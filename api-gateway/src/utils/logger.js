@@ -79,7 +79,7 @@ const fileFormat = winston.format.combine(
 // Create logger instance
 const logger = winston.createLogger({
   levels: logLevels,
-  level: config.logging.level,
+  level: config.logging?.level || 'info',
   defaultMeta: {
     service: 'api-gateway',
     environment: config.app.env,
@@ -94,52 +94,52 @@ const logger = winston.createLogger({
 
     // File transport for all logs
     new winston.transports.File({
-      filename: config.logging.filePath,
+      filename: logFilePath,
       format: fileFormat,
-      maxsize: config.logging.maxFileSize,
-      maxFiles: config.logging.maxFiles,
+      maxsize: config.logging?.maxFileSize || '10m',
+      maxFiles: config.logging?.maxFiles || 5,
       tailable: true
     }),
 
     // Separate file for errors
     new winston.transports.File({
-      filename: config.logging.filePath.replace('.log', '-error.log'),
+      filename: logFilePath.replace('.log', '-error.log'),
       level: 'error',
       format: fileFormat,
-      maxsize: config.logging.maxFileSize,
-      maxFiles: config.logging.maxFiles
+      maxsize: config.logging?.maxFileSize || '10m',
+      maxFiles: config.logging?.maxFiles || 5
     }),
 
     // Separate file for security events
     new winston.transports.File({
-      filename: config.logging.filePath.replace('.log', '-security.log'),
+      filename: logFilePath.replace('.log', '-security.log'),
       level: 'security',
       format: fileFormat,
-      maxsize: config.logging.maxFileSize,
-      maxFiles: config.logging.maxFiles
+      maxsize: config.logging?.maxFileSize || '10m',
+      maxFiles: config.logging?.maxFiles || 5
     }),
 
     // Separate file for audit events
     new winston.transports.File({
-      filename: config.logging.filePath.replace('.log', '-audit.log'),
+      filename: logFilePath.replace('.log', '-audit.log'),
       level: 'audit',
       format: fileFormat,
-      maxsize: config.logging.maxFileSize,
-      maxFiles: config.logging.maxFiles
+      maxsize: config.logging?.maxFileSize || '10m',
+      maxFiles: config.logging?.maxFiles || 5
     })
   ],
 
   // Handle uncaught exceptions
   exceptionHandlers: [
     new winston.transports.File({
-      filename: config.logging.filePath.replace('.log', '-exceptions.log')
+      filename: logFilePath.replace('.log', '-exceptions.log')
     })
   ],
 
   // Handle unhandled promise rejections
   rejectionHandlers: [
     new winston.transports.File({
-      filename: config.logging.filePath.replace('.log', '-rejections.log')
+      filename: logFilePath.replace('.log', '-rejections.log')
     })
   ]
 });
@@ -423,7 +423,7 @@ class ApiGatewayLogger {
   async cleanupLogs(retentionDays = 30) {
     try {
       const fs = require('fs').promises;
-      const logDir = path.dirname(config.logging.filePath);
+      const logDir = path.dirname(logFilePath);
       const files = await fs.readdir(logDir);
 
       const cutoffTime = Date.now() - (retentionDays * 24 * 60 * 60 * 1000);
