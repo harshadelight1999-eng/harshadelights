@@ -4,7 +4,7 @@ services:
     env: node
     plan: free
     buildCommand: npm install && npm run build
-    startCommand: node src/server.js
+    startCommand: node dist/server.js
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -67,5 +67,13 @@ services:
       # Logging
       - key: LOG_LEVEL
         value: info
+      - key: LOG_FILE_PATH
+        value: ./logs/api-gateway.log
+      - key: LOG_MAX_FILE_SIZE
+        value: 10m
+      - key: LOG_MAX_FILES
+        value: 5
+      - key: LOG_DATE_PATTERN
+        value: YYYY-MM-DD
       - key: METRICS_ENABLED
         value: true

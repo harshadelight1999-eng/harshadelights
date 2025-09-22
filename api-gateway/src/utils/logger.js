@@ -9,7 +9,8 @@ const fs = require('fs');
 const config = require('../config');
 
 // Ensure logs directory exists
-const logsDir = path.dirname(config.logging.filePath);
+const logFilePath = config.logging?.filePath || './logs/api-gateway.log';
+const logsDir = path.dirname(logFilePath);
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
