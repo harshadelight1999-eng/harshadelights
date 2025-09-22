@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: harsha-config
+  namespace: harsha-delights
+data:
+  # API Configuration
+  api-url: "https://api.harshadelights.com"
+  frontend-url: "https://harshadelights.com"
+  admin-url: "https://admin.harshadelights.com"
+
+  # Application Settings
+  node-env: "production"
+  log-level: "info"
+  session-timeout: "3600"
+
+  # Feature Flags
+  enable-analytics: "true"
+  enable-notifications: "true"
+  enable-maintenance-mode: "false"
+
+  # Rate Limiting
+  rate-limit-max: "100"
+  rate-limit-window: "60000"
+
+  # Cache Settings
+  cache-ttl: "300"
+  redis-key-prefix: "harsha:"
+
+  # Security Settings
+  cors-origins: "https://harshadelights.com,https://www.harshadelights.com,https://admin.harshadelights.com"
+
+  # Database Settings
+  db-pool-min: "2"
+  db-pool-max: "10"
+  db-timeout: "30000"

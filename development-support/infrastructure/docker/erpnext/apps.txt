@@ -1,0 +1,16 @@
+# ERPNext Applications Configuration
+# This file lists all the applications to be installed in the ERPNext instance
+
+# Core Frappe Framework (required)
+frappe
+
+# ERPNext Core Application (required)
+erpnext
+
+# Harsha Delights Custom Application
+harsha_customizations
+
+# Additional Applications (uncomment if needed)
+# payments
+# hrms
+# ecommerce_integrations

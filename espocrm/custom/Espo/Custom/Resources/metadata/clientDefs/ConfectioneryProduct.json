@@ -1,0 +1,95 @@
+{
+    "controller": "controllers/record",
+    "views": {
+        "list": "views/confectionery-product/list",
+        "detail": "views/confectionery-product/detail",
+        "edit": "views/confectionery-product/edit"
+    },
+    "recordViews": {
+        "list": "views/confectionery-product/record/list",
+        "detail": "views/confectionery-product/record/detail",
+        "edit": "views/confectionery-product/record/edit"
+    },
+    "modalViews": {
+        "detail": "views/confectionery-product/modals/detail",
+        "edit": "views/confectionery-product/modals/edit",
+        "select": "views/confectionery-product/modals/select"
+    },
+    "searchPanelView": "views/confectionery-product/record/search",
+    "filterList": [
+        "category",
+        "productType",
+        "isActive",
+        "qualityGrade",
+        "targetMarket"
+    ],
+    "boolFilterList": [
+        "onlyActive",
+        "inStock",
+        "lowStock",
+        "expiringItems",
+        "premiumOnly",
+        "b2bProducts",
+        "b2cProducts"
+    ],
+    "defaultFilterData": {
+        "primary": "onlyActive"
+    },
+    "selectDefaultFilters": {
+        "filter": "onlyActive"
+    },
+    "color": "#D2691E",
+    "iconClass": "fas fa-cookie-bite",
+    "kanbanViewMode": true,
+    "kanbanStatusIgnoreList": [],
+    "quickCreateDisabled": false,
+    "quickSearchFields": ["name", "sku", "barcode"],
+    "textFilterFields": ["name", "sku", "description", "ingredients", "barcode"],
+    "tooltip": true,
+    "tooltipText": "Confectionery products including sweets, chocolates, namkeens and related items",
+    "mandatorySelectAttributeList": ["name", "sku", "category", "basePrice", "isActive"],
+    "forceSelectAllAttributes": false,
+    "duplicateWhereBuilt": true,
+    "exportDisabled": false,
+    "mergeDisabled": false,
+    "massUpdateDisabled": false,
+    "massFollowDisabled": true,
+    "massUnfollowDisabled": true,
+    "dynamicLogic": {
+        "fields": {
+            "seasonality": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "notEquals",
+                            "attribute": "category",
+                            "value": "raw_materials"
+                        }
+                    ]
+                }
+            },
+            "shelfLife": {
+                "required": {
+                    "conditionGroup": [
+                        {
+                            "type": "in",
+                            "attribute": "category",
+                            "value": ["sweets", "chocolates", "buns", "cookies"]
+                        }
+                    ]
+                }
+            },
+            "allergens": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "notEquals",
+                            "attribute": "productType",
+                            "value": "packaging"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,151 @@
+# =====================================================================================
+# HARSHA DELIGHTS CONFECTIONERY SYSTEM - GIT IGNORE
+# =====================================================================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Next.js build artifacts
+.next/
+**/.next/
+out/
+
+# Backup and temporary files
+*.bak
+*.backup
+*.tmp
+temp_*
+
+# MacOS system files
+.DS_Store
+
+# Docker compose files in subdirectories (use main orchestration)
+api-gateway/docker-compose*.yml
+sync-services/docker-compose*.yml
+espocrm/docker-compose*.yml
+ecommerce-backend/docker-compose*.yml
+out/
+
+# Logs
+logs
+*.log
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Temporary folders
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compiled binary addons
+*.node
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Docker volumes and data
+volumes/
+*-data/
+
+# Research archives directory (reference only, no git tracking)
+research-archives/
+
+# Open source research directory (too large for git)
+open-source-research/
+
+# Security and secrets
+*.pem
+*.key
+*.cert
+private.key
+public.key
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Python files (if any)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# PHP files (if any)
+vendor/
+composer.lock
+
+# Local development settings
+.local
+local.yaml
+local.yml
+
+# Production specific files
+production.env
+staging.env
+
+# Test coverage
+coverage/
+.nyc_output
+
+# Miscellaneous
+.sass-cache/
+connect.lock
+libpeerconnection.log
+testem.log
+typings/
+.angular/cachefrontend-applications/05-mobile-sales/flutter.zip

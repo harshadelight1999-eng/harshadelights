@@ -1,0 +1,24 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "API Gateway Database",
+      "Group": "Harsha Delights",
+      "Host": "postgres-api",
+      "Port": 5432,
+      "MaintenanceDB": "postgres",
+      "Username": "postgres",
+      "PassFile": "/tmp/pgpassfile",
+      "SSLMode": "prefer"
+    },
+    "2": {
+      "Name": "Sync Database",
+      "Group": "Harsha Delights",
+      "Host": "postgres-sync",
+      "Port": 5432,
+      "MaintenanceDB": "postgres",
+      "Username": "postgres",
+      "PassFile": "/tmp/pgpassfile",
+      "SSLMode": "prefer"
+    }
+  }
+}

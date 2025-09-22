@@ -1,0 +1,27 @@
+import { authkitMiddleware } from '@workos-inc/authkit-nextjs';
+
+export default authkitMiddleware({
+  // Middleware will run for all routes except those defined here
+  middlewareAuth: {
+    ignoredRoutes: [
+      '/',
+      '/auth/callback',
+      '/auth/error',
+      '/favicon.ico',
+      '/api/health',
+    ],
+  },
+});
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     */
+    '/((?!_next/static|_next/image|favicon.ico|public/).*)',
+  ],
+};

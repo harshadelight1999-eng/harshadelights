@@ -1,0 +1,507 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "readOnly": true,
+            "maxLength": 255,
+            "tooltip": "Auto-generated QC reference number"
+        },
+        "qcNumber": {
+            "type": "autoincrement",
+            "unique": true,
+            "prefix": "QC-",
+            "padLength": 6
+        },
+        "checkType": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "incoming_inspection",
+                "in_process_check",
+                "final_inspection",
+                "random_sampling",
+                "customer_complaint",
+                "batch_release"
+            ],
+            "default": "incoming_inspection"
+        },
+        "status": {
+            "type": "enum",
+            "required": true,
+            "options": ["pending", "in_progress", "passed", "failed", "on_hold", "cancelled"],
+            "default": "pending"
+        },
+        "priority": {
+            "type": "enum",
+            "options": ["low", "normal", "high", "urgent"],
+            "default": "normal"
+        },
+        "product": {
+            "type": "link",
+            "entity": "ConfectioneryProduct"
+        },
+        "inventoryItem": {
+            "type": "link",
+            "entity": "InventoryItem"
+        },
+        "salesOrder": {
+            "type": "link",
+            "entity": "SalesOrder"
+        },
+        "salesOrderItem": {
+            "type": "link",
+            "entity": "SalesOrderItem"
+        },
+        "productionOrder": {
+            "type": "link",
+            "entity": "ProductionOrder"
+        },
+        "batchNumber": {
+            "type": "varchar",
+            "maxLength": 50,
+            "tooltip": "Batch number being checked"
+        },
+        "lotNumber": {
+            "type": "varchar",
+            "maxLength": 50,
+            "tooltip": "Lot number being checked"
+        },
+        "sampleSize": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Size of sample taken for testing"
+        },
+        "sampleUnit": {
+            "type": "enum",
+            "options": ["kg", "gm", "piece", "box", "packet", "liter", "ml"],
+            "default": "gm"
+        },
+        "checkDate": {
+            "type": "date",
+            "required": true,
+            "default": "javascript: return new Date();"
+        },
+        "checkTime": {
+            "type": "datetime",
+            "tooltip": "Specific time of quality check"
+        },
+        "inspector": {
+            "type": "link",
+            "required": true,
+            "entity": "User",
+            "tooltip": "Quality inspector performing the check"
+        },
+        "supervisor": {
+            "type": "link",
+            "entity": "User",
+            "tooltip": "Supervisor approving the check"
+        },
+        "checkLocation": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": "Location where check was performed"
+        },
+        "temperature": {
+            "type": "float",
+            "tooltip": "Temperature during check (Celsius)"
+        },
+        "humidity": {
+            "type": "float",
+            "tooltip": "Humidity during check (%)"
+        },
+        "visualInspection": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "visualNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Visual inspection observations"
+        },
+        "tasteTest": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "tasteNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Taste test observations"
+        },
+        "textureTest": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "textureNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Texture test observations"
+        },
+        "aromTest": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "aromaNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Aroma test observations"
+        },
+        "packagingCheck": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "packagingNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Packaging inspection notes"
+        },
+        "weightCheck": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "expectedWeight": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Expected weight (grams)"
+        },
+        "actualWeight": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Actual measured weight (grams)"
+        },
+        "weightVariance": {
+            "type": "float",
+            "readOnly": true,
+            "tooltip": "Weight variance percentage"
+        },
+        "moistureContent": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "tooltip": "Moisture content percentage"
+        },
+        "moistureCheck": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "not_applicable"
+        },
+        "microbiologyTest": {
+            "type": "enum",
+            "options": ["passed", "failed", "pending", "not_applicable"],
+            "default": "not_applicable"
+        },
+        "microbiologyNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Microbiology test results"
+        },
+        "chemicalTest": {
+            "type": "enum",
+            "options": ["passed", "failed", "pending", "not_applicable"],
+            "default": "not_applicable"
+        },
+        "chemicalNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Chemical test results"
+        },
+        "allergenCheck": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "not_applicable"
+        },
+        "allergenNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Allergen test results"
+        },
+        "labelingCheck": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "labelingNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Labeling accuracy check"
+        },
+        "foreignMatterCheck": {
+            "type": "enum",
+            "options": ["passed", "failed", "not_applicable"],
+            "default": "passed"
+        },
+        "foreignMatterNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Foreign matter inspection notes"
+        },
+        "overallResult": {
+            "type": "enum",
+            "required": true,
+            "options": ["passed", "passed_with_conditions", "failed", "pending"],
+            "default": "pending"
+        },
+        "grade": {
+            "type": "enum",
+            "options": ["A+", "A", "B+", "B", "C", "D", "F"],
+            "tooltip": "Quality grade assigned"
+        },
+        "score": {
+            "type": "int",
+            "min": 0,
+            "max": 100,
+            "tooltip": "Quality score out of 100"
+        },
+        "defectsFound": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "List of defects found during inspection"
+        },
+        "correctiveActions": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Corrective actions recommended"
+        },
+        "preventiveActions": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Preventive actions for future"
+        },
+        "retestRequired": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether retest is required"
+        },
+        "retestDate": {
+            "type": "date",
+            "tooltip": "Date for retest if required"
+        },
+        "approvedBy": {
+            "type": "link",
+            "entity": "User",
+            "tooltip": "User who approved the quality check"
+        },
+        "approvedDate": {
+            "type": "datetime",
+            "tooltip": "Date and time of approval"
+        },
+        "certificateNumber": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": "Quality certificate number"
+        },
+        "certificateFile": {
+            "type": "attachment",
+            "tooltip": "Quality certificate document"
+        },
+        "testReports": {
+            "type": "attachmentMultiple",
+            "tooltip": "Laboratory test reports"
+        },
+        "photos": {
+            "type": "attachmentMultiple",
+            "tooltip": "Photos taken during inspection"
+        },
+        "complianceStatus": {
+            "type": "enum",
+            "options": ["compliant", "non_compliant", "partial_compliance"],
+            "default": "compliant"
+        },
+        "regulatoryRequirements": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Applicable regulatory requirements"
+        },
+        "customerSpecifications": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Customer specific quality requirements"
+        },
+        "holdStatus": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether product is on quality hold"
+        },
+        "holdReason": {
+            "type": "text",
+            "tooltip": "Reason for quality hold"
+        },
+        "releaseDate": {
+            "type": "datetime",
+            "tooltip": "Date when product was released from hold"
+        },
+        "releasedBy": {
+            "type": "link",
+            "entity": "User",
+            "tooltip": "User who released from hold"
+        },
+        "expiryDate": {
+            "type": "date",
+            "tooltip": "Product expiry date"
+        },
+        "shelfLifeRemaining": {
+            "type": "int",
+            "readOnly": true,
+            "tooltip": "Shelf life remaining in days"
+        },
+        "qualityAlert": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether to raise quality alert"
+        },
+        "alertSent": {
+            "type": "bool",
+            "default": false,
+            "readOnly": true
+        },
+        "followUpRequired": {
+            "type": "bool",
+            "default": false
+        },
+        "followUpDate": {
+            "type": "date"
+        },
+        "followUpNotes": {
+            "type": "text",
+            "rows": 2
+        },
+        "cost": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Cost of quality check"
+        },
+        "duration": {
+            "type": "int",
+            "min": 0,
+            "tooltip": "Duration of check in minutes"
+        },
+        "equipment": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Equipment used for testing"
+        },
+        "standardProcedure": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Standard procedure followed"
+        },
+        "deviations": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Deviations from standard procedure"
+        },
+        "remarks": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Additional remarks"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        }
+    },
+    "links": {
+        "product": {
+            "type": "belongsTo",
+            "entity": "ConfectioneryProduct",
+            "foreign": "qualityChecks"
+        },
+        "inventoryItem": {
+            "type": "belongsTo",
+            "entity": "InventoryItem",
+            "foreign": "qualityChecks"
+        },
+        "salesOrder": {
+            "type": "belongsTo",
+            "entity": "SalesOrder",
+            "foreign": "qualityChecks"
+        },
+        "salesOrderItem": {
+            "type": "belongsTo",
+            "entity": "SalesOrderItem",
+            "foreign": "qualityChecks"
+        },
+        "productionOrder": {
+            "type": "belongsTo",
+            "entity": "ProductionOrder",
+            "foreign": "qualityChecks"
+        },
+        "inspector": {
+            "type": "belongsTo",
+            "entity": "User",
+            "foreign": "performedQualityChecks"
+        },
+        "supervisor": {
+            "type": "belongsTo",
+            "entity": "User",
+            "foreign": "supervisedQualityChecks"
+        },
+        "approvedBy": {
+            "type": "belongsTo",
+            "entity": "User",
+            "foreign": "approvedQualityChecks"
+        },
+        "releasedBy": {
+            "type": "belongsTo",
+            "entity": "User",
+            "foreign": "releasedQualityChecks"
+        },
+        "correctiveActionTasks": {
+            "type": "hasMany",
+            "entity": "Task",
+            "foreign": "qualityCheck"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc"
+    },
+    "indexes": {
+        "qcNumber": {
+            "columns": ["qcNumber"],
+            "unique": true
+        },
+        "status": {
+            "columns": ["status"]
+        },
+        "checkDate": {
+            "columns": ["checkDate"]
+        },
+        "product": {
+            "columns": ["productId"]
+        },
+        "batchNumber": {
+            "columns": ["batchNumber"]
+        },
+        "overallResult": {
+            "columns": ["overallResult"]
+        }
+    }
+}

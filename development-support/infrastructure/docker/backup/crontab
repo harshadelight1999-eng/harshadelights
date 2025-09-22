@@ -1,0 +1,32 @@
+# =====================================================================================
+# HARSHA DELIGHTS - BACKUP SERVICE CRONTAB
+# =====================================================================================
+# Automated backup schedule for all databases and application data
+# Format: minute hour day month weekday command
+# =====================================================================================
+
+# Daily database backups at 2:00 AM
+0 2 * * * /scripts/backup-databases.sh postgres mariadb redis >> /logs/backup.log 2>&1
+
+# Weekly full backup at 3:00 AM on Sundays
+0 3 * * 0 /scripts/backup-full.sh >> /logs/backup-full.log 2>&1
+
+# Daily cleanup of old backups at 4:00 AM
+0 4 * * * /scripts/cleanup-old-backups.sh >> /logs/cleanup.log 2>&1
+
+# Health check every 30 minutes
+*/30 * * * * /scripts/healthcheck.sh >> /logs/healthcheck.log 2>&1
+
+# Log rotation at midnight
+0 0 * * * /scripts/rotate-logs.sh >> /logs/rotate.log 2>&1
+
+# Sync to cloud storage (if enabled) at 5:00 AM
+0 5 * * * /scripts/sync-to-cloud.sh >> /logs/cloud-sync.log 2>&1
+
+# =====================================================================================
+# NOTES:
+# - All times are in container timezone (UTC by default)
+# - Logs are written to /logs/ directory
+# - Failed backups will be logged with ERROR level
+# - Cloud sync only runs if BACKUP_STORAGE_TYPE=cloud
+# =====================================================================================

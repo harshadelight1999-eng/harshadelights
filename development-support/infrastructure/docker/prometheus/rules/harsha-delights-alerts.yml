@@ -1,0 +1,302 @@
+# =====================================================================================
+# HARSHA DELIGHTS PROMETHEUS ALERTING RULES
+# =====================================================================================
+# Alert rules for monitoring the confectionery system infrastructure and business metrics
+# =====================================================================================
+
+groups:
+  # System Infrastructure Alerts
+  - name: infrastructure.rules
+    rules:
+      # High CPU usage
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High CPU usage detected on {{ $labels.instance }}"
+          description: "CPU usage is above 80% for more than 5 minutes on {{ $labels.instance }}"
+
+      # High memory usage
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High memory usage detected on {{ $labels.instance }}"
+          description: "Memory usage is above 85% for more than 5 minutes on {{ $labels.instance }}"
+
+      # Disk space running low
+      - alert: LowDiskSpace
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 10
+        for: 2m
+        labels:
+          severity: critical
+          component: storage
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Disk space is below 10% on {{ $labels.instance }} mount {{ $labels.mountpoint }}"
+
+      # High disk I/O
+      - alert: HighDiskIO
+        expr: irate(node_disk_io_time_seconds_total[5m]) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          component: storage
+        annotations:
+          summary: "High disk I/O on {{ $labels.instance }}"
+          description: "Disk I/O usage is above 80% for more than 5 minutes on {{ $labels.instance }}"
+
+  # Application Services Alerts
+  - name: applications.rules
+    rules:
+      # Service down
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: application
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Service {{ $labels.job }} on {{ $labels.instance }} has been down for more than 1 minute"
+
+      # High HTTP error rate
+      - alert: HighHTTPErrorRate
+        expr: rate(http_requests_total{code=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          component: application
+        annotations:
+          summary: "High HTTP error rate for {{ $labels.job }}"
+          description: "HTTP error rate is above 10% for {{ $labels.job }} for more than 5 minutes"
+
+      # Slow HTTP response time
+      - alert: SlowHTTPResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          component: application
+        annotations:
+          summary: "Slow HTTP response time for {{ $labels.job }}"
+          description: "95th percentile response time is above 2 seconds for {{ $labels.job }}"
+
+  # Database Alerts
+  - name: database.rules
+    rules:
+      # Database connection issues
+      - alert: DatabaseConnectionFailure
+        expr: mysql_up == 0 or pg_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: database
+        annotations:
+          summary: "Database connection failure"
+          description: "Cannot connect to database {{ $labels.instance }}"
+
+      # High database connections
+      - alert: HighDatabaseConnections
+        expr: mysql_global_status_threads_connected / mysql_global_variables_max_connections > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "High database connections on {{ $labels.instance }}"
+          description: "Database connections are above 80% of maximum on {{ $labels.instance }}"
+
+      # Slow database queries
+      - alert: SlowDatabaseQueries
+        expr: mysql_global_status_slow_queries > 10
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "Number of slow queries is above threshold on {{ $labels.instance }}"
+
+      # Database replication lag
+      - alert: DatabaseReplicationLag
+        expr: mysql_slave_lag_seconds > 30
+        for: 2m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Database replication lag"
+          description: "Replication lag is above 30 seconds on {{ $labels.instance }}"
+
+  # Redis Alerts
+  - name: redis.rules
+    rules:
+      # Redis down
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: cache
+        annotations:
+          summary: "Redis is down"
+          description: "Redis instance {{ $labels.instance }} is down"
+
+      # High Redis memory usage
+      - alert: HighRedisMemoryUsage
+        expr: redis_memory_used_bytes / redis_config_maxmemory_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          component: cache
+        annotations:
+          summary: "High Redis memory usage"
+          description: "Redis memory usage is above 90% on {{ $labels.instance }}"
+
+      # High Redis connections
+      - alert: HighRedisConnections
+        expr: redis_connected_clients > 100
+        for: 5m
+        labels:
+          severity: warning
+          component: cache
+        annotations:
+          summary: "High Redis connections"
+          description: "Redis has more than 100 connected clients on {{ $labels.instance }}"
+
+  # Business Logic Alerts
+  - name: business.rules
+    rules:
+      # High order failure rate
+      - alert: HighOrderFailureRate
+        expr: rate(orders_failed_total[5m]) / rate(orders_total[5m]) > 0.05
+        for: 3m
+        labels:
+          severity: warning
+          component: business
+        annotations:
+          summary: "High order failure rate"
+          description: "Order failure rate is above 5% for more than 3 minutes"
+
+      # Low inventory alert
+      - alert: LowInventoryAlert
+        expr: inventory_stock_level < inventory_minimum_threshold
+        for: 1m
+        labels:
+          severity: warning
+          component: business
+        annotations:
+          summary: "Low inventory for {{ $labels.product_code }}"
+          description: "Stock level for {{ $labels.product_code }} is below minimum threshold"
+
+      # Batch expiry warning
+      - alert: BatchExpiryWarning
+        expr: (batch_expiry_timestamp - time()) / 86400 < 7
+        for: 1m
+        labels:
+          severity: warning
+          component: business
+        annotations:
+          summary: "Batch expiry warning for {{ $labels.batch_id }}"
+          description: "Batch {{ $labels.batch_id }} will expire in less than 7 days"
+
+      # Quality control failure
+      - alert: QualityControlFailure
+        expr: quality_check_failed == 1
+        for: 0m
+        labels:
+          severity: critical
+          component: business
+        annotations:
+          summary: "Quality control failure for batch {{ $labels.batch_id }}"
+          description: "Quality control check failed for batch {{ $labels.batch_id }}"
+
+      # Payment processing failure
+      - alert: PaymentProcessingFailure
+        expr: rate(payment_failures_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+          component: business
+        annotations:
+          summary: "High payment processing failure rate"
+          description: "Payment processing failure rate is above threshold"
+
+  # Security Alerts
+  - name: security.rules
+    rules:
+      # High login failure rate
+      - alert: HighLoginFailureRate
+        expr: rate(auth_login_failures_total[5m]) > 5
+        for: 2m
+        labels:
+          severity: warning
+          component: security
+        annotations:
+          summary: "High login failure rate"
+          description: "Login failure rate is above 5 failures per second"
+
+      # Suspicious API activity
+      - alert: SuspiciousAPIActivity
+        expr: rate(api_requests_total[1m]) > 100
+        for: 2m
+        labels:
+          severity: warning
+          component: security
+        annotations:
+          summary: "Suspicious API activity from {{ $labels.client_ip }}"
+          description: "High API request rate detected from {{ $labels.client_ip }}"
+
+      # Rate limit exceeded
+      - alert: RateLimitExceeded
+        expr: rate(rate_limit_exceeded_total[5m]) > 10
+        for: 1m
+        labels:
+          severity: warning
+          component: security
+        annotations:
+          summary: "Rate limit frequently exceeded"
+          description: "Rate limit is being exceeded frequently, possible attack"
+
+  # Integration Alerts
+  - name: integration.rules
+    rules:
+      # ERPNext sync failure
+      - alert: ERPNextSyncFailure
+        expr: erpnext_sync_failures_total > 5
+        for: 5m
+        labels:
+          severity: warning
+          component: integration
+        annotations:
+          summary: "ERPNext synchronization failures"
+          description: "Multiple ERPNext sync failures detected"
+
+      # API Gateway health check failure
+      - alert: APIGatewayHealthFailure
+        expr: api_gateway_health_check == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: integration
+        annotations:
+          summary: "API Gateway health check failure"
+          description: "API Gateway health check is failing"
+
+      # External service timeout
+      - alert: ExternalServiceTimeout
+        expr: external_service_response_time > 10
+        for: 3m
+        labels:
+          severity: warning
+          component: integration
+        annotations:
+          summary: "External service timeout"
+          description: "External service {{ $labels.service_name }} is responding slowly"

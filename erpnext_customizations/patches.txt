@@ -1,0 +1,8 @@
+# Database patches for Harsha Delights ERPNext Customizations
+# Format: execute:erpnext_customizations.patches.v1_0.patch_name
+
+# Initial setup patches
+execute:erpnext_customizations.patches.v1_0.setup_confectionery_item_groups
+execute:erpnext_customizations.patches.v1_0.setup_warehouse_structure
+execute:erpnext_customizations.patches.v1_0.setup_customer_groups
+execute:erpnext_customizations.patches.v1_0.setup_default_uoms

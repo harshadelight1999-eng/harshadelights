@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # B2C E-commerce Frontend
+  b2c-frontend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_APP_NAME=Harsha Delights Shop
+      - NEXT_PUBLIC_APP_URL=https://shop.harshadelights.com
+      - MEDUSA_BACKEND_URL=http://medusa-backend:9000
+      - NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - NEXT_PUBLIC_COMPANY_NAME=Harsha Delights
+      - NEXT_PUBLIC_COMPANY_PHONE=+91-98765-43210
+      - NEXT_PUBLIC_COMPANY_EMAIL=orders@harshadelights.com
+      - NEXT_PUBLIC_ENABLE_WISHLIST=true
+      - NEXT_PUBLIC_ENABLE_REVIEWS=true
+    networks:
+      - harsha-delights-network
+    depends_on:
+      - medusa-backend
+
+  # Medusa.js Backend (placeholder for integration)
+  medusa-backend:
+    image: medusajs/medusa:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://medusa:medusa@postgres:5432/medusa
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_here}
+      - COOKIE_SECRET=${COOKIE_SECRET:-your_cookie_secret_here}
+    networks:
+      - harsha-delights-network
+    depends_on:
+      - postgres
+      - redis
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=medusa
+      - POSTGRES_USER=medusa
+      - POSTGRES_PASSWORD=medusa
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - harsha-delights-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    networks:
+      - harsha-delights-network
+
+networks:
+  harsha-delights-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

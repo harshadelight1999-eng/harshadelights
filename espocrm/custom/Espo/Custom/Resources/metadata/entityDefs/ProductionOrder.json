@@ -1,0 +1,390 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "readOnly": true,
+            "maxLength": 255,
+            "tooltip": "Auto-generated production order number"
+        },
+        "productionOrderNumber": {
+            "type": "autoincrement",
+            "unique": true,
+            "prefix": "PO-",
+            "padLength": 6
+        },
+        "salesOrder": {
+            "type": "link",
+            "entity": "SalesOrder"
+        },
+        "salesOrderItem": {
+            "type": "link",
+            "entity": "SalesOrderItem"
+        },
+        "product": {
+            "type": "link",
+            "required": true,
+            "entity": "ConfectioneryProduct"
+        },
+        "plannedQuantity": {
+            "type": "float",
+            "required": true,
+            "min": 0,
+            "tooltip": "Quantity planned for production"
+        },
+        "producedQuantity": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Actual quantity produced"
+        },
+        "unitOfMeasure": {
+            "type": "enum",
+            "required": true,
+            "options": ["kg", "gm", "piece", "box", "packet", "liter", "ml"],
+            "default": "kg"
+        },
+        "status": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "draft",
+                "planned",
+                "material_reserved",
+                "in_production",
+                "quality_check",
+                "completed",
+                "cancelled",
+                "on_hold"
+            ],
+            "default": "draft"
+        },
+        "priority": {
+            "type": "enum",
+            "options": ["low", "normal", "high", "urgent"],
+            "default": "normal"
+        },
+        "plannedStartDate": {
+            "type": "date",
+            "required": true,
+            "tooltip": "Planned production start date"
+        },
+        "plannedEndDate": {
+            "type": "date",
+            "required": true,
+            "tooltip": "Planned production completion date"
+        },
+        "actualStartDate": {
+            "type": "datetime",
+            "tooltip": "Actual production start time"
+        },
+        "actualEndDate": {
+            "type": "datetime",
+            "tooltip": "Actual production completion time"
+        },
+        "productionPartner": {
+            "type": "link",
+            "entity": "Account",
+            "tooltip": "Manufacturing partner assigned"
+        },
+        "warehouse": {
+            "type": "link",
+            "entity": "Warehouse",
+            "tooltip": "Warehouse for production"
+        },
+        "supervisor": {
+            "type": "link",
+            "entity": "User",
+            "tooltip": "Production supervisor"
+        },
+        "assignedTeam": {
+            "type": "link",
+            "entity": "Team",
+            "tooltip": "Team assigned for production"
+        },
+        "batchNumber": {
+            "type": "varchar",
+            "maxLength": 50,
+            "unique": true,
+            "tooltip": "Production batch number"
+        },
+        "recipe": {
+            "type": "link",
+            "entity": "Recipe",
+            "tooltip": "Recipe to follow for production"
+        },
+        "instructions": {
+            "type": "text",
+            "rows": 4,
+            "tooltip": "Special production instructions"
+        },
+        "qualityRequirements": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Quality requirements for this production"
+        },
+        "packagingInstructions": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Packaging instructions"
+        },
+        "estimatedCost": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Estimated production cost"
+        },
+        "actualCost": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Actual production cost"
+        },
+        "materialCost": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Cost of raw materials"
+        },
+        "laborCost": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Labor cost for production"
+        },
+        "overheadCost": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Overhead cost allocation"
+        },
+        "yieldPercentage": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "tooltip": "Production yield percentage"
+        },
+        "wastePercentage": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "tooltip": "Production waste percentage"
+        },
+        "temperatureLog": {
+            "type": "text",
+            "tooltip": "Temperature monitoring log"
+        },
+        "humidityLog": {
+            "type": "text",
+            "tooltip": "Humidity monitoring log"
+        },
+        "qualityCheckStatus": {
+            "type": "enum",
+            "options": ["pending", "in_progress", "passed", "failed", "not_required"],
+            "default": "pending"
+        },
+        "defectsFound": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Defects found during production"
+        },
+        "correctiveActions": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Corrective actions taken"
+        },
+        "equipmentUsed": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Equipment used for production"
+        },
+        "shiftDetails": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Shift and crew details"
+        },
+        "energyConsumption": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Energy consumption in kWh"
+        },
+        "waterConsumption": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Water consumption in liters"
+        },
+        "environmentalConditions": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Environmental conditions during production"
+        },
+        "productionNotes": {
+            "type": "text",
+            "rows": 4,
+            "tooltip": "General production notes"
+        },
+        "completionPercentage": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "readOnly": true,
+            "tooltip": "Production completion percentage"
+        },
+        "isUrgent": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether this is an urgent production order"
+        },
+        "requiresSpecialHandling": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Requires special handling or equipment"
+        },
+        "specialHandlingNotes": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Special handling requirements"
+        },
+        "allergenControls": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Allergen control measures"
+        },
+        "hygieneProtocol": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Hygiene protocols followed"
+        },
+        "documents": {
+            "type": "attachmentMultiple",
+            "tooltip": "Production related documents"
+        },
+        "photos": {
+            "type": "attachmentMultiple",
+            "tooltip": "Production photos for quality control"
+        },
+        "cancelReason": {
+            "type": "text",
+            "tooltip": "Reason for cancellation"
+        },
+        "cancelledBy": {
+            "type": "link",
+            "entity": "User"
+        },
+        "cancelledDate": {
+            "type": "datetime"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        }
+    },
+    "links": {
+        "salesOrder": {
+            "type": "belongsTo",
+            "entity": "SalesOrder",
+            "foreign": "productionOrders"
+        },
+        "salesOrderItem": {
+            "type": "belongsTo",
+            "entity": "SalesOrderItem",
+            "foreign": "productionOrders"
+        },
+        "product": {
+            "type": "belongsTo",
+            "entity": "ConfectioneryProduct",
+            "foreign": "productionOrders"
+        },
+        "productionPartner": {
+            "type": "belongsTo",
+            "entity": "Account",
+            "foreign": "productionOrders"
+        },
+        "warehouse": {
+            "type": "belongsTo",
+            "entity": "Warehouse",
+            "foreign": "productionOrders"
+        },
+        "supervisor": {
+            "type": "belongsTo",
+            "entity": "User",
+            "foreign": "supervisedProductionOrders"
+        },
+        "assignedTeam": {
+            "type": "belongsTo",
+            "entity": "Team",
+            "foreign": "productionOrders"
+        },
+        "recipe": {
+            "type": "belongsTo",
+            "entity": "Recipe",
+            "foreign": "productionOrders"
+        },
+        "qualityChecks": {
+            "type": "hasMany",
+            "entity": "QualityCheck",
+            "foreign": "productionOrder"
+        },
+        "inventoryItems": {
+            "type": "hasMany",
+            "entity": "InventoryItem",
+            "foreign": "productionOrder"
+        },
+        "materialTransactions": {
+            "type": "hasMany",
+            "entity": "InventoryTransaction",
+            "foreign": "productionOrder"
+        },
+        "tasks": {
+            "type": "hasMany",
+            "entity": "Task",
+            "foreign": "productionOrder"
+        },
+        "cancelledBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "plannedStartDate",
+        "order": "asc"
+    },
+    "indexes": {
+        "productionOrderNumber": {
+            "columns": ["productionOrderNumber"],
+            "unique": true
+        },
+        "status": {
+            "columns": ["status"]
+        },
+        "plannedStartDate": {
+            "columns": ["plannedStartDate"]
+        },
+        "product": {
+            "columns": ["productId"]
+        },
+        "batchNumber": {
+            "columns": ["batchNumber"],
+            "unique": true
+        },
+        "priority": {
+            "columns": ["priority"]
+        }
+    }
+}

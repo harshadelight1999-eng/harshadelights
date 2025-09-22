@@ -1,0 +1,217 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: harsha-delights
+
+jobs:
+  # Security and Code Quality
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # Test and Build API Gateway
+  api-gateway-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api-gateway
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: api-gateway/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+      env:
+        NODE_ENV: test
+
+    - name: Run security audit
+      run: npm audit --audit-level=high
+
+  # Test and Build Frontend Applications
+  frontend-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend-applications
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend-applications/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run type checking
+      run: npm run type-check
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build applications
+      run: npm run build
+      env:
+        NODE_ENV: production
+
+  # Build and Push Docker Images
+  build-and-push:
+    needs: [security-scan, api-gateway-test, frontend-test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        service: [api-gateway, frontend-apps, ecommerce-backend, sync-services, integration-services]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.service }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./docker/${{ matrix.service }}/Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  # Deploy to Staging
+  deploy-staging:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure kubectl
+      uses: azure/k8s-set-context@v3
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.STAGING_KUBECONFIG }}
+
+    - name: Deploy to staging
+      run: |
+        kubectl apply -f k8s/namespace/
+        kubectl apply -f k8s/configmaps/
+        kubectl apply -f k8s/secrets/
+        kubectl apply -f k8s/deployments/
+        kubectl apply -f k8s/services/
+        kubectl apply -f k8s/ingress/
+
+    - name: Verify deployment
+      run: |
+        kubectl rollout status deployment/api-gateway -n harsha-delights
+        kubectl rollout status deployment/frontend-apps -n harsha-delights
+
+  # Deploy to Production
+  deploy-production:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure kubectl
+      uses: azure/k8s-set-context@v3
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.PRODUCTION_KUBECONFIG }}
+
+    - name: Deploy to production
+      run: |
+        kubectl apply -f k8s/namespace/
+        kubectl apply -f k8s/configmaps/
+        kubectl apply -f k8s/secrets/
+        kubectl apply -f k8s/deployments/
+        kubectl apply -f k8s/services/
+        kubectl apply -f k8s/ingress/
+
+    - name: Verify deployment
+      run: |
+        kubectl rollout status deployment/api-gateway -n harsha-delights
+        kubectl rollout status deployment/frontend-apps -n harsha-delights
+
+    - name: Run health checks
+      run: |
+        sleep 60
+        kubectl get pods -n harsha-delights
+        curl -f https://api.harshadelights.com/health || exit 1
+        curl -f https://harshadelights.com/api/health || exit 1
+
+    - name: Notify deployment
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        text: 'Production deployment completed successfully!'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      if: always()

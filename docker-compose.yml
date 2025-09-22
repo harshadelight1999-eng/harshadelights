@@ -1,0 +1,311 @@
+version: '3.8'
+
+services:
+  # Core Databases
+  postgres:
+    image: postgres:15
+    container_name: harsha-postgres
+    environment:
+      POSTGRES_DB: harsha_delights
+      POSTGRES_USER: harsha_user
+      POSTGRES_PASSWORD: harsha_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./configs/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - harsha-network
+
+  mariadb:
+    image: mariadb:10.9
+    container_name: harsha-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: erpnext
+      MYSQL_USER: erpnext_user
+      MYSQL_PASSWORD: erpnext_pass
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - harsha-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: harsha-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - harsha-network
+
+  # Core ERP (ERPNext)
+  erpnext:
+    image: frappe/erpnext:latest
+    container_name: harsha-erpnext
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - REDIS_CACHE=redis:6379
+      - REDIS_QUEUE=redis:6379
+    depends_on:
+      - mariadb
+      - redis
+    volumes:
+      - ./core-erp/custom:/home/frappe/frappe-bench/apps/custom
+      - erpnext_data:/home/frappe/frappe-bench/sites
+    ports:
+      - "8000:8000"
+    networks:
+      - harsha-network
+
+  # E-commerce Backend (Medusa.js)
+  medusa-backend:
+    build:
+      context: ./e-commerce
+      dockerfile: Dockerfile
+    container_name: harsha-medusa
+    environment:
+      - DATABASE_URL=postgres://harsha_user:harsha_pass@postgres:5432/medusa_db
+      - REDIS_URL=redis://redis:6379
+      - NODE_ENV=development
+      - JWT_SECRET=supersecret
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./e-commerce:/app
+      - /app/node_modules
+    ports:
+      - "9000:9000"
+    networks:
+      - harsha-network
+
+  # CRM (EspoCRM)
+  espocrm:
+    image: espocrm/espocrm:latest
+    container_name: harsha-espocrm
+    environment:
+      - ESPOCRM_DATABASE_HOST=mariadb
+      - ESPOCRM_DATABASE_NAME=espocrm
+      - ESPOCRM_DATABASE_USER=erpnext_user
+      - ESPOCRM_DATABASE_PASSWORD=erpnext_pass
+      - ESPOCRM_ADMIN_USERNAME=admin
+      - ESPOCRM_ADMIN_PASSWORD=admin123
+      - ESPOCRM_SITE_URL=http://localhost:8080
+    depends_on:
+      - mariadb
+    volumes:
+      - ./crm/custom:/var/www/html/custom
+      - espocrm_data:/var/www/html/data
+    ports:
+      - "8080:80"
+    networks:
+      - harsha-network
+
+  # API Gateway with Enhanced Monitoring
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: harsha-api-gateway
+    environment:
+      # Application Configuration
+      - NODE_ENV=development
+      - APP_VERSION=1.0.0
+      - PORT=4000
+      - HOST=0.0.0.0
+
+      # Service URLs
+      - ERPNEXT_URL=http://erpnext:8000
+      - MEDUSA_URL=http://medusa-backend:9000
+      - ESPOCRM_URL=http://espocrm:80
+
+      # Database Configuration
+      - DATABASE_URL=postgres://harsha_user:harsha_pass@postgres:5432/harsha_delights
+      - REDIS_URL=redis://redis:6379
+
+      # Security Configuration
+      - JWT_SECRET=harsha_delights_super_secret_jwt_key_change_in_production
+      - API_KEY_SECRET=harsha_delights_api_key_secret_change_in_production
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:8080
+
+      # Monitoring Configuration
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - DD_API_KEY=${DD_API_KEY:-}
+      - DD_SITE=${DD_SITE:-datadoghq.com}
+      - DD_SERVICE=harsha-delights-api-gateway
+      - DD_ENV=development
+      - DD_VERSION=1.0.0
+
+      # Logging Configuration
+      - LOG_LEVEL=debug
+      - LOG_FILE_PATH=/app/logs/api-gateway.log
+
+      # Rate Limiting Configuration
+      - REDIS_RATE_LIMIT_PREFIX=rl:
+
+      # Security Enhancement
+      - BLOCKED_IPS=${BLOCKED_IPS:-}
+      - ALLOWED_IPS=${ALLOWED_IPS:-}
+
+    depends_on:
+      - postgres
+      - redis
+      - erpnext
+      - medusa-backend
+      - espocrm
+    volumes:
+      - ./api-gateway:/app
+      - /app/node_modules
+      - api-gateway-logs:/app/logs
+    ports:
+      - "4000:4000"
+    networks:
+      - harsha-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Web Frontend
+  web-frontend:
+    build:
+      context: ./web-frontend
+      dockerfile: Dockerfile
+    container_name: harsha-frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NODE_ENV=development
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./web-frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    networks:
+      - harsha-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: harsha-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./configs/prometheus/rules:/etc/prometheus/rules
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - harsha-network
+    restart: unless-stopped
+
+  # Grafana Visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: harsha-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=harsha_admin_password_change_in_production
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
+    volumes:
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - harsha-network
+    restart: unless-stopped
+
+  # Node Exporter for system metrics
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: harsha-node-exporter
+    command:
+      - '--path.rootfs=/host'
+    volumes:
+      - '/:/host:ro,rslave'
+    ports:
+      - "9100:9100"
+    networks:
+      - harsha-network
+    restart: unless-stopped
+
+  # cAdvisor for container metrics
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: harsha-cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - "8081:8080"
+    networks:
+      - harsha-network
+    restart: unless-stopped
+    privileged: true
+
+  # NGINX Reverse Proxy with Enhanced Configuration
+  nginx:
+    image: nginx:alpine
+    container_name: harsha-nginx
+    volumes:
+      - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./configs/nginx/ssl:/etc/nginx/ssl
+      - ./configs/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web-frontend
+      - api-gateway
+      - erpnext
+      - espocrm
+      - grafana
+      - prometheus
+    networks:
+      - harsha-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+  mariadb_data:
+  redis_data:
+  erpnext_data:
+  espocrm_data:
+  prometheus_data:
+  grafana_data:
+  api-gateway-logs:
+
+networks:
+  harsha-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

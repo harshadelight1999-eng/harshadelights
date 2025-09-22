@@ -1,0 +1,69 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime files
+logs
+*.log
+uploads
+temp
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Version control
+.git
+.gitignore
+
+# Documentation
+README.md
+docs
+
+# Test files
+tests
+coverage
+*.test.js
+*.spec.js
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Development tools
+.eslintrc*
+.prettierrc*
+jest.config.js
+
+# Build artifacts
+dist
+build
+
+# Package manager files
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Temporary files
+tmp
+.tmp

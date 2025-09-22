@@ -1,0 +1,71 @@
+services:
+  - type: web
+    name: harsha-delights-api
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
+      - key: APP_NAME
+        value: Harsha Delights API Gateway
+
+      # Database Configuration (Neon PostgreSQL)
+      - key: DB_HOST
+        value: ep-mute-salad-adfq08ng-pooler.c-2.us-east-1.aws.neon.tech
+      - key: DB_PORT
+        value: 5432
+      - key: DB_NAME
+        value: neondb
+      - key: DB_USER
+        value: neondb_owner
+      - key: DB_PASS
+        value: npg_4ZETerSsJFG7
+      - key: DB_SSL
+        value: true
+
+      # Redis Configuration (Upstash)
+      - key: REDIS_HOST
+        value: assured-giraffe-8292.upstash.io
+      - key: REDIS_PORT
+        value: 6379
+      - key: REDIS_PASSWORD
+        value: ASBkAAImcDIwZjlhNzIxZDRlYmU0ZDZiYmRlMDFiNGFjMTY2YjkzNHAyODI5Mg
+      - key: REDIS_DB
+        value: 0
+
+      # JWT Configuration
+      - key: JWT_SECRET
+        value: harsha_delights_super_secret_jwt_key_2024_production_32_chars_min
+      - key: JWT_REFRESH_SECRET
+        value: harsha_delights_refresh_secret_key_2024_production_different_32_chars
+      - key: JWT_ACCESS_EXPIRES_IN
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+
+      # Security
+      - key: API_KEY_SECRET
+        value: harsha_delights_api_key_secret_2024_production_change_this
+      - key: SESSION_SECRET
+        value: harsha_delights_session_secret_2024_production_change_this
+      - key: BCRYPT_ROUNDS
+        value: 12
+
+      # CORS
+      - key: CORS_ORIGIN
+        value: https://harshadelights.com,https://*.netlify.app,https://*.onrender.com
+      - key: CORS_CREDENTIALS
+        value: true
+
+      # Logging
+      - key: LOG_LEVEL
+        value: info
+      - key: METRICS_ENABLED
+        value: true

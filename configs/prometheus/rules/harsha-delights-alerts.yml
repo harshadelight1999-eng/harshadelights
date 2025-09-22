@@ -1,0 +1,211 @@
+# Prometheus Alerting Rules for Harsha Delights
+# Comprehensive alerting for application and infrastructure health
+
+groups:
+  # API Gateway Alerts
+  - name: api-gateway
+    rules:
+      - alert: APIGatewayDown
+        expr: up{job="api-gateway"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: api-gateway
+        annotations:
+          summary: "API Gateway is down"
+          description: "API Gateway has been down for more than 1 minute."
+
+      - alert: APIGatewayHighErrorRate
+        expr: rate(http_requests_total{job="api-gateway",status_code=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+          service: api-gateway
+        annotations:
+          summary: "High error rate on API Gateway"
+          description: "API Gateway error rate is {{ $value }} errors per second."
+
+      - alert: APIGatewayHighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="api-gateway"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: api-gateway
+        annotations:
+          summary: "High latency on API Gateway"
+          description: "95th percentile latency is {{ $value }} seconds."
+
+      - alert: APIGatewayRateLimitExceeded
+        expr: rate(rate_limit_hits_total{job="api-gateway"}[5m]) > 10
+        for: 1m
+        labels:
+          severity: warning
+          service: api-gateway
+        annotations:
+          summary: "High rate limit violations"
+          description: "Rate limit violations: {{ $value }} per second."
+
+  # Database Alerts
+  - name: databases
+    rules:
+      - alert: PostgreSQLDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: postgres
+        annotations:
+          summary: "PostgreSQL is down"
+          description: "PostgreSQL database has been down for more than 1 minute."
+
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis is down"
+          description: "Redis has been down for more than 1 minute."
+
+      - alert: DatabaseConnectionsHigh
+        expr: database_connections_active > 80
+        for: 2m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "High database connections"
+          description: "Active database connections: {{ $value }}"
+
+  # System Resource Alerts
+  - name: system-resources
+    rules:
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 2m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 85
+        for: 2m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }}"
+
+  # Application Health Alerts
+  - name: application-health
+    rules:
+      - alert: ERPNextUnhealthy
+        expr: up{job="health-checks",instance="erpnext:8000"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: erpnext
+        annotations:
+          summary: "ERPNext health check failing"
+          description: "ERPNext health check has been failing for more than 2 minutes."
+
+      - alert: MedusaUnhealthy
+        expr: up{job="health-checks",instance="medusa-backend:9000"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: medusa
+        annotations:
+          summary: "Medusa health check failing"
+          description: "Medusa health check has been failing for more than 2 minutes."
+
+      - alert: EspoCRMUnhealthy
+        expr: up{job="health-checks",instance="espocrm:80"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: espocrm
+        annotations:
+          summary: "EspoCRM health check failing"
+          description: "EspoCRM health check has been failing for more than 2 minutes."
+
+  # Container Alerts
+  - name: containers
+    rules:
+      - alert: ContainerKilled
+        expr: time() - container_last_seen > 60
+        for: 0m
+        labels:
+          severity: warning
+          service: docker
+        annotations:
+          summary: "Container killed"
+          description: "A container has disappeared"
+
+      - alert: ContainerCpuUsage
+        expr: (sum(rate(container_cpu_usage_seconds_total[3m])) BY (instance, name) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+          service: docker
+        annotations:
+          summary: "Container CPU usage"
+          description: "Container CPU usage is above 80%"
+
+      - alert: ContainerMemoryUsage
+        expr: (sum(container_memory_working_set_bytes) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+          service: docker
+        annotations:
+          summary: "Container Memory usage"
+          description: "Container Memory usage is above 80%"
+
+  # Business Metrics Alerts
+  - name: business-metrics
+    rules:
+      - alert: HighOrderFailureRate
+        expr: rate(business_events_total{event_type="order_failed"}[5m]) > 0.05
+        for: 1m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "High order failure rate"
+          description: "Order failure rate is {{ $value }} per second."
+
+      - alert: PaymentProcessingIssues
+        expr: rate(business_events_total{event_type="payment_failed"}[5m]) > 0.02
+        for: 1m
+        labels:
+          severity: critical
+          service: business
+        annotations:
+          summary: "Payment processing issues"
+          description: "Payment failure rate is {{ $value }} per second."
+
+      - alert: AuthenticationFailureSpike
+        expr: rate(authentication_attempts_total{result="failure"}[5m]) > 1
+        for: 2m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "High authentication failure rate"
+          description: "Authentication failure rate is {{ $value }} per second."

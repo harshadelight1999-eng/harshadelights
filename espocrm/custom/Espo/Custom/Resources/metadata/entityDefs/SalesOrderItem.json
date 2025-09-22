@@ -1,0 +1,329 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "readOnly": true,
+            "maxLength": 255,
+            "tooltip": "Auto-generated from product name and order"
+        },
+        "salesOrder": {
+            "type": "link",
+            "required": true,
+            "entity": "SalesOrder"
+        },
+        "product": {
+            "type": "link",
+            "required": true,
+            "entity": "ConfectioneryProduct"
+        },
+        "productName": {
+            "type": "varchar",
+            "maxLength": 255,
+            "readOnly": true,
+            "tooltip": "Product name at time of order"
+        },
+        "productSku": {
+            "type": "varchar",
+            "maxLength": 100,
+            "readOnly": true,
+            "tooltip": "Product SKU at time of order"
+        },
+        "description": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Item specific description or customization"
+        },
+        "quantity": {
+            "type": "float",
+            "required": true,
+            "min": 0,
+            "default": 1
+        },
+        "unitOfMeasure": {
+            "type": "enum",
+            "required": true,
+            "options": ["kg", "gm", "piece", "box", "packet", "liter", "ml"],
+            "default": "kg"
+        },
+        "unitPrice": {
+            "type": "currency",
+            "required": true,
+            "min": 0,
+            "tooltip": "Price per unit"
+        },
+        "basePrice": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Original base price before discounts"
+        },
+        "discountPercent": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        "discountAmount": {
+            "type": "currency",
+            "min": 0,
+            "default": 0
+        },
+        "lineTotal": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Quantity × Unit Price - Discount"
+        },
+        "gstRate": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "default": 18.0,
+            "tooltip": "GST rate percentage for this item"
+        },
+        "gstAmount": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "GST amount for this line item"
+        },
+        "hsnCode": {
+            "type": "varchar",
+            "maxLength": 20,
+            "tooltip": "HSN code for GST"
+        },
+        "lineNumber": {
+            "type": "int",
+            "required": true,
+            "min": 1,
+            "tooltip": "Line item sequence number"
+        },
+        "requestedDate": {
+            "type": "date",
+            "tooltip": "Customer requested date for this item"
+        },
+        "promisedDate": {
+            "type": "date",
+            "tooltip": "Date promised to customer for this item"
+        },
+        "productionDate": {
+            "type": "date",
+            "tooltip": "Actual production date"
+        },
+        "packingDate": {
+            "type": "date",
+            "tooltip": "Date when item was packed"
+        },
+        "batchNumber": {
+            "type": "varchar",
+            "maxLength": 50,
+            "tooltip": "Production batch number"
+        },
+        "expiryDate": {
+            "type": "date",
+            "tooltip": "Product expiry date"
+        },
+        "qualityGrade": {
+            "type": "enum",
+            "options": ["premium", "standard", "economy"],
+            "default": "standard"
+        },
+        "specialInstructions": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Special instructions for this item"
+        },
+        "packagingType": {
+            "type": "enum",
+            "options": ["bulk", "retail_pack", "gift_pack", "institutional_pack", "custom"],
+            "default": "retail_pack"
+        },
+        "customPackaging": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Custom packaging requirements"
+        },
+        "weight": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Total weight for this line item"
+        },
+        "volume": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Total volume for this line item"
+        },
+        "costPrice": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Cost price for margin calculation"
+        },
+        "marginAmount": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Margin for this line item"
+        },
+        "marginPercent": {
+            "type": "float",
+            "readOnly": true,
+            "tooltip": "Margin percentage"
+        },
+        "status": {
+            "type": "enum",
+            "options": [
+                "pending",
+                "confirmed",
+                "in_production",
+                "produced",
+                "quality_checked",
+                "packed",
+                "shipped",
+                "delivered",
+                "cancelled"
+            ],
+            "default": "pending"
+        },
+        "quantityProduced": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Quantity actually produced"
+        },
+        "quantityPacked": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Quantity packed for shipment"
+        },
+        "quantityShipped": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Quantity shipped to customer"
+        },
+        "quantityDelivered": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Quantity actually delivered"
+        },
+        "isCustomProduct": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether this is a custom/made-to-order item"
+        },
+        "customSpecifications": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Custom product specifications"
+        },
+        "productionPartner": {
+            "type": "link",
+            "entity": "Account",
+            "tooltip": "Manufacturing partner for this item"
+        },
+        "qualityCheckRequired": {
+            "type": "bool",
+            "default": true
+        },
+        "qualityCheckStatus": {
+            "type": "enum",
+            "options": ["pending", "in_progress", "passed", "failed", "not_required"],
+            "default": "pending"
+        },
+        "rejectionReason": {
+            "type": "text",
+            "tooltip": "Reason for quality rejection"
+        },
+        "allergenInfo": {
+            "type": "multiEnum",
+            "options": [
+                "contains_nuts",
+                "contains_milk",
+                "contains_eggs",
+                "contains_wheat",
+                "contains_soy",
+                "contains_sesame",
+                "may_contain_nuts"
+            ]
+        },
+        "storageInstructions": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Storage instructions for this item"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        }
+    },
+    "links": {
+        "salesOrder": {
+            "type": "belongsTo",
+            "entity": "SalesOrder",
+            "foreign": "orderItems"
+        },
+        "product": {
+            "type": "belongsTo",
+            "entity": "ConfectioneryProduct",
+            "foreign": "salesOrderItems"
+        },
+        "productionPartner": {
+            "type": "belongsTo",
+            "entity": "Account",
+            "foreign": "producedOrderItems"
+        },
+        "productionOrders": {
+            "type": "hasMany",
+            "entity": "ProductionOrder",
+            "foreign": "salesOrderItem"
+        },
+        "qualityChecks": {
+            "type": "hasMany",
+            "entity": "QualityCheck",
+            "foreign": "salesOrderItem"
+        },
+        "inventoryTransactions": {
+            "type": "hasMany",
+            "entity": "InventoryTransaction",
+            "foreign": "salesOrderItem"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "lineNumber",
+        "order": "asc"
+    },
+    "indexes": {
+        "salesOrder": {
+            "columns": ["salesOrderId"]
+        },
+        "product": {
+            "columns": ["productId"]
+        },
+        "status": {
+            "columns": ["status"]
+        },
+        "lineNumber": {
+            "columns": ["salesOrderId", "lineNumber"]
+        }
+    }
+}

@@ -1,0 +1,61 @@
+{
+  "name": "@harshadelights/frontend-applications",
+  "version": "1.0.0",
+  "description": "Harsha Delights Frontend Applications Workspace",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "01-public-website",
+    "02-b2c-ecommerce",
+    "03-b2b-portal",
+    "05-customer-mobile-app",
+    "05-mobile-sales"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "build:all": "npm run build --workspaces --if-present",
+    "dev:public": "npm run dev --workspace=@harshadelights/public-website",
+    "dev:b2c": "npm run dev --workspace=@harshadelights/b2c-ecommerce",
+    "dev:b2b": "npm run dev --workspace=@harshadelights/b2b-portal",
+    "build:shared": "npm run build --workspace=@harshadelights/shared-components",
+    "build:public": "npm run build --workspace=@harshadelights/public-website",
+    "build:b2c": "npm run build --workspace=@harshadelights/b2c-ecommerce",
+    "build:b2b": "npm run build --workspace=@harshadelights/b2b-portal",
+    "test:all": "npm run test --workspaces --if-present",
+    "test:shared": "npm run test --workspace=@harshadelights/shared-components",
+    "test:public": "npm run test --workspace=@harshadelights/public-website",
+    "test:b2c": "npm run test --workspace=@harshadelights/b2c-ecommerce",
+    "test:b2b": "npm run test --workspace=@harshadelights/b2b-portal",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "lint:all": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint:fix --workspaces --if-present",
+    "type-check:all": "npm run type-check --workspaces --if-present",
+    "clean": "rm -rf node_modules && npm run clean --workspaces --if-present",
+    "clean:builds": "find . -name '.next' -type d -exec rm -rf {} + && find . -name 'dist' -type d -exec rm -rf {} + && find . -name 'build' -type d -exec rm -rf {} +",
+    "dev:all": "concurrently \"npm run dev:public\" \"npm run dev:b2c\" \"npm run dev:b2b\"",
+    "storybook": "npm run storybook --workspace=@harshadelights/shared-components",
+    "build-storybook": "npm run build-storybook --workspace=@harshadelights/shared-components",
+    "prepare": "npm run build:shared"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.0",
+    "typescript": "^5.6.2",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "frontend",
+    "workspace",
+    "confectionery",
+    "harsha-delights",
+    "monorepo"
+  ],
+  "author": "Harsha Delights Development Team",
+  "license": "MIT"
+}

@@ -1,0 +1,347 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "maxLength": 255,
+            "trim": true
+        },
+        "sku": {
+            "type": "varchar",
+            "required": true,
+            "maxLength": 100,
+            "unique": true,
+            "pattern": "[A-Z0-9_-]+",
+            "tooltip": "Stock Keeping Unit - unique product identifier"
+        },
+        "category": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "sweets",
+                "chocolates",
+                "namkeens",
+                "dry_fruits",
+                "buns",
+                "cookies",
+                "raw_materials",
+                "packaging_materials",
+                "seasonal_items"
+            ],
+            "default": "sweets"
+        },
+        "subCategory": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": "Specific subcategory (e.g., Milk Sweets, Dark Chocolate, etc.)"
+        },
+        "description": {
+            "type": "text",
+            "rows": 4
+        },
+        "isActive": {
+            "type": "bool",
+            "default": true
+        },
+        "productType": {
+            "type": "enum",
+            "options": ["finished_good", "raw_material", "packaging", "semi_finished"],
+            "default": "finished_good"
+        },
+        "basePrice": {
+            "type": "currency",
+            "min": 0,
+            "required": true,
+            "tooltip": "Base selling price per unit"
+        },
+        "costPrice": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Cost price for margin calculations"
+        },
+        "unitOfMeasure": {
+            "type": "enum",
+            "required": true,
+            "options": ["kg", "gm", "piece", "box", "packet", "liter", "ml"],
+            "default": "kg"
+        },
+        "weight": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Weight per unit in grams"
+        },
+        "dimensions": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": "L x W x H in cm"
+        },
+        "shelfLife": {
+            "type": "int",
+            "min": 0,
+            "tooltip": "Shelf life in days"
+        },
+        "storageConditions": {
+            "type": "enum",
+            "options": ["room_temperature", "refrigerated", "frozen", "dry_cool_place"],
+            "default": "room_temperature"
+        },
+        "minimumStockLevel": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Minimum stock level for reorder alerts"
+        },
+        "maximumStockLevel": {
+            "type": "float",
+            "min": 0,
+            "default": 0
+        },
+        "reorderQuantity": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Standard reorder quantity"
+        },
+        "leadTime": {
+            "type": "int",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Production/procurement lead time in days"
+        },
+        "ingredients": {
+            "type": "text",
+            "tooltip": "List of ingredients for food labeling"
+        },
+        "allergens": {
+            "type": "multiEnum",
+            "options": [
+                "contains_nuts",
+                "contains_milk",
+                "contains_eggs",
+                "contains_wheat",
+                "contains_soy",
+                "contains_sesame",
+                "may_contain_nuts"
+            ]
+        },
+        "nutritionalInfo": {
+            "type": "text",
+            "tooltip": "Nutritional information per 100g"
+        },
+        "certifications": {
+            "type": "multiEnum",
+            "options": [
+                "fssai_approved",
+                "organic_certified",
+                "iso22000",
+                "haccp",
+                "halal",
+                "jain_friendly",
+                "vegan"
+            ]
+        },
+        "hsnCode": {
+            "type": "varchar",
+            "maxLength": 20,
+            "tooltip": "HSN Code for GST purposes"
+        },
+        "gstRate": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "default": 18.0,
+            "tooltip": "GST rate percentage"
+        },
+        "barcode": {
+            "type": "varchar",
+            "maxLength": 50,
+            "unique": true
+        },
+        "qrCode": {
+            "type": "varchar",
+            "maxLength": 255
+        },
+        "productImage": {
+            "type": "image"
+        },
+        "productImages": {
+            "type": "attachmentMultiple"
+        },
+        "productionPartner": {
+            "type": "link",
+            "entity": "Account",
+            "tooltip": "Manufacturing partner for this product"
+        },
+        "qualityGrade": {
+            "type": "enum",
+            "options": ["premium", "standard", "economy"],
+            "default": "standard"
+        },
+        "seasonality": {
+            "type": "multiEnum",
+            "options": [
+                "summer",
+                "monsoon",
+                "winter",
+                "festival_season",
+                "wedding_season",
+                "year_round"
+            ],
+            "default": ["year_round"]
+        },
+        "targetMarket": {
+            "type": "multiEnum",
+            "options": ["b2b", "b2c", "export", "institutional"],
+            "default": ["b2b", "b2c"]
+        },
+        "minimumOrderQuantity": {
+            "type": "float",
+            "min": 0,
+            "default": 1
+        },
+        "packagingType": {
+            "type": "enum",
+            "options": ["bulk", "retail_pack", "gift_pack", "institutional_pack"],
+            "default": "retail_pack"
+        },
+        "tags": {
+            "type": "multiEnum",
+            "options": [
+                "bestseller",
+                "new_product",
+                "seasonal",
+                "premium",
+                "bulk_only",
+                "custom_order",
+                "export_quality"
+            ]
+        },
+        "isDiscontinued": {
+            "type": "bool",
+            "default": false
+        },
+        "discontinuedDate": {
+            "type": "date"
+        },
+        "replacementProduct": {
+            "type": "link",
+            "entity": "ConfectioneryProduct"
+        },
+        "manufacturingComplexity": {
+            "type": "enum",
+            "options": ["simple", "medium", "complex"],
+            "default": "simple"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        }
+    },
+    "links": {
+        "customerTypes": {
+            "type": "hasMany",
+            "entity": "CustomerType",
+            "foreign": "applicableProducts",
+            "relationName": "CustomerTypeProduct"
+        },
+        "pricingRules": {
+            "type": "hasMany",
+            "entity": "PricingRule",
+            "foreign": "product"
+        },
+        "inventoryItems": {
+            "type": "hasMany",
+            "entity": "InventoryItem",
+            "foreign": "product"
+        },
+        "salesOrderItems": {
+            "type": "hasMany",
+            "entity": "SalesOrderItem",
+            "foreign": "product"
+        },
+        "purchaseOrderItems": {
+            "type": "hasMany",
+            "entity": "PurchaseOrderItem",
+            "foreign": "product"
+        },
+        "productionOrders": {
+            "type": "hasMany",
+            "entity": "ProductionOrder",
+            "foreign": "product"
+        },
+        "qualityChecks": {
+            "type": "hasMany",
+            "entity": "QualityCheck",
+            "foreign": "product"
+        },
+        "productionPartner": {
+            "type": "belongsTo",
+            "entity": "Account",
+            "foreign": "producedProducts"
+        },
+        "replacementProduct": {
+            "type": "belongsTo",
+            "entity": "ConfectioneryProduct"
+        },
+        "replacedByProducts": {
+            "type": "hasMany",
+            "entity": "ConfectioneryProduct",
+            "foreign": "replacementProduct"
+        },
+        "bomItems": {
+            "type": "hasMany",
+            "entity": "BOMItem",
+            "foreign": "product"
+        },
+        "recipes": {
+            "type": "hasMany",
+            "entity": "Recipe",
+            "foreign": "product"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "name",
+        "order": "asc"
+    },
+    "indexes": {
+        "sku": {
+            "columns": ["sku"],
+            "unique": true
+        },
+        "category": {
+            "columns": ["category"]
+        },
+        "isActive": {
+            "columns": ["isActive"]
+        },
+        "productType": {
+            "columns": ["productType"]
+        },
+        "barcode": {
+            "columns": ["barcode"],
+            "unique": true
+        }
+    }
+}

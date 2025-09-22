@@ -1,0 +1,105 @@
+# Prometheus Configuration for Harsha Delights
+# Comprehensive monitoring setup for all services and infrastructure
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+  external_labels:
+    monitor: 'harsha-delights'
+    environment: 'development'
+
+# Rule files for alerting
+rule_files:
+  - "rules/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  # Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  # cAdvisor for container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  # API Gateway metrics
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['api-gateway:4000']
+    scrape_interval: 10s
+    metrics_path: '/metrics'
+    scrape_timeout: 5s
+    honor_labels: true
+    basic_auth:
+      username: 'prometheus'
+      password: 'harsha_prometheus_password'
+
+  # PostgreSQL metrics (if postgres_exporter is available)
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    # Note: Requires postgres_exporter to be configured
+
+  # Redis metrics (if redis_exporter is available)
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    # Note: Requires redis_exporter to be configured
+
+  # NGINX metrics (if nginx-prometheus-exporter is available)
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:9113']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    # Note: Requires nginx-prometheus-exporter to be configured
+
+  # Application-specific health checks
+  - job_name: 'health-checks'
+    static_configs:
+      - targets:
+        - 'api-gateway:4000'
+        - 'erpnext:8000'
+        - 'medusa-backend:9000'
+        - 'espocrm:80'
+    metrics_path: '/health'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+# Alertmanager configuration (optional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - 'alertmanager:9093'
+
+# Remote write configuration for long-term storage (optional)
+# remote_write:
+#   - url: "https://your-remote-write-endpoint.com/api/v1/write"
+#     basic_auth:
+#       username: 'your-username'
+#       password: 'your-password'
+
+# Storage configuration
+storage:
+  tsdb:
+    retention.time: 15d
+    retention.size: 10GB

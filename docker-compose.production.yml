@@ -1,0 +1,276 @@
+# Production Docker Compose Configuration
+# Optimized for production deployment with enhanced security and monitoring
+
+version: '3.8'
+
+services:
+  # PostgreSQL with production optimizations
+  postgres:
+    image: postgres:15-alpine
+    container_name: harsha-postgres-prod
+    restart: always
+    environment:
+      POSTGRES_DB: harsha_delights
+      POSTGRES_USER: harsha_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./configs/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./configs/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    ports:
+      - "127.0.0.1:5432:5432"  # Bind to localhost only
+    networks:
+      - harsha-network
+    secrets:
+      - postgres_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U harsha_user -d harsha_delights"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # Redis with production configuration
+  redis:
+    image: redis:7-alpine
+    container_name: harsha-redis-prod
+    restart: always
+    command: redis-server /etc/redis/redis.conf --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+      - ./configs/redis/redis.conf:/etc/redis/redis.conf:ro
+    ports:
+      - "127.0.0.1:6379:6379"  # Bind to localhost only
+    networks:
+      - harsha-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # API Gateway with production configuration
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile.production
+    container_name: harsha-api-gateway-prod
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+      - DD_AGENT_HOST=datadog-agent
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - api-gateway-logs:/app/logs:rw
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+    ports:
+      - "127.0.0.1:4000:4000"  # Bind to localhost only
+    networks:
+      - harsha-network
+    secrets:
+      - jwt_secret
+      - api_key_secret
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  # DataDog Agent for monitoring
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:latest
+    container_name: harsha-datadog-agent
+    restart: unless-stopped
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=${DD_SITE:-datadoghq.com}
+      - DD_HOSTNAME=harsha-delights-production
+      - DD_TAGS=env:production,service:harsha-delights
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_DOCKER_LABELS_AS_TAGS=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /opt/datadog-agent/run:/opt/datadog-agent/run:rw
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - api-gateway-logs:/logs/api-gateway:ro
+    networks:
+      - harsha-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: harsha-prometheus-prod
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    volumes:
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/prometheus/rules:/etc/prometheus/rules:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"  # Bind to localhost only
+    networks:
+      - harsha-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: harsha-grafana-prod
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_DISABLE_GRAVATAR=true
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
+    volumes:
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3001:3000"  # Bind to localhost only
+    depends_on:
+      - prometheus
+    networks:
+      - harsha-network
+    secrets:
+      - grafana_admin_password
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # NGINX with SSL termination
+  nginx:
+    image: nginx:alpine
+    container_name: harsha-nginx-prod
+    restart: unless-stopped
+    volumes:
+      - ./configs/nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./configs/nginx/conf.d:/etc/nginx/conf.d:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - nginx_logs:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api-gateway
+      - grafana
+    networks:
+      - harsha-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # Log rotation service
+  logrotate:
+    image: blacklabelops/logrotate
+    container_name: harsha-logrotate
+    restart: unless-stopped
+    environment:
+      - LOGS_DIRECTORIES=/logs
+      - LOGROTATE_INTERVAL=daily
+      - LOGROTATE_COPIES=30
+      - LOGROTATE_SIZE=100M
+    volumes:
+      - api-gateway-logs:/logs/api-gateway
+      - nginx_logs:/logs/nginx
+    networks:
+      - harsha-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  api-gateway-logs:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  harsha-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  jwt_secret:
+    file: ./secrets/jwt_secret.txt
+  api_key_secret:
+    file: ./secrets/api_key_secret.txt
+  grafana_admin_password:
+    file: ./secrets/grafana_admin_password.txt

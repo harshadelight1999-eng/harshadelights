@@ -1,0 +1,125 @@
+# Production Dockerfile for Harsha Delights API Gateway
+# Multi-stage build for optimized production deployment
+
+# Stage 1: Build Dependencies
+FROM node:18-alpine AS dependencies
+LABEL stage=dependencies
+
+# Security: Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S apigateway -u 1001
+
+# Install system dependencies for native modules
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    libc6-compat \
+    dumb-init
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY yarn.lock* ./
+
+# Install production dependencies only
+RUN npm ci --only=production --no-audit --no-fund && \
+    npm cache clean --force
+
+# Stage 2: Build Application
+FROM node:18-alpine AS builder
+LABEL stage=builder
+
+WORKDIR /app
+
+# Copy package files and install all dependencies (including dev)
+COPY package*.json ./
+RUN npm ci --no-audit --no-fund
+
+# Copy source code
+COPY . .
+
+# Build application (if you have a build step)
+# RUN npm run build
+
+# Remove dev dependencies
+RUN npm prune --production
+
+# Stage 3: Production Runtime
+FROM node:18-alpine AS runtime
+LABEL maintainer="Harsha Delights Development Team <dev@harshadelights.com>"
+LABEL version="1.0.0"
+LABEL description="Production API Gateway for Harsha Delights"
+
+# Security and optimization packages
+RUN apk add --no-cache \
+    dumb-init \
+    curl \
+    ca-certificates \
+    tzdata && \
+    rm -rf /var/cache/apk/*
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S apigateway -u 1001
+
+# Set timezone
+ENV TZ=UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Create application directory with proper permissions
+WORKDIR /app
+RUN chown -R apigateway:nodejs /app
+
+# Create logs directory
+RUN mkdir -p /app/logs && \
+    chown -R apigateway:nodejs /app/logs
+
+# Copy production dependencies
+COPY --from=dependencies --chown=apigateway:nodejs /app/node_modules ./node_modules
+
+# Copy application code
+COPY --chown=apigateway:nodejs . .
+
+# Remove unnecessary files for production
+RUN rm -rf \
+    .git \
+    .github \
+    .vscode \
+    docs \
+    tests \
+    *.md \
+    .env.* \
+    docker-compose*.yml \
+    Dockerfile* \
+    .gitignore \
+    .eslintrc* \
+    jest.config.js \
+    nodemon.json
+
+# Set proper file permissions
+RUN chmod -R 755 /app && \
+    chmod -R 644 /app/src && \
+    chmod 755 /app/src/server.js
+
+# Security: Run as non-root user
+USER apigateway
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=4000
+ENV HOST=0.0.0.0
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:4000/health || exit 1
+
+# Expose port
+EXPOSE 4000
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["node", "src/server.js"]

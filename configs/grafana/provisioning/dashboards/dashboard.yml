@@ -1,0 +1,25 @@
+# Grafana Dashboard Provisioning Configuration
+# Automatically loads dashboards for Harsha Delights monitoring
+
+apiVersion: 1
+
+providers:
+  - name: 'harsha-delights-dashboards'
+    orgId: 1
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/definitions
+
+  - name: 'system-dashboards'
+    orgId: 1
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 60
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/system

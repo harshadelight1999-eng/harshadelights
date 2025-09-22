@@ -1,0 +1,62 @@
+[
+    {
+        "doctype": "UOM",
+        "uom_name": "Kg",
+        "must_be_whole_number": 0,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Gram",
+        "must_be_whole_number": 0,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Piece",
+        "must_be_whole_number": 1,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Box",
+        "must_be_whole_number": 1,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Packet",
+        "must_be_whole_number": 1,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Liter",
+        "must_be_whole_number": 0,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "ML",
+        "must_be_whole_number": 0,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Dozen",
+        "must_be_whole_number": 1,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Tin",
+        "must_be_whole_number": 1,
+        "enabled": 1
+    },
+    {
+        "doctype": "UOM",
+        "uom_name": "Bottle",
+        "must_be_whole_number": 1,
+        "enabled": 1
+    }
+]

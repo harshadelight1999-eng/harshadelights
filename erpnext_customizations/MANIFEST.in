@@ -1,0 +1,12 @@
+include README.md
+include LICENSE
+include requirements.txt
+include *.md
+include *.txt
+recursive-include harsha_delights *.py
+recursive-include harsha_delights *.js
+recursive-include harsha_delights *.css
+recursive-include harsha_delights *.html
+recursive-include harsha_delights *.json
+recursive-include fixtures *.json
+recursive-include fixtures *.csv

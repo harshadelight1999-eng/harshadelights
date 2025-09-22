@@ -1,0 +1,190 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "maxLength": 150,
+            "trim": true
+        },
+        "code": {
+            "type": "varchar",
+            "required": true,
+            "maxLength": 50,
+            "pattern": "[a-z_]+",
+            "unique": true,
+            "tooltip": "Unique code for customer type (e.g., shops_retailers, wholesalers)"
+        },
+        "category": {
+            "type": "enum",
+            "required": true,
+            "options": ["b2b", "b2c"],
+            "default": "b2b"
+        },
+        "description": {
+            "type": "text",
+            "rows": 4
+        },
+        "isActive": {
+            "type": "bool",
+            "default": true
+        },
+        "pricingMultiplier": {
+            "type": "float",
+            "min": 0,
+            "max": 10,
+            "default": 1.0,
+            "tooltip": "Price multiplier for this customer type (1.0 = base price)"
+        },
+        "creditLimit": {
+            "type": "currency",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Default credit limit for customers of this type"
+        },
+        "paymentTerms": {
+            "type": "enum",
+            "options": ["cash", "net_7", "net_15", "net_30", "net_45", "net_60", "custom"],
+            "default": "cash"
+        },
+        "minimumOrderAmount": {
+            "type": "currency",
+            "min": 0,
+            "default": 0
+        },
+        "discountPercentage": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        "requiresApproval": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether orders from this customer type require approval"
+        },
+        "allowsCredit": {
+            "type": "bool",
+            "default": false
+        },
+        "priority": {
+            "type": "int",
+            "min": 1,
+            "max": 10,
+            "default": 5,
+            "tooltip": "Order processing priority (1=highest, 10=lowest)"
+        },
+        "salesTeam": {
+            "type": "linkMultiple",
+            "entity": "Team",
+            "tooltip": "Teams responsible for this customer type"
+        },
+        "defaultWarehouse": {
+            "type": "link",
+            "entity": "Warehouse"
+        },
+        "applicableProducts": {
+            "type": "linkMultiple",
+            "entity": "Product",
+            "tooltip": "Products available to this customer type"
+        },
+        "geographicRestrictions": {
+            "type": "text",
+            "tooltip": "Geographic areas where this customer type applies"
+        },
+        "specialInstructions": {
+            "type": "text",
+            "tooltip": "Special handling instructions for this customer type"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        }
+    },
+    "links": {
+        "accounts": {
+            "type": "hasMany",
+            "entity": "Account",
+            "foreign": "customerType"
+        },
+        "contacts": {
+            "type": "hasMany",
+            "entity": "Contact",
+            "foreign": "customerType"
+        },
+        "leads": {
+            "type": "hasMany",
+            "entity": "Lead",
+            "foreign": "customerType"
+        },
+        "opportunities": {
+            "type": "hasMany",
+            "entity": "Opportunity",
+            "foreign": "customerType"
+        },
+        "salesOrders": {
+            "type": "hasMany",
+            "entity": "SalesOrder",
+            "foreign": "customerType"
+        },
+        "pricingRules": {
+            "type": "hasMany",
+            "entity": "PricingRule",
+            "foreign": "customerType"
+        },
+        "salesTeam": {
+            "type": "hasMany",
+            "entity": "Team",
+            "foreign": "customerTypes",
+            "relationName": "CustomerTypeTeam"
+        },
+        "defaultWarehouse": {
+            "type": "belongsTo",
+            "entity": "Warehouse",
+            "foreign": "customerTypes"
+        },
+        "applicableProducts": {
+            "type": "hasMany",
+            "entity": "Product",
+            "foreign": "customerTypes",
+            "relationName": "CustomerTypeProduct"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "priority",
+        "order": "asc"
+    },
+    "indexes": {
+        "code": {
+            "columns": ["code"],
+            "unique": true
+        },
+        "category": {
+            "columns": ["category"]
+        },
+        "isActive": {
+            "columns": ["isActive"]
+        }
+    }
+}

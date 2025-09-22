@@ -1,0 +1,73 @@
+# Cert-Manager Installation and Configuration for SSL/TLS Certificate Management
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@harshadelights.com
+    privateKeySecretRef:
+      name: letsencrypt-prod-private-key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+    - dns01:
+        cloudflare:
+          email: admin@harshadelights.com
+          apiTokenSecretRef:
+            name: cloudflare-api-token
+            key: api-token
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: admin@harshadelights.com
+    privateKeySecretRef:
+      name: letsencrypt-staging-private-key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+    - dns01:
+        cloudflare:
+          email: admin@harshadelights.com
+          apiTokenSecretRef:
+            name: cloudflare-api-token
+            key: api-token
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: harsha-delights-tls
+  namespace: harsha-delights
+spec:
+  secretName: harsha-delights-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - harshadelights.com
+  - www.harshadelights.com
+  - api.harshadelights.com
+  - admin.harshadelights.com
+  - monitoring.harshadelights.com
+  usages:
+  - digital signature
+  - key encipherment
+  duration: 2160h0m0s  # 90 days
+  renewBefore: 360h0m0s  # 15 days before expiry
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-token
+  namespace: cert-manager
+type: Opaque
+stringData:
+  api-token: "REPLACE_WITH_CLOUDFLARE_API_TOKEN"

@@ -1,0 +1,252 @@
+# =====================================================================================
+# HARSHA DELIGHTS - DOCKER COMPOSE DEVELOPMENT OVERRIDES
+# =====================================================================================
+# This file automatically extends docker-compose.yml for development environment
+# It enables hot reloading, debug mode, and development-specific configurations
+#
+# Usage: Docker Compose automatically loads this file when present
+# To disable: Use 'docker-compose -f docker-compose.yml up' (without override)
+# =====================================================================================
+
+version: '3.8'
+
+services:
+  # =====================================================================================
+  # DEVELOPMENT OVERRIDES FOR APPLICATION SERVICES
+  # =====================================================================================
+
+  # API Gateway - Development Configuration
+  api-gateway:
+    build:
+      target: development  # Use development stage from Dockerfile
+    environment:
+      # Development environment variables
+      NODE_ENV: development
+      DEBUG: harsha:*
+      LOG_LEVEL: debug
+      ENABLE_HOT_RELOAD: true
+
+      # Debug configuration
+      ENABLE_REQUEST_LOGGING: true
+      ENABLE_RESPONSE_LOGGING: true
+      ENABLE_PROFILING: true
+
+      # Development CORS (more permissive)
+      CORS_ORIGINS: "*"
+
+      # Disable some security features for development
+      RATE_LIMIT_ENABLED: false
+      CSRF_PROTECTION_ENABLED: false
+    volumes:
+      # Mount source code for hot reloading
+      - ./api-gateway/src:/app/src:rw
+      - ./api-gateway/package.json:/app/package.json:ro
+      - ./api-gateway/ecosystem.config.js:/app/ecosystem.config.js:ro
+      # Development logs
+      - ./logs/api-gateway:/app/logs:rw
+    command: ["npm", "run", "dev"]
+    # Enable debugging
+    ports:
+      - "3000:3000"
+      - "9229:9229"  # Node.js debugging port
+
+  # Medusa.js - Development Configuration
+  medusa:
+    build:
+      target: development
+    environment:
+      NODE_ENV: development
+      DEBUG: medusa:*
+      LOG_LEVEL: debug
+
+      # Development database with verbose logging
+      DATABASE_LOGGING: true
+
+      # Development admin CORS
+      MEDUSA_ADMIN_CORS: "http://localhost:3000,http://localhost:3001,http://localhost:7000,http://localhost:7001"
+
+      # Enable development features
+      MEDUSA_FF_SALES_CHANNELS: true
+      MEDUSA_FF_PUBLISHABLE_API_KEYS: true
+    volumes:
+      # Hot reloading for Medusa
+      - ./ecommerce-backend/src:/app/src:rw
+      - ./ecommerce-backend/package.json:/app/package.json:ro
+      - ./logs/medusa:/app/logs:rw
+    command: ["npm", "run", "develop"]
+    ports:
+      - "9000:9000"
+      - "7000:7000"
+      - "9230:9230"  # Debugging port
+
+  # Sync Services - Development Configuration
+  sync-services:
+    build:
+      target: development  # Use development stage
+    environment:
+      NODE_ENV: development
+      DEBUG: harsha-sync:*
+      LOG_LEVEL: debug
+
+      # Development-specific sync settings
+      SYNC_INTERVAL: 10000  # More frequent syncing in dev
+      ENABLE_SYNC_DEBUGGING: true
+      DRY_RUN_MODE: false
+
+      # Enable TypeScript watching
+      TS_NODE_DEV: true
+    volumes:
+      # Mount TypeScript source for hot reloading
+      - ./sync-services/src:/app/src:rw
+      - ./sync-services/package.json:/app/package.json:ro
+      - ./sync-services/tsconfig.json:/app/tsconfig.json:ro
+      - ./logs/sync-services:/app/logs:rw
+    command: ["npm", "run", "dev"]
+    ports:
+      - "3005:3005"
+      - "9091:9090"  # Metrics
+      - "9231:9231"  # Debugging port
+
+  # ERPNext - Development Configuration
+  erpnext:
+    environment:
+      # Development mode
+      DEVELOPER_MODE: 1
+      ALLOW_TESTS: 1
+      ENABLE_SCHEDULER: 0  # Disable scheduler in development
+
+      # Debug settings
+      FRAPPE_LOG_LEVEL: DEBUG
+      WERKZEUG_DEBUG_PIN: "off"
+    volumes:
+      # Mount custom apps for development
+      - ./erpnext_customizations:/home/frappe/frappe-bench/apps/harsha_customizations:rw
+      - ./logs/erpnext:/home/frappe/frappe-bench/logs:rw
+
+  # =====================================================================================
+  # DEVELOPMENT TOOLS AND UTILITIES
+  # =====================================================================================
+
+  # Development Database Explorer
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: harsha-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@harshadelights.local
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-pgadmin_dev_2024}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    volumes:
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json:ro
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      harsha-delights-network:
+        ipv4_address: 172.20.0.85
+    depends_on:
+      - postgres
+
+  # Code Quality and Linting Service
+  code-quality:
+    image: node:18-alpine
+    container_name: harsha-code-quality
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:ro
+    networks:
+      harsha-delights-network:
+        ipv4_address: 172.20.0.86
+    profiles:
+      - tools
+    command: >
+      sh -c "
+        echo 'Installing development tools...' &&
+        npm install -g eslint prettier typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin &&
+        echo 'Code quality tools ready!' &&
+        tail -f /dev/null
+      "
+
+  # File Watcher for Development
+  file-watcher:
+    image: node:18-alpine
+    container_name: harsha-file-watcher
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      harsha-delights-network:
+        ipv4_address: 172.20.0.87
+    profiles:
+      - tools
+    command: >
+      sh -c "
+        echo 'File watcher ready for development' &&
+        tail -f /dev/null
+      "
+
+  # =====================================================================================
+  # ENHANCED MONITORING FOR DEVELOPMENT
+  # =====================================================================================
+
+  # Grafana with development dashboards
+  grafana:
+    environment:
+      # Development settings
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: true
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Editor
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel
+    volumes:
+      # Development dashboards
+      - ./docker/grafana/dashboards-dev:/var/lib/grafana/dashboards-dev:ro
+
+  # Development Log Aggregator
+  loki:
+    image: grafana/loki:latest
+    container_name: harsha-loki
+    restart: unless-stopped
+    volumes:
+      - ./docker/loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/tmp/loki
+    ports:
+      - "3100:3100"
+    networks:
+      harsha-delights-network:
+        ipv4_address: 172.20.0.88
+    profiles:
+      - monitoring
+
+  # Log Shipper for Development
+  promtail:
+    image: grafana/promtail:latest
+    container_name: harsha-promtail
+    restart: unless-stopped
+    volumes:
+      - ./docker/promtail/promtail-config.yml:/etc/promtail/config.yml:ro
+      - ./logs:/var/log/harsha:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    networks:
+      harsha-delights-network:
+        ipv4_address: 172.20.0.89
+    profiles:
+      - monitoring
+    depends_on:
+      - loki
+
+# =====================================================================================
+# DEVELOPMENT-SPECIFIC VOLUMES
+# =====================================================================================
+volumes:
+  pgadmin-data:
+  loki-data:
+
+# =====================================================================================
+# DEVELOPMENT NETWORKS (extends main network)
+# =====================================================================================
+networks:
+  harsha-delights-network:
+    # Extends the main network defined in docker-compose.yml

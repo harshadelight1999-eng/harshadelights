@@ -1,0 +1,437 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "maxLength": 100,
+            "readOnly": true,
+            "tooltip": "Auto-generated order number"
+        },
+        "orderNumber": {
+            "type": "autoincrement",
+            "unique": true,
+            "prefix": "SO-",
+            "padLength": 6
+        },
+        "customer": {
+            "type": "link",
+            "required": true,
+            "entity": "Account"
+        },
+        "customerContact": {
+            "type": "link",
+            "entity": "Contact"
+        },
+        "customerType": {
+            "type": "link",
+            "entity": "CustomerType",
+            "required": true
+        },
+        "orderDate": {
+            "type": "date",
+            "required": true,
+            "default": "javascript: return new Date();"
+        },
+        "requiredDate": {
+            "type": "date",
+            "required": true,
+            "tooltip": "Customer required delivery date"
+        },
+        "promisedDate": {
+            "type": "date",
+            "tooltip": "Date promised to customer"
+        },
+        "actualDeliveryDate": {
+            "type": "date",
+            "readOnly": true
+        },
+        "status": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "draft",
+                "pending_approval",
+                "confirmed",
+                "in_production",
+                "quality_check",
+                "packed",
+                "shipped",
+                "delivered",
+                "completed",
+                "cancelled",
+                "on_hold"
+            ],
+            "default": "draft"
+        },
+        "priority": {
+            "type": "enum",
+            "options": ["low", "normal", "high", "urgent"],
+            "default": "normal"
+        },
+        "orderType": {
+            "type": "enum",
+            "options": ["regular", "custom", "sample", "bulk", "export"],
+            "default": "regular"
+        },
+        "salesRep": {
+            "type": "link",
+            "entity": "User",
+            "tooltip": "Sales representative handling this order"
+        },
+        "team": {
+            "type": "link",
+            "entity": "Team"
+        },
+        "billingAddress": {
+            "type": "address",
+            "trim": true
+        },
+        "shippingAddress": {
+            "type": "address",
+            "trim": true
+        },
+        "sameAsShippingAddress": {
+            "type": "bool",
+            "default": false
+        },
+        "paymentTerms": {
+            "type": "enum",
+            "options": ["cash", "net_7", "net_15", "net_30", "net_45", "net_60", "advance"],
+            "default": "cash"
+        },
+        "paymentMethod": {
+            "type": "enum",
+            "options": ["cash", "bank_transfer", "cheque", "credit_card", "upi", "rtgs_neft"],
+            "default": "cash"
+        },
+        "creditApproved": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether credit has been approved for this order"
+        },
+        "creditApprovedBy": {
+            "type": "link",
+            "entity": "User"
+        },
+        "creditApprovedDate": {
+            "type": "datetime"
+        },
+        "deliveryMethod": {
+            "type": "enum",
+            "options": ["self_delivery", "third_party", "courier", "pickup"],
+            "default": "self_delivery"
+        },
+        "warehouse": {
+            "type": "link",
+            "entity": "Warehouse",
+            "tooltip": "Warehouse to fulfill from"
+        },
+        "currency": {
+            "type": "enum",
+            "options": ["INR", "USD", "EUR", "GBP"],
+            "default": "INR"
+        },
+        "exchangeRate": {
+            "type": "float",
+            "min": 0,
+            "default": 1.0
+        },
+        "subtotal": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Total before taxes and discounts"
+        },
+        "discountPercent": {
+            "type": "float",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        "discountAmount": {
+            "type": "currency",
+            "min": 0,
+            "default": 0
+        },
+        "taxableAmount": {
+            "type": "currency",
+            "readOnly": true
+        },
+        "gstAmount": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Total GST amount"
+        },
+        "cgstAmount": {
+            "type": "currency",
+            "readOnly": true
+        },
+        "sgstAmount": {
+            "type": "currency",
+            "readOnly": true
+        },
+        "igstAmount": {
+            "type": "currency",
+            "readOnly": true
+        },
+        "shippingCost": {
+            "type": "currency",
+            "min": 0,
+            "default": 0
+        },
+        "otherCharges": {
+            "type": "currency",
+            "min": 0,
+            "default": 0
+        },
+        "roundOffAmount": {
+            "type": "currency",
+            "default": 0
+        },
+        "totalAmount": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Final total including all taxes and charges"
+        },
+        "paidAmount": {
+            "type": "currency",
+            "min": 0,
+            "default": 0,
+            "readOnly": true
+        },
+        "balanceAmount": {
+            "type": "currency",
+            "readOnly": true
+        },
+        "specialInstructions": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Special instructions for production/delivery"
+        },
+        "internalNotes": {
+            "type": "text",
+            "rows": 3,
+            "tooltip": "Internal notes not visible to customer"
+        },
+        "qualityRequirements": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Specific quality requirements for this order"
+        },
+        "packagingRequirements": {
+            "type": "text",
+            "rows": 2,
+            "tooltip": "Special packaging requirements"
+        },
+        "isUrgent": {
+            "type": "bool",
+            "default": false
+        },
+        "isExport": {
+            "type": "bool",
+            "default": false
+        },
+        "exportDocuments": {
+            "type": "attachmentMultiple",
+            "tooltip": "Export related documents"
+        },
+        "qualityCheckRequired": {
+            "type": "bool",
+            "default": true
+        },
+        "qualityCheckStatus": {
+            "type": "enum",
+            "options": ["pending", "in_progress", "passed", "failed", "not_required"],
+            "default": "pending"
+        },
+        "productionStartDate": {
+            "type": "date"
+        },
+        "productionCompletionDate": {
+            "type": "date"
+        },
+        "packingDate": {
+            "type": "date"
+        },
+        "shippingDate": {
+            "type": "date"
+        },
+        "trackingNumber": {
+            "type": "varchar",
+            "maxLength": 100
+        },
+        "deliveryPartner": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": "Courier/delivery partner name"
+        },
+        "invoiceGenerated": {
+            "type": "bool",
+            "default": false,
+            "readOnly": true
+        },
+        "invoiceNumber": {
+            "type": "varchar",
+            "maxLength": 100,
+            "readOnly": true
+        },
+        "cancelReason": {
+            "type": "text",
+            "tooltip": "Reason for cancellation"
+        },
+        "cancelledBy": {
+            "type": "link",
+            "entity": "User"
+        },
+        "cancelledDate": {
+            "type": "datetime"
+        },
+        "sourceChannel": {
+            "type": "enum",
+            "options": ["phone", "email", "website", "mobile_app", "walk_in", "sales_rep"],
+            "default": "phone"
+        },
+        "orderWeight": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Total order weight in kg"
+        },
+        "orderVolume": {
+            "type": "float",
+            "min": 0,
+            "tooltip": "Total order volume in cubic cm"
+        },
+        "estimatedMargin": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Estimated profit margin for this order"
+        },
+        "marginPercentage": {
+            "type": "float",
+            "readOnly": true,
+            "tooltip": "Margin percentage"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        }
+    },
+    "links": {
+        "customer": {
+            "type": "belongsTo",
+            "entity": "Account",
+            "foreign": "salesOrders"
+        },
+        "customerContact": {
+            "type": "belongsTo",
+            "entity": "Contact",
+            "foreign": "salesOrders"
+        },
+        "customerType": {
+            "type": "belongsTo",
+            "entity": "CustomerType",
+            "foreign": "salesOrders"
+        },
+        "salesRep": {
+            "type": "belongsTo",
+            "entity": "User",
+            "foreign": "assignedSalesOrders"
+        },
+        "team": {
+            "type": "belongsTo",
+            "entity": "Team",
+            "foreign": "salesOrders"
+        },
+        "warehouse": {
+            "type": "belongsTo",
+            "entity": "Warehouse",
+            "foreign": "salesOrders"
+        },
+        "orderItems": {
+            "type": "hasMany",
+            "entity": "SalesOrderItem",
+            "foreign": "salesOrder"
+        },
+        "productionOrders": {
+            "type": "hasMany",
+            "entity": "ProductionOrder",
+            "foreign": "salesOrder"
+        },
+        "qualityChecks": {
+            "type": "hasMany",
+            "entity": "QualityCheck",
+            "foreign": "salesOrder"
+        },
+        "deliveries": {
+            "type": "hasMany",
+            "entity": "Delivery",
+            "foreign": "salesOrder"
+        },
+        "invoices": {
+            "type": "hasMany",
+            "entity": "Invoice",
+            "foreign": "salesOrder"
+        },
+        "payments": {
+            "type": "hasMany",
+            "entity": "Payment",
+            "foreign": "salesOrder"
+        },
+        "opportunity": {
+            "type": "belongsTo",
+            "entity": "Opportunity",
+            "foreign": "salesOrders"
+        },
+        "creditApprovedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "cancelledBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc"
+    },
+    "indexes": {
+        "orderNumber": {
+            "columns": ["orderNumber"],
+            "unique": true
+        },
+        "status": {
+            "columns": ["status"]
+        },
+        "orderDate": {
+            "columns": ["orderDate"]
+        },
+        "customer": {
+            "columns": ["customerId"]
+        },
+        "priority": {
+            "columns": ["priority"]
+        }
+    }
+}

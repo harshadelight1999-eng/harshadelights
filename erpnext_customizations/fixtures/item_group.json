@@ -1,0 +1,58 @@
+[
+    {
+        "doctype": "Item Group",
+        "item_group_name": "Confectionery",
+        "parent_item_group": "All Item Groups",
+        "is_group": 1,
+        "image": "",
+        "description": "Parent group for all confectionery products"
+    },
+    {
+        "doctype": "Item Group",
+        "item_group_name": "Raw Materials",
+        "parent_item_group": "Confectionery",
+        "is_group": 1,
+        "image": "",
+        "description": "Raw materials used in confectionery production"
+    },
+    {
+        "doctype": "Item Group",
+        "item_group_name": "Packaging Materials",
+        "parent_item_group": "Confectionery",
+        "is_group": 1,
+        "image": "",
+        "description": "Materials used for packaging finished products"
+    },
+    {
+        "doctype": "Item Group",
+        "item_group_name": "Finished Goods",
+        "parent_item_group": "Confectionery",
+        "is_group": 1,
+        "image": "",
+        "description": "Ready-to-sell confectionery products"
+    },
+    {
+        "doctype": "Item Group",
+        "item_group_name": "Sweets & Desserts",
+        "parent_item_group": "Finished Goods",
+        "is_group": 0,
+        "image": "",
+        "description": "Traditional sweets and desserts"
+    },
+    {
+        "doctype": "Item Group",
+        "item_group_name": "Chocolates",
+        "parent_item_group": "Finished Goods",
+        "is_group": 0,
+        "image": "",
+        "description": "Chocolate products and confections"
+    },
+    {
+        "doctype": "Item Group",
+        "item_group_name": "Baked Items",
+        "parent_item_group": "Finished Goods",
+        "is_group": 0,
+        "image": "",
+        "description": "Baked confectionery items"
+    }
+]

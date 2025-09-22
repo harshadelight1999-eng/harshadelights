@@ -1,0 +1,43 @@
+{
+    "controller": "controllers/record",
+    "views": {
+        "list": "views/customer-type/list",
+        "detail": "views/customer-type/detail",
+        "edit": "views/customer-type/edit"
+    },
+    "recordViews": {
+        "list": "views/customer-type/record/list",
+        "detail": "views/customer-type/record/detail",
+        "edit": "views/customer-type/record/edit"
+    },
+    "modalViews": {
+        "detail": "views/customer-type/modals/detail",
+        "edit": "views/customer-type/modals/edit"
+    },
+    "searchPanelView": "views/customer-type/record/search",
+    "filterList": [
+        "category",
+        "isActive"
+    ],
+    "boolFilterList": [
+        "onlyActive",
+        "b2bOnly",
+        "b2cOnly"
+    ],
+    "defaultFilterData": {
+        "primary": "onlyActive"
+    },
+    "selectDefaultFilters": {
+        "filter": "onlyActive"
+    },
+    "color": "#8B4513",
+    "iconClass": "fas fa-users-cog",
+    "kanbanViewMode": false,
+    "quickCreateDisabled": false,
+    "quickSearchFields": ["name", "code"],
+    "textFilterFields": ["name", "code", "description"],
+    "tooltip": true,
+    "tooltipText": "Customer types define B2B/B2C segments with specific pricing and terms",
+    "mandatorySelectAttributeList": ["name", "code", "category", "isActive"],
+    "forceSelectAllAttributes": false
+}

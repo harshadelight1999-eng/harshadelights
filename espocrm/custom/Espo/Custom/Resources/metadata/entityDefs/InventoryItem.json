@@ -1,0 +1,320 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "readOnly": true,
+            "maxLength": 255,
+            "tooltip": "Auto-generated from product and warehouse"
+        },
+        "product": {
+            "type": "link",
+            "required": true,
+            "entity": "ConfectioneryProduct"
+        },
+        "warehouse": {
+            "type": "link",
+            "required": true,
+            "entity": "Warehouse"
+        },
+        "batchNumber": {
+            "type": "varchar",
+            "maxLength": 50,
+            "tooltip": "Production batch number"
+        },
+        "lotNumber": {
+            "type": "varchar",
+            "maxLength": 50,
+            "tooltip": "Lot tracking number"
+        },
+        "currentStock": {
+            "type": "float",
+            "required": true,
+            "min": 0,
+            "default": 0,
+            "tooltip": "Current available stock quantity"
+        },
+        "reservedStock": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Stock reserved for confirmed orders"
+        },
+        "availableStock": {
+            "type": "float",
+            "readOnly": true,
+            "tooltip": "Current Stock - Reserved Stock"
+        },
+        "unitOfMeasure": {
+            "type": "enum",
+            "required": true,
+            "options": ["kg", "gm", "piece", "box", "packet", "liter", "ml"],
+            "default": "kg"
+        },
+        "costPrice": {
+            "type": "currency",
+            "min": 0,
+            "tooltip": "Average cost price of this inventory"
+        },
+        "totalValue": {
+            "type": "currency",
+            "readOnly": true,
+            "tooltip": "Current Stock × Cost Price"
+        },
+        "minimumLevel": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Minimum stock level for reorder alerts"
+        },
+        "maximumLevel": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Maximum stock level"
+        },
+        "reorderLevel": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Stock level at which reorder is triggered"
+        },
+        "reorderQuantity": {
+            "type": "float",
+            "min": 0,
+            "default": 0,
+            "tooltip": "Standard quantity to reorder"
+        },
+        "manufactureDate": {
+            "type": "date",
+            "tooltip": "Date of manufacture for this batch"
+        },
+        "expiryDate": {
+            "type": "date",
+            "tooltip": "Expiry date for this batch"
+        },
+        "receivedDate": {
+            "type": "date",
+            "tooltip": "Date when inventory was received"
+        },
+        "lastMovementDate": {
+            "type": "datetime",
+            "readOnly": true,
+            "tooltip": "Date of last stock movement"
+        },
+        "qualityStatus": {
+            "type": "enum",
+            "options": ["pending_inspection", "approved", "rejected", "quarantined", "expired"],
+            "default": "pending_inspection"
+        },
+        "qualityGrade": {
+            "type": "enum",
+            "options": ["premium", "standard", "economy", "seconds"],
+            "default": "standard"
+        },
+        "storageLocation": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": "Specific storage location within warehouse"
+        },
+        "storageConditions": {
+            "type": "enum",
+            "options": ["room_temperature", "refrigerated", "frozen", "dry_cool_place"],
+            "default": "room_temperature"
+        },
+        "temperature": {
+            "type": "float",
+            "tooltip": "Storage temperature in Celsius"
+        },
+        "humidity": {
+            "type": "float",
+            "tooltip": "Storage humidity percentage"
+        },
+        "supplierBatch": {
+            "type": "varchar",
+            "maxLength": 50,
+            "tooltip": "Supplier's batch number"
+        },
+        "supplier": {
+            "type": "link",
+            "entity": "Account",
+            "tooltip": "Supplier of this inventory"
+        },
+        "purchaseOrder": {
+            "type": "link",
+            "entity": "PurchaseOrder",
+            "tooltip": "Purchase order this inventory came from"
+        },
+        "productionOrder": {
+            "type": "link",
+            "entity": "ProductionOrder",
+            "tooltip": "Production order this inventory came from"
+        },
+        "isBlocked": {
+            "type": "bool",
+            "default": false,
+            "tooltip": "Whether this inventory is blocked from use"
+        },
+        "blockReason": {
+            "type": "text",
+            "tooltip": "Reason for blocking this inventory"
+        },
+        "blockedBy": {
+            "type": "link",
+            "entity": "User"
+        },
+        "blockedDate": {
+            "type": "datetime"
+        },
+        "isExpired": {
+            "type": "bool",
+            "readOnly": true,
+            "tooltip": "Whether this batch has expired"
+        },
+        "daysToExpiry": {
+            "type": "int",
+            "readOnly": true,
+            "tooltip": "Number of days until expiry"
+        },
+        "turnoverRate": {
+            "type": "float",
+            "readOnly": true,
+            "tooltip": "Inventory turnover rate"
+        },
+        "averageDailyUsage": {
+            "type": "float",
+            "readOnly": true,
+            "tooltip": "Average daily usage of this item"
+        },
+        "daysOfStock": {
+            "type": "float",
+            "readOnly": true,
+            "tooltip": "Days of stock remaining at current usage rate"
+        },
+        "abc_classification": {
+            "type": "enum",
+            "options": ["A", "B", "C"],
+            "tooltip": "ABC classification based on value and usage"
+        },
+        "movements": {
+            "type": "int",
+            "readOnly": true,
+            "tooltip": "Number of stock movements"
+        },
+        "lastCountDate": {
+            "type": "date",
+            "tooltip": "Date of last physical count"
+        },
+        "countVariance": {
+            "type": "float",
+            "default": 0,
+            "tooltip": "Variance from last physical count"
+        },
+        "barcode": {
+            "type": "varchar",
+            "maxLength": 100,
+            "tooltip": "Barcode for this specific batch/lot"
+        },
+        "qrCode": {
+            "type": "varchar",
+            "maxLength": 255,
+            "tooltip": "QR code for batch tracking"
+        },
+        "notes": {
+            "type": "text",
+            "tooltip": "Additional notes about this inventory"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "entity": "User"
+        }
+    },
+    "links": {
+        "product": {
+            "type": "belongsTo",
+            "entity": "ConfectioneryProduct",
+            "foreign": "inventoryItems"
+        },
+        "warehouse": {
+            "type": "belongsTo",
+            "entity": "Warehouse",
+            "foreign": "inventoryItems"
+        },
+        "supplier": {
+            "type": "belongsTo",
+            "entity": "Account",
+            "foreign": "suppliedInventory"
+        },
+        "purchaseOrder": {
+            "type": "belongsTo",
+            "entity": "PurchaseOrder",
+            "foreign": "inventoryItems"
+        },
+        "productionOrder": {
+            "type": "belongsTo",
+            "entity": "ProductionOrder",
+            "foreign": "inventoryItems"
+        },
+        "transactions": {
+            "type": "hasMany",
+            "entity": "InventoryTransaction",
+            "foreign": "inventoryItem"
+        },
+        "qualityChecks": {
+            "type": "hasMany",
+            "entity": "QualityCheck",
+            "foreign": "inventoryItem"
+        },
+        "stockCounts": {
+            "type": "hasMany",
+            "entity": "StockCount",
+            "foreign": "inventoryItem"
+        },
+        "blockedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "name",
+        "order": "asc"
+    },
+    "indexes": {
+        "product_warehouse": {
+            "columns": ["productId", "warehouseId"]
+        },
+        "batchNumber": {
+            "columns": ["batchNumber"]
+        },
+        "expiryDate": {
+            "columns": ["expiryDate"]
+        },
+        "qualityStatus": {
+            "columns": ["qualityStatus"]
+        },
+        "currentStock": {
+            "columns": ["currentStock"]
+        }
+    }
+}

@@ -1,0 +1,82 @@
+# =====================================================================================
+# HARSHA DELIGHTS GRAFANA DATASOURCE CONFIGURATION
+# =====================================================================================
+# Automatic provisioning of Prometheus datasource for monitoring dashboards
+# =====================================================================================
+
+apiVersion: 1
+
+deleteDatasources:
+  - name: Prometheus
+    orgId: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    isDefault: true
+    version: 1
+    editable: true
+    jsonData:
+      httpMethod: POST
+      manageAlerts: true
+      prometheusType: Prometheus
+      prometheusVersion: 2.40.0
+      cacheLevel: 'High'
+      disableRecordingRules: false
+      incrementalQueryOverlapWindow: 10m
+      queryTimeout: 60s
+      timeInterval: 15s
+      exemplarTraceIdDestinations:
+        - name: traceID
+          datasourceUid: jaeger
+          url: http://jaeger:16686/trace/${__value.raw}
+      alertmanagerUid: alertmanager
+
+  # Additional datasources for different metrics
+  - name: Business Metrics
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    isDefault: false
+    version: 1
+    editable: true
+    jsonData:
+      httpMethod: POST
+      timeInterval: 60s
+      queryTimeout: 120s
+      # Custom labels for business metrics
+      customQueryParameters: 'job=business-metrics'
+
+  # Node Exporter specific datasource
+  - name: System Metrics
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    isDefault: false
+    version: 1
+    editable: true
+    jsonData:
+      httpMethod: POST
+      timeInterval: 15s
+      # Filter for system metrics only
+      customQueryParameters: 'job=node-exporter'
+
+  # Application metrics datasource
+  - name: Application Metrics
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    isDefault: false
+    version: 1
+    editable: true
+    jsonData:
+      httpMethod: POST
+      timeInterval: 10s
+      # Filter for application metrics
+      customQueryParameters: 'job=~"api-gateway|erpnext|medusa|espocrm"'

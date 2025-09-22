@@ -1,0 +1,295 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 24 95% 53%; /* Harsha Delights Orange */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 24 95% 53%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 24 95% 53%;
+    --primary-foreground: 222.2 84% 4.9%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 24 95% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Typography improvements */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-harsha-orange-100 text-harsha-orange-900;
+  }
+
+  /* Scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-harsha-orange-300;
+  }
+}
+
+@layer components {
+  /* Website-specific component styles */
+
+  .hero-gradient {
+    background: linear-gradient(
+      135deg,
+      theme('colors.harsha-orange.50') 0%,
+      theme('colors.harsha-yellow.50') 50%,
+      theme('colors.harsha-orange.50') 100%
+    );
+  }
+
+  .hero-text-gradient {
+    background: linear-gradient(
+      135deg,
+      theme('colors.harsha-orange.600') 0%,
+      theme('colors.harsha-yellow.600') 50%,
+      theme('colors.harsha-orange.700') 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-cta {
+    @apply bg-harsha-orange-500 hover:bg-harsha-orange-600 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-harsha-orange-600 border-2 border-harsha-orange-500 font-semibold px-8 py-4 rounded-lg transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-xl;
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+
+  /* Product category cards */
+  .category-card {
+    @apply relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-gray-50 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group;
+  }
+
+  .category-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-harsha-orange-500/10 to-harsha-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300;
+  }
+
+  /* Feature highlight cards */
+  .feature-card {
+    @apply bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100;
+  }
+
+  .feature-card:hover {
+    @apply border-harsha-orange-200 shadow-harsha-orange-100/50;
+  }
+
+  /* Testimonial cards */
+  .testimonial-card {
+    @apply bg-white p-6 rounded-lg shadow-md border-l-4 border-harsha-orange-500;
+  }
+
+  /* Navigation styles */
+  .nav-link {
+    @apply text-gray-700 hover:text-harsha-orange-600 font-medium transition-colors duration-200 relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-harsha-orange-500 transition-all duration-300;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  /* Footer styles */
+  .footer-link {
+    @apply text-gray-400 hover:text-white transition-colors duration-200;
+  }
+
+  /* Loading states */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-harsha-orange-500;
+  }
+
+  /* Form styles */
+  .form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-harsha-orange-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .form-input:focus {
+    @apply border-harsha-orange-500 shadow-lg shadow-harsha-orange-100/50;
+  }
+
+  .form-error {
+    @apply border-red-500 bg-red-50 text-red-900;
+  }
+
+  /* Section backgrounds */
+  .section-bg-pattern {
+    background-image:
+      radial-gradient(circle at 25% 25%, theme('colors.harsha-orange.100') 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, theme('colors.harsha-yellow.100') 0%, transparent 50%);
+  }
+
+  /* Responsive typography */
+  .heading-responsive {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
+  }
+
+  .subheading-responsive {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+
+  .body-responsive {
+    @apply text-base sm:text-lg md:text-xl;
+  }
+}
+
+@layer utilities {
+  /* Custom utility classes */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .bg-grid-pattern {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(148 163 184 / 0.05)'%3e%3cpath d='m0 .5h32m-32 32v-32'/%3e%3c/svg%3e");
+  }
+
+  .bg-dots-pattern {
+    background-image: radial-gradient(circle, rgb(148 163 184 / 0.1) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  /* Animation delays for staggered animations */
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+}

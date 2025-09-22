@@ -1,0 +1,63 @@
+# =====================================================================================
+# HARSHA DELIGHTS GRAFANA DASHBOARD PROVISIONING
+# =====================================================================================
+# Automatic provisioning of monitoring dashboards for the confectionery system
+# =====================================================================================
+
+apiVersion: 1
+
+providers:
+  # System Infrastructure Dashboards
+  - name: 'System Dashboards'
+    orgId: 1
+    folder: 'System Monitoring'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/system
+
+  # Application Dashboards
+  - name: 'Application Dashboards'
+    orgId: 1
+    folder: 'Application Monitoring'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/applications
+
+  # Business Metrics Dashboards
+  - name: 'Business Dashboards'
+    orgId: 1
+    folder: 'Business Intelligence'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/business
+
+  # Database Dashboards
+  - name: 'Database Dashboards'
+    orgId: 1
+    folder: 'Database Monitoring'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/databases
+
+  # Security Dashboards
+  - name: 'Security Dashboards'
+    orgId: 1
+    folder: 'Security Monitoring'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/security

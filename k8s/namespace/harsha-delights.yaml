@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: harsha-delights
+  labels:
+    name: harsha-delights
+    environment: production
+    app.kubernetes.io/name: harsha-delights
+    app.kubernetes.io/version: "1.0.0"
+  annotations:
+    description: "Harsha Delights confectionery business ecosystem"
