@@ -11,7 +11,7 @@ const config = {
   // PostgreSQL - API Gateway Database
   apiGateway: {
     client: 'pg',
-    connection: {
+    connection: process.env.DATABASE_URL || {
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT) || 5432,
       database: process.env.DB_NAME || 'harsha_delights_gateway',
@@ -20,14 +20,14 @@ const config = {
       ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
     },
     pool: {
-      min: parseInt(process.env.DB_POOL_MIN) || 2,
-      max: parseInt(process.env.DB_POOL_MAX) || 10,
-      acquireTimeoutMillis: 30000,
-      createTimeoutMillis: 30000,
-      destroyTimeoutMillis: 5000,
-      idleTimeoutMillis: 30000,
+      min: parseInt(process.env.DB_POOL_MIN) || 1,
+      max: parseInt(process.env.DB_POOL_MAX) || 5,
+      acquireTimeoutMillis: 60000,
+      createTimeoutMillis: 60000,
+      destroyTimeoutMillis: 15000,
+      idleTimeoutMillis: 300000,
       reapIntervalMillis: 1000,
-      createRetryIntervalMillis: 200,
+      createRetryIntervalMillis: 500,
       propagateCreateError: false
     },
     migrations: {
