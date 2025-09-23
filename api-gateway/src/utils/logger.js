@@ -9,9 +9,17 @@ const fs = require('fs');
 const config = require('../config');
 
 // Ensure logs directory exists
-const logFilePath = config.logging?.filePath || './logs/api-gateway.log';
+let logFilePath = './logs/api-gateway.log'; // Default fallback
+try {
+  if (config && config.logging && typeof config.logging.filePath === 'string' && config.logging.filePath.length > 0) {
+    logFilePath = config.logging.filePath;
+  }
+} catch (error) {
+  console.warn('Config loading issue, using default log path:', error.message);
+}
+
 const logsDir = path.dirname(logFilePath);
-if (!fs.existsSync(logsDir)) {
+if (typeof logsDir === 'string' && logsDir.length > 0 && !fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
 
@@ -77,19 +85,28 @@ const fileFormat = winston.format.combine(
 );
 
 // Create logger instance
+let logLevel = 'info'; // Default fallback
+try {
+  if (config && config.logging && typeof config.logging.level === 'string') {
+    logLevel = config.logging.level;
+  }
+} catch (error) {
+  console.warn('Config logging level issue, using default:', error.message);
+}
+
 const logger = winston.createLogger({
   levels: logLevels,
-  level: config.logging?.level || 'info',
+  level: logLevel,
   defaultMeta: {
     service: 'api-gateway',
-    environment: config.app.env,
-    version: config.app.version
+    environment: (config && config.app && config.app.env) ? config.app.env : 'production',
+    version: (config && config.app && config.app.version) ? config.app.version : '1.0.0'
   },
   transports: [
     // Console transport for development
     new winston.transports.Console({
       format: consoleFormat,
-      silent: config.app.env === 'test'
+      silent: (config && config.app && config.app.env === 'test') || false
     }),
 
     // File transport for all logs
