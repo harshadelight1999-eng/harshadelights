@@ -40,7 +40,7 @@ const securityRefinements = {
   noPathTraversal: (value) => {
     const pathTraversalPatterns = [
       /\.\.\//g,
-      /\.\.\\\/g,
+      /\.\.\\\\/g,
       /%2e%2e%2f/gi,
       /%2e%2e%5c/gi
     ];
