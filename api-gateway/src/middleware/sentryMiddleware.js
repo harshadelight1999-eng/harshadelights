@@ -298,7 +298,7 @@ function captureSecurityEvent(eventName, severity, details, user = null) {
       timestamp: new Date().toISOString()
     });
 
-    Sentry.captureMessage(`Security Event: ${eventName}`, scope.getLevel());
+    Sentry.captureMessage(`Security Event: ${eventName}`, severity);
   });
 }
 

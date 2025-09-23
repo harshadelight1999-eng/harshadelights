@@ -12,7 +12,14 @@ const { logger } = require('../utils/logger');
 
 class SecurityMiddleware {
   constructor() {
-    this.db = getApiGatewayDB();
+    this.db = null;
+  }
+
+  getDB() {
+    if (!this.db) {
+      this.db = getApiGatewayDB();
+    }
+    return this.db;
   }
 
   /**
@@ -405,7 +412,13 @@ class SecurityMiddleware {
    */
   async logAuditEvent(eventData) {
     try {
-      await this.db('api_audit_logs').insert({
+      const db = this.getDB();
+      if (!db) {
+        logger.debug('Database not available for audit logging');
+        return;
+      }
+      
+      await db('api_audit_logs').insert({
         request_id: eventData.requestId,
         http_method: eventData.method,
         path: eventData.path,

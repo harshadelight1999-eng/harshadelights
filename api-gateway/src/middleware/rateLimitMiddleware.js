@@ -12,8 +12,15 @@ const { getApiGatewayDB } = require('../config/database');
 
 class RateLimitMiddleware {
   constructor() {
-    this.db = getApiGatewayDB();
+    this.db = null;
     this.rateLimitStore = new RedisRateLimitStore();
+  }
+
+  getDB() {
+    if (!this.db) {
+      this.db = getApiGatewayDB();
+    }
+    return this.db;
   }
 
   /**
@@ -364,13 +371,19 @@ class RateLimitMiddleware {
    */
   async trackRateLimit(identifier, current, limit, exceeded) {
     try {
+      const db = this.getDB();
+      if (!db) {
+        logger.debug('Database not available for rate limit tracking');
+        return;
+      }
+
       const [identifierType, identifierValue] = identifier.includes(':')
         ? identifier.split(':', 2)
         : ['unknown', identifier];
 
       const windowStart = new Date(Math.floor(Date.now() / 60000) * 60000); // 1-minute windows
 
-      await this.db('rate_limit_tracking')
+      await db('rate_limit_tracking')
         .insert({
           identifier_type: identifierType,
           identifier_value: identifierValue,
@@ -384,7 +397,7 @@ class RateLimitMiddleware {
         .merge({
           request_count: current,
           last_request_at: new Date(),
-          ...(exceeded && { blocked_count: this.db.raw('blocked_count + 1') })
+          ...(exceeded && { blocked_count: db.raw('blocked_count + 1') })
         });
 
     } catch (error) {
