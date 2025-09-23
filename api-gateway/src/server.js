@@ -302,7 +302,13 @@ class ApiGatewayServer {
 
       // Initialize legacy Redis (for backward compatibility)
       logger.info('🔴 Initializing Redis...');
-      await redisManager.initialize();
+      try {
+        await redisManager.initialize();
+        logger.info('✅ Redis initialized successfully');
+      } catch (error) {
+        logger.error('❌ Redis initialization failed:', error);
+        logger.warn('🚨 Continuing without Redis - API will run in limited mode');
+      }
 
       // Perform startup health check (non-blocking in production)
       logger.info('🏥 Performing startup health check...');
