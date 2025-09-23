@@ -95,7 +95,8 @@ const initializeDatabases = async () => {
     logger.info('✅ All database connections established successfully');
   } catch (error) {
     logger.error('❌ Database initialization failed:', error.message);
-    process.exit(1);
+    logger.warn('🚨 Continuing without database - API will run in limited mode');
+    // Don't exit - allow server to continue without database
   }
 };
 
