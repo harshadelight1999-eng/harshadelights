@@ -23,7 +23,7 @@ const dbConnectionManager = require('./shared/database/connection-pool');
 const { logger } = require('./utils/logger');
 const User = require('./models/User');
 const authMiddleware = require('./middleware/auth');
-const securityMiddleware = require('./middleware/security');
+const securityMiddleware = require('./middleware/securityMiddleware');
 
 // Import monitoring and security middleware
 const {
