@@ -359,7 +359,7 @@ class ApiGatewayServer {
     this.app.locals.userModel = this.userModel;
 
     // Initialize comprehensive security middleware
-    const securityStack = securityMiddleware.initialize();
+    const securityStack = securityMiddleware.createSecurityStack();
     securityStack.forEach(middleware => this.app.use(middleware));
 
     // Initialize legacy security middleware for backward compatibility
