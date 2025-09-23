@@ -99,7 +99,7 @@ const rateLimitMiddleware = require('./middleware/rateLimitMiddleware');
 const routes = require('./routes');
 
 // Import unified service modules
-const serviceModules = require('./modules');
+// const serviceModules = require('./modules'); // TODO: Create modules directory
 
 // Swagger configuration
 const swaggerOptions = {
@@ -315,7 +315,7 @@ class ApiGatewayServer {
 
       // Initialize service modules
       logger.info('🔧 Initializing service modules...');
-      await serviceModules.initialize(this.app);
+      // await serviceModules.initialize(this.app); // TODO: Implement when modules exist
 
       // Setup routes
       logger.info('🛣️  Setting up routes...');

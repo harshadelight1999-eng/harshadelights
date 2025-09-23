@@ -12,14 +12,24 @@ const config = require('../config');
 
 class ProxyService {
   constructor() {
-    this.db = getApiGatewayDB();
+    this.db = null; // Will be initialized later
     this.serviceRoutes = new Map();
     this.circuitBreakers = new Map();
     this.healthCheckers = new Map();
     this.loadBalancers = new Map();
+    this.initialized = false;
+  }
 
-    this.initializeRoutes();
-    this.startHealthChecks();
+  // Initialize the service after database is ready
+  async initialize() {
+    if (this.initialized) return;
+
+    this.db = getApiGatewayDB();
+    if (this.db) {
+      await this.initializeRoutes();
+      this.startHealthChecks();
+      this.initialized = true;
+    }
   }
 
   /**
@@ -27,6 +37,11 @@ class ProxyService {
    */
   async initializeRoutes() {
     try {
+      if (!this.db) {
+        logger.warn('Database not initialized, skipping route initialization');
+        return;
+      }
+
       const routes = await this.db('service_routes')
         .where({ is_active: true })
         .orderBy('priority', 'desc');
