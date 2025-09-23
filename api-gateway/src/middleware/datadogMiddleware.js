@@ -3,18 +3,21 @@
  * Provides comprehensive application performance monitoring
  */
 
-const tracer = require('dd-trace').init({
-  service: 'harsha-delights-api-gateway',
-  env: process.env.NODE_ENV || 'development',
-  version: process.env.APP_VERSION || '1.0.0',
+// Temporarily disable DataDog for initial deployment
+let tracer = null;
+if (false && process.env.DD_API_KEY && process.env.NODE_ENV === 'production') {
+  tracer = require('dd-trace').init({
+    service: 'harsha-delights-api-gateway',
+    env: process.env.NODE_ENV || 'development',
+    version: process.env.APP_VERSION || '1.0.0',
 
-  // Distributed tracing configuration
-  analytics: true,
-  runtimeMetrics: true,
-  profiling: true,
+    // Distributed tracing configuration
+    analytics: true,
+    runtimeMetrics: true,
+    profiling: true,
 
-  // Sampling configuration
-  sampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+    // Sampling configuration
+    sampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
 
   // Integration configuration
   plugins: {
@@ -61,7 +64,10 @@ const tracer = require('dd-trace').init({
     'service.tier': 'backend',
     'deployment.environment': process.env.NODE_ENV || 'development'
   }
-});
+  });
+} else {
+  console.log('DataDog tracing disabled - DD_API_KEY not provided or not in production mode');
+}
 
 const { logger } = require('../utils/logger');
 const client = require('prom-client');
@@ -206,12 +212,14 @@ function datadogMiddleware() {
 function trackAuthentication(result, method = 'password') {
   authenticationAttempts.labels(result, method).inc();
 
-  tracer.scope().activate(tracer.startSpan('authentication'), () => {
-    const span = tracer.scope().active();
-    span.setTag('auth.result', result);
-    span.setTag('auth.method', method);
-    span.finish();
-  });
+  if (tracer) {
+    tracer.scope().activate(tracer.startSpan('authentication'), () => {
+      const span = tracer.scope().active();
+      span.setTag('auth.result', result);
+      span.setTag('auth.method', method);
+      span.finish();
+    });
+  }
 }
 
 /**
@@ -280,6 +288,15 @@ function trackBusinessEvent(eventType, application = 'api-gateway', metadata = {
  * Create custom span for operations
  */
 function createCustomSpan(operationName, tags = {}) {
+  if (!tracer) {
+    // Return a no-op span when tracer is disabled
+    return {
+      span: null,
+      finish: () => {},
+      setError: () => {}
+    };
+  }
+
   const span = tracer.startSpan(operationName);
 
   Object.keys(tags).forEach(key => {
