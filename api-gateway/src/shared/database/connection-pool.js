@@ -28,7 +28,8 @@ class DatabaseConnectionManager {
       logger.info('✅ Database connection pools initialized successfully');
     } catch (error) {
       logger.error('❌ Failed to initialize database connection pools:', error);
-      throw error;
+      logger.warn('🚨 Continuing without database connection pools - API will run in limited mode');
+      // Don't throw - allow server to continue without database connection pools
     }
   }
 

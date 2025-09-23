@@ -35,7 +35,7 @@ const config = require('./config');
 console.log('✅ Configuration loaded successfully');
 
 console.log('🗄️ Loading database modules...');
-const { initializeDatabases, getDatabaseConnection } = require('./config/database');
+const { initializeDatabases, getApiGatewayDB } = require('./config/database');
 console.log('✅ Database modules loaded');
 
 console.log('🔄 Loading Redis manager...');
@@ -253,9 +253,8 @@ class ApiGatewayServer {
           // Initialize unified database connection pools
           await dbConnectionManager.initialize();
 
-          // Initialize legacy database system (for backward compatibility)
-          await initializeDatabases();
-          this.db = getDatabaseConnection();
+          // Get database connection (getApiGatewayDB should be safe to call even if initialization failed)
+          this.db = getApiGatewayDB();
 
           if (this.db) {
             logger.info('✅ Database connections established successfully');
