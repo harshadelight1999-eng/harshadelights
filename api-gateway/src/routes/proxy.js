@@ -7,7 +7,7 @@ const express = require('express');
 const { logger } = require("../utils/logger");
 const router = express.Router();
 const ProxyService = require('../services/ProxyService');
-const authMiddleware = require('../middleware/authMiddleware');
+const authMiddleware = require('../middleware/auth');
 
 // Initialize proxy service
 const proxyService = new ProxyService();

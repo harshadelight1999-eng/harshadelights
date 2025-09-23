@@ -7,7 +7,7 @@ const express = require('express');
 const { logger } = require("../utils/logger");
 const router = express.Router();
 const Joi = require('joi');
-const authMiddleware = require('../middleware/authMiddleware');
+const authMiddleware = require('../middleware/auth');
 const { getApiGatewayDB, getSyncDB } = require('../config/database');
 
 /**

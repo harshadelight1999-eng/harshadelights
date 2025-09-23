@@ -13,7 +13,7 @@ const adminRoutes = require('./admin');
 const proxyRoutes = require('./proxy');
 
 // Import middleware
-const authMiddleware = require('../middleware/authMiddleware');
+const authMiddleware = require('../middleware/auth');
 const rateLimitMiddleware = require('../middleware/rateLimitMiddleware');
 const securityMiddleware = require('../middleware/securityMiddleware');
 
