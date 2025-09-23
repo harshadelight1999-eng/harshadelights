@@ -335,10 +335,6 @@ class ApiGatewayServer {
       logger.info('🔄 Setting up graceful shutdown...');
       this.setupGracefulShutdown();
 
-      // Start periodic monitoring
-      logger.info('⏰ Starting periodic health checks...');
-      startPeriodicHealthChecks(30000); // Every 30 seconds
-
       logger.info('✅ API Gateway initialization complete');
 
     } catch (error) {
@@ -676,6 +672,10 @@ Press Ctrl+C to stop the server
           cors: true
         }
       });
+
+      // Start periodic health checks now that server is running
+      logger.info('⏰ Starting periodic health checks...');
+      startPeriodicHealthChecks(30000); // Every 30 seconds
     });
 
     this.server.on('error', (error) => {
