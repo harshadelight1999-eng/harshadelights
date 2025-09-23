@@ -22,24 +22,40 @@ class RedisManager {
         return;
       }
 
-      const config = {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT) || 6379,
-        db: parseInt(process.env.REDIS_DB) || 0,
-        retryDelayOnFailover: 100,
-        enableReadyCheck: true,
-        maxRetriesPerRequest: 3,
-        lazyConnect: true,
-        connectTimeout: 10000,
-        commandTimeout: 5000
-      };
+      // Use REDIS_URL if available, otherwise individual config variables
+      let clientConfig;
+      
+      if (process.env.REDIS_URL) {
+        // Use the full Redis URL (for Upstash, Render, etc.)
+        clientConfig = {
+          url: process.env.REDIS_URL,
+          connectTimeout: 10000,
+          commandTimeout: 5000,
+          retryDelayOnFailover: 100,
+          maxRetriesPerRequest: 3,
+          lazyConnect: true
+        };
+      } else {
+        // Use individual config variables
+        clientConfig = {
+          host: process.env.REDIS_HOST || 'localhost',
+          port: parseInt(process.env.REDIS_PORT) || 6379,
+          db: parseInt(process.env.REDIS_DB) || 0,
+          retryDelayOnFailover: 100,
+          enableReadyCheck: true,
+          maxRetriesPerRequest: 3,
+          lazyConnect: true,
+          connectTimeout: 10000,
+          commandTimeout: 5000
+        };
 
-      if (process.env.REDIS_PASSWORD) {
-        config.password = process.env.REDIS_PASSWORD;
+        if (process.env.REDIS_PASSWORD) {
+          clientConfig.password = process.env.REDIS_PASSWORD;
+        }
       }
 
       // Create Redis client
-      this.client = redis.createClient(config);
+      this.client = redis.createClient(clientConfig);
 
       // Error handling
       this.client.on('error', (error) => {
