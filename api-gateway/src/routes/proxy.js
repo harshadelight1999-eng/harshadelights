@@ -366,7 +366,7 @@ router.use(proxyService.createRoutingMiddleware());
 
 // Customer segment-aware pricing
 router.get('/customers/:customerId/pricing',
-  authMiddleware.requirePermissions('customers:read', 'pricing:read'),
+  authMiddleware.authorizePermission(['customers:read', 'pricing:read']),
   async (req, res, next) => {
     try {
       // Add customer segment information to the request
@@ -381,7 +381,7 @@ router.get('/customers/:customerId/pricing',
 
 // Inventory with batch tracking
 router.get('/inventory/batches/expiring',
-  authMiddleware.requirePermissions('inventory:read'),
+  authMiddleware.authorizePermission(['inventory:read']),
   async (req, res, next) => {
     try {
       // Add expiry filter logic
@@ -402,7 +402,7 @@ router.get('/inventory/batches/expiring',
 
 // Order processing with business logic
 router.post('/orders/process',
-  authMiddleware.requirePermissions('orders:write'),
+  authMiddleware.authorizePermission(['orders:write']),
   async (req, res, next) => {
     try {
       // Add business logic validations
@@ -422,7 +422,7 @@ router.post('/orders/process',
 
 // Real-time inventory updates
 router.get('/inventory/realtime/:itemCode',
-  authMiddleware.requirePermissions('inventory:read'),
+  authMiddleware.authorizePermission(['inventory:read']),
   async (req, res, next) => {
     try {
       // Add real-time cache headers

@@ -294,7 +294,7 @@ router.get('/health', async (req, res) => {
  */
 router.get('/metrics',
   authMiddleware.authenticate(),
-  authMiddleware.requireRoles('administrator', 'manager'),
+  authMiddleware.authorizeRole(['administrator', 'manager']),
   async (req, res) => {
     try {
       const ProxyService = require('../services/ProxyService');
@@ -335,7 +335,7 @@ router.get('/metrics',
 const v1Router = express.Router();
 
 // Apply common middleware to all v1 routes
-v1Router.use(authMiddleware.setAuthContext());
+v1Router.use(authMiddleware.applicationContext);
 
 // Authentication routes (public)
 v1Router.use('/auth', authRoutes);
@@ -343,7 +343,7 @@ v1Router.use('/auth', authRoutes);
 // Admin routes (protected)
 v1Router.use('/admin',
   authMiddleware.authenticate(),
-  authMiddleware.requireRoles('administrator'),
+  authMiddleware.authorizeRole(['administrator']),
   adminRoutes
 );
 

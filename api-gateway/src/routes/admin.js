@@ -52,7 +52,7 @@ const { getApiGatewayDB, getSyncDB } = require('../config/database');
  */
 
 // All admin routes require administrator role
-router.use(authMiddleware.requireAdmin());
+router.use(authMiddleware.authorizeRole(['admin']));
 
 /**
  * @swagger
