@@ -38,15 +38,15 @@ COPY --chown=nodejs:nodejs . .
 RUN mkdir -p logs uploads && \
     chown -R nodejs:nodejs logs uploads
 
-# Health check
+# Health check - use port 10000 to match Render configuration
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:3000/health || exit 1
+    CMD curl -f http://localhost:10000/health || exit 1
 
 # Switch to non-root user
 USER nodejs
 
-# Expose port
-EXPOSE 3000
+# Expose port 10000 to match Render PORT environment variable
+EXPOSE 10000
 
 # Use tini as init system
 ENTRYPOINT ["/sbin/tini", "--"]
