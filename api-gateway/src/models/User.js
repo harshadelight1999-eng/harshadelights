@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const config = require('../config');
-const logger = require('../utils/logger');
+const { logger } = require('../utils/logger');
 
 class User {
   constructor(db) {

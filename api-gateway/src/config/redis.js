@@ -14,6 +14,14 @@ class RedisManager {
 
   async initialize() {
     try {
+      // Skip Redis in production if no Redis URL is provided
+      if (process.env.NODE_ENV === 'production' && !process.env.REDIS_URL && !process.env.REDIS_HOST) {
+        logger.info('⚠️  No Redis configuration found in production, using mock client');
+        this.client = new MockRedisClient();
+        this.isConnected = false;
+        return;
+      }
+
       const config = {
         host: process.env.REDIS_HOST || 'localhost',
         port: parseInt(process.env.REDIS_PORT) || 6379,
@@ -35,7 +43,7 @@ class RedisManager {
 
       // Error handling
       this.client.on('error', (error) => {
-        logger.error('❌ Redis connection error:', error);
+        logger.debug('❌ Redis connection error:', error.message);
         this.isConnected = false;
       });
 
@@ -66,15 +74,11 @@ class RedisManager {
 
     } catch (error) {
       logger.error('❌ Redis initialization failed:', error.message);
+      logger.warn('⚠️  Continuing without Redis - features requiring cache will be disabled');
 
-      // Continue without Redis for development
-      if (process.env.NODE_ENV === 'development') {
-        logger.warn('⚠️  Continuing without Redis in development mode');
-        this.client = new MockRedisClient();
-        this.isConnected = false;
-      } else {
-        throw error;
-      }
+      // Use mock client for graceful degradation in all environments
+      this.client = new MockRedisClient();
+      this.isConnected = false;
     }
   }
 
