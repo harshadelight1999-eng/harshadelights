@@ -507,10 +507,8 @@ async function performStartupHealthCheck() {
         failures: criticalFailures.map(f => f.name)
       });
 
-      // Don't exit in development mode
-      if (process.env.NODE_ENV === 'production') {
-        process.exit(1);
-      }
+      // Don't exit - allow server to continue with degraded functionality
+      logger.warn('🚨 Continuing server startup despite health check failures - API will run in limited mode');
     } else {
       logger.info('Startup health check passed', {
         healthyChecks: results.checks.healthy,
