@@ -283,7 +283,7 @@ class ApiGatewayServer {
       if (this.db) {
         try {
           this.userModel = new User(this.db);
-          this.authMiddleware = new AuthMiddleware(this.db);
+          this.authMiddleware = authMiddleware;
 
           // Create database tables if they don't exist
           await User.createSchema(this.db);
