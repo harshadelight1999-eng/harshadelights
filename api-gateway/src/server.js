@@ -200,22 +200,68 @@ class ApiGatewayServer {
       registerHealthChecks();
       logger.info('✅ Health checks registered');
 
-      // Initialize unified database connection pools
-      logger.info('🗄️  Initializing unified database connection pools...');
-      await dbConnectionManager.initialize();
+      // Initialize database connections with retry logic
+      logger.info('🗄️  Initializing database connections with retry logic...');
 
-      // Initialize legacy database system (for backward compatibility)
-      await initializeDatabases();
-      this.db = getDatabaseConnection();
+      let dbInitialized = false;
+      let attempts = 0;
+      const maxAttempts = 3;
+
+      while (!dbInitialized && attempts < maxAttempts) {
+        try {
+          attempts++;
+          logger.info(`Database initialization attempt ${attempts}/${maxAttempts}...`);
+
+          // Initialize unified database connection pools
+          await dbConnectionManager.initialize();
+
+          // Initialize legacy database system (for backward compatibility)
+          await initializeDatabases();
+          this.db = getDatabaseConnection();
+
+          if (this.db) {
+            logger.info('✅ Database connections established successfully');
+            dbInitialized = true;
+          } else {
+            throw new Error('Database connection returned null');
+          }
+
+        } catch (error) {
+          logger.error(`Database initialization attempt ${attempts} failed:`, error);
+
+          if (attempts < maxAttempts) {
+            const delay = Math.pow(2, attempts) * 1000; // Exponential backoff
+            logger.info(`Retrying database initialization in ${delay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+          } else {
+            logger.error('All database initialization attempts failed. Starting in API-only mode.');
+            this.db = null; // Ensure db is null for graceful degradation
+          }
+        }
+      }
 
       // Initialize user model and authentication
       logger.info('🔐 Initializing authentication system...');
-      this.userModel = new User(this.db);
-      this.authMiddleware = new AuthMiddleware(this.db);
 
-      // Create database tables if they don't exist
-      await User.createSchema(this.db);
-      logger.info('✅ User authentication tables verified');
+      if (this.db) {
+        try {
+          this.userModel = new User(this.db);
+          this.authMiddleware = new AuthMiddleware(this.db);
+
+          // Create database tables if they don't exist
+          await User.createSchema(this.db);
+          logger.info('✅ User authentication tables verified');
+        } catch (error) {
+          logger.error('Authentication system initialization failed:', error);
+          logger.warn('🚨 Authentication will be disabled - API running in limited mode');
+          this.userModel = null;
+          this.authMiddleware = null;
+        }
+      } else {
+        logger.warn('🚨 Database not available - Authentication disabled, API running in limited mode');
+        this.userModel = null;
+        this.authMiddleware = null;
+      }
 
       // Initialize legacy Redis (for backward compatibility)
       logger.info('🔴 Initializing Redis...');

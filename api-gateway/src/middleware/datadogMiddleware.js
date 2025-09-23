@@ -3,9 +3,9 @@
  * Provides comprehensive application performance monitoring
  */
 
-// Temporarily disable DataDog for initial deployment
+// Initialize DataDog only when API key is available and in production
 let tracer = null;
-if (false && process.env.DD_API_KEY && process.env.NODE_ENV === 'production') {
+if (process.env.DD_API_KEY && process.env.NODE_ENV === 'production') {
   tracer = require('dd-trace').init({
     service: 'harsha-delights-api-gateway',
     env: process.env.NODE_ENV || 'development',
@@ -146,7 +146,7 @@ register.registerMetric(businessMetrics);
 function datadogMiddleware() {
   return (req, res, next) => {
     const startTime = Date.now();
-    const span = tracer.scope().active();
+    const span = tracer ? tracer.scope().active() : null;
 
     // Add request context to span
     if (span) {
@@ -228,11 +228,13 @@ function trackAuthentication(result, method = 'password') {
 function trackProxyRequest(serviceName, statusCode, result = 'success') {
   proxyRequests.labels(serviceName, statusCode.toString(), result).inc();
 
-  const span = tracer.startSpan('proxy.request');
-  span.setTag('proxy.service', serviceName);
-  span.setTag('proxy.status_code', statusCode);
-  span.setTag('proxy.result', result);
-  span.finish();
+  if (tracer) {
+    const span = tracer.startSpan('proxy.request');
+    span.setTag('proxy.service', serviceName);
+    span.setTag('proxy.status_code', statusCode);
+    span.setTag('proxy.result', result);
+    span.finish();
+  }
 }
 
 /**
@@ -242,10 +244,12 @@ function trackCircuitBreakerState(serviceName, state) {
   const stateValue = state === 'open' ? 1 : state === 'half-open' ? 0.5 : 0;
   circuitBreakerState.labels(serviceName).set(stateValue);
 
-  const span = tracer.startSpan('circuit_breaker.state_change');
-  span.setTag('circuit_breaker.service', serviceName);
-  span.setTag('circuit_breaker.state', state);
-  span.finish();
+  if (tracer) {
+    const span = tracer.startSpan('circuit_breaker.state_change');
+    span.setTag('circuit_breaker.service', serviceName);
+    span.setTag('circuit_breaker.state', state);
+    span.finish();
+  }
 }
 
 /**
@@ -254,10 +258,12 @@ function trackCircuitBreakerState(serviceName, state) {
 function trackRateLimit(identifierType, endpoint) {
   rateLimitHits.labels(identifierType, endpoint).inc();
 
-  const span = tracer.startSpan('rate_limit.violation');
-  span.setTag('rate_limit.identifier_type', identifierType);
-  span.setTag('rate_limit.endpoint', endpoint);
-  span.finish();
+  if (tracer) {
+    const span = tracer.startSpan('rate_limit.violation');
+    span.setTag('rate_limit.identifier_type', identifierType);
+    span.setTag('rate_limit.endpoint', endpoint);
+    span.finish();
+  }
 }
 
 /**
@@ -273,15 +279,17 @@ function trackDatabaseConnections(databaseType, activeConnections) {
 function trackBusinessEvent(eventType, application = 'api-gateway', metadata = {}) {
   businessMetrics.labels(eventType, application).inc();
 
-  const span = tracer.startSpan('business.event');
-  span.setTag('business.event_type', eventType);
-  span.setTag('business.application', application);
+  if (tracer) {
+    const span = tracer.startSpan('business.event');
+    span.setTag('business.event_type', eventType);
+    span.setTag('business.application', application);
 
-  Object.keys(metadata).forEach(key => {
-    span.setTag(`business.${key}`, metadata[key]);
-  });
+    Object.keys(metadata).forEach(key => {
+      span.setTag(`business.${key}`, metadata[key]);
+    });
 
-  span.finish();
+    span.finish();
+  }
 }
 
 /**
@@ -327,16 +335,18 @@ function createCustomSpan(operationName, tags = {}) {
  */
 function injectTraceId() {
   return (req, res, next) => {
-    const span = tracer.scope().active();
-    if (span) {
-      const traceId = span.context().toTraceId();
-      const spanId = span.context().toSpanId();
+    if (tracer) {
+      const span = tracer.scope().active();
+      if (span) {
+        const traceId = span.context().toTraceId();
+        const spanId = span.context().toSpanId();
 
-      req.traceId = traceId;
-      req.spanId = spanId;
+        req.traceId = traceId;
+        req.spanId = spanId;
 
-      // Add to response headers for client correlation
-      res.set('X-Trace-Id', traceId);
+        // Add to response headers for client correlation
+        res.set('X-Trace-Id', traceId);
+      }
     }
 
     next();
@@ -362,6 +372,20 @@ function getMetrics() {
  */
 function healthCheck() {
   try {
+    if (!tracer) {
+      return {
+        status: 'healthy',
+        tracer: {
+          enabled: false,
+          activeSpan: false,
+          service: 'harsha-delights-api-gateway'
+        },
+        metrics: {
+          registered: register.getMetricsAsArray().length
+        }
+      };
+    }
+
     const activeSpan = tracer.scope().active();
     return {
       status: 'healthy',
