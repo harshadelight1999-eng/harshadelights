@@ -180,7 +180,19 @@ module.exports = {
   initializeDatabases,
   testConnections,
   closeDatabases,
-  getApiGatewayDB: () => apiGatewayDB,
-  getSyncDB: () => syncDB,
+  getApiGatewayDB: () => {
+    // Return null if database is not properly initialized or in error state
+    if (!apiGatewayDB || apiGatewayDB.isDestroyed || apiGatewayDB._destroying) {
+      return null;
+    }
+    return apiGatewayDB;
+  },
+  getSyncDB: () => {
+    // Return null if database is not properly initialized or in error state
+    if (!syncDB || syncDB.isDestroyed || syncDB._destroying) {
+      return null;
+    }
+    return syncDB;
+  },
   getErpNextPool: () => erpNextPool
 };
