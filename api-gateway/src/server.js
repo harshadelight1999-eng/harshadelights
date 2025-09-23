@@ -418,9 +418,9 @@ class ApiGatewayServer {
     }));
 
     // Additional authentication rate limiters
-    this.app.use('/api/auth/login', securityMiddleware.authRateLimit());
-    this.app.use('/api/auth/register', securityMiddleware.authRateLimit());
-    this.app.use('/api/auth/refresh', securityMiddleware.authRateLimit());
+    this.app.use('/api/auth/login', rateLimitMiddleware.authenticatedRateLimit());
+    this.app.use('/api/auth/register', rateLimitMiddleware.authenticatedRateLimit());
+    this.app.use('/api/auth/refresh', rateLimitMiddleware.authenticatedRateLimit());
 
     logger.info('✅ Enhanced middleware setup complete');
   }
