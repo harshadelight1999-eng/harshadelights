@@ -304,9 +304,16 @@ class ApiGatewayServer {
       logger.info('🔴 Initializing Redis...');
       await redisManager.initialize();
 
-      // Perform startup health check
+      // Perform startup health check (non-blocking in production)
       logger.info('🏥 Performing startup health check...');
-      await performStartupHealthCheck();
+      if (process.env.NODE_ENV === 'production') {
+        // Run health check asynchronously in production to avoid blocking server start
+        performStartupHealthCheck().catch(error => {
+          logger.warn('⚠️  Startup health check failed, but continuing server startup:', error.message);
+        });
+      } else {
+        await performStartupHealthCheck();
+      }
 
       // Setup Express middleware
       logger.info('⚙️  Setting up middleware...');
