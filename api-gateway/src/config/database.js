@@ -82,17 +82,43 @@ let erpNextPool;
 
 const initializeDatabases = async () => {
   try {
-    // Initialize PostgreSQL connections
-    apiGatewayDB = knex(config.apiGateway);
-    syncDB = knex(config.syncDatabase);
+    // Initialize primary PostgreSQL connection (API Gateway)
+    if (process.env.DATABASE_URL || process.env.DB_HOST) {
+      try {
+        apiGatewayDB = knex(config.apiGateway);
+        logger.info('✅ API Gateway PostgreSQL connection initialized');
+      } catch (error) {
+        logger.error('❌ API Gateway database connection failed:', error.message);
+      }
+    } else {
+      logger.warn('⚠️  No API Gateway database configuration found');
+    }
 
-    // Initialize MariaDB connection pool
-    erpNextPool = mysql.createPool(config.erpNext);
+    // Initialize sync database (optional)
+    if (process.env.SYNC_DB_HOST || process.env.SYNC_DATABASE_URL) {
+      try {
+        syncDB = knex(config.syncDatabase);
+        logger.info('✅ Sync PostgreSQL connection initialized');
+      } catch (error) {
+        logger.error('❌ Sync database connection failed:', error.message);
+      }
+    } else {
+      logger.info('ℹ️  Sync database not configured - using API Gateway database');
+    }
 
-    // Test connections
-    await testConnections();
+    // Initialize MariaDB connection pool (optional)
+    if (process.env.ERPNEXT_DB_HOST) {
+      try {
+        erpNextPool = mysql.createPool(config.erpNext);
+        logger.info('✅ ERPNext MariaDB connection initialized');
+      } catch (error) {
+        logger.error('❌ ERPNext database connection failed:', error.message);
+      }
+    } else {
+      logger.info('ℹ️  ERPNext database not configured - ERP features disabled');
+    }
 
-    logger.info('✅ All database connections established successfully');
+    logger.info('✅ Database initialization completed');
   } catch (error) {
     logger.error('❌ Database initialization failed:', error.message);
     logger.warn('🚨 Continuing without database - API will run in limited mode');

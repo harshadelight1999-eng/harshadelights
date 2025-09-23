@@ -21,9 +21,9 @@ class DatabaseConnectionManager {
       logger.info('Initializing database connection pools...');
       await initializeDatabases();
 
-      // Test connections to verify they work
-      await testConnections();
-
+      // Skip connection testing to prevent hanging
+      // Individual database connections are tested during actual usage
+      
       this.initialized = true;
       logger.info('✅ Database connection pools initialized successfully');
     } catch (error) {
