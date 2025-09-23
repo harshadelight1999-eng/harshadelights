@@ -8,6 +8,20 @@ require('./middleware/datadogMiddleware');
 
 require('dotenv').config();
 
+// Add global error handlers to catch startup issues
+process.on('uncaughtException', (error) => {
+  console.error('🚨 UNCAUGHT EXCEPTION:', error.message);
+  console.error('Stack:', error.stack);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 UNHANDLED REJECTION at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+console.log('🚀 Initializing Harsha Delights API Gateway...');
+
 const express = require('express');
 const cors = require('cors');
 const compression = require('compression');
@@ -16,16 +30,40 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
 // Import configuration and services
+console.log('📊 Loading configuration...');
 const config = require('./config');
+console.log('✅ Configuration loaded successfully');
+
+console.log('🗄️ Loading database modules...');
 const { initializeDatabases, getDatabaseConnection } = require('./config/database');
+console.log('✅ Database modules loaded');
+
+console.log('🔄 Loading Redis manager...');
 const redisManager = require('./config/redis');
+console.log('✅ Redis manager loaded');
+
+console.log('💾 Loading database connection pool...');
 const dbConnectionManager = require('./shared/database/connection-pool');
+console.log('✅ Database connection pool loaded');
+
+console.log('📝 Loading logger...');
 const { logger } = require('./utils/logger');
+console.log('✅ Logger loaded successfully');
+
+console.log('👤 Loading User model...');
 const User = require('./models/User');
+console.log('✅ User model loaded');
+
+console.log('🔐 Loading auth middleware...');
 const authMiddleware = require('./middleware/auth');
+console.log('✅ Auth middleware loaded');
+
+console.log('🛡️ Loading security middleware...');
 const securityMiddleware = require('./middleware/securityMiddleware');
+console.log('✅ Security middleware loaded');
 
 // Import monitoring and security middleware
+console.log('📊 Initializing monitoring systems...');
 const {
   initializeSentry,
   sentryRequestHandler,
