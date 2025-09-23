@@ -232,26 +232,22 @@ async function checkPostgresHealth() {
 }
 
 async function checkRedisHealth() {
-  const client = Redis.createClient({
-    url: process.env.REDIS_URL || config.redis.url,
-    socket: {
-      connectTimeout: 3000
-    }
-  });
-
+  const redisManager = require('../config/redis');
+  
   try {
-    await client.connect();
-    const pong = await client.ping();
-    const info = await client.info('server');
-    await client.quit();
+    const isConnected = await redisManager.ping();
+    
+    if (!isConnected) {
+      throw new Error('Redis ping failed');
+    }
 
     return {
-      connected: true,
-      ping: pong,
-      serverInfo: info.split('\r\n')[1] // Redis version line
+      connected: isConnected,
+      ping: 'PONG',
+      status: 'healthy'
     };
   } catch (error) {
-    throw new Error(`Redis connection failed: ${error.message}`);
+    throw new Error(`Redis health check failed: ${error.message}`);
   }
 }
 
@@ -402,9 +398,9 @@ function registerHealthChecks() {
   });
 
   healthRegistry.register('redis', checkRedisHealth, {
-    critical: true,
-    timeout: 5000,
-    retries: 2
+    critical: false, // Don't block server startup if Redis is unavailable
+    timeout: 3000,
+    retries: 1
   });
 
   // External services
