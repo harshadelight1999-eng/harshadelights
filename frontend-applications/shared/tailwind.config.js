@@ -92,30 +92,30 @@ module.exports = {
             900: '#79511e',
           },
         },
-        // Brand-specific colors (keeping existing)
-        "harsha-orange": {
-          50: "#fff7ed",
-          100: "#ffedd5",
-          200: "#fed7aa",
-          300: "#fdba74",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea580c",
-          700: "#c2410c",
-          800: "#9a3412",
-          900: "#7c2d12",
+        // Brand-specific colors - Updated to Royal/Luxury theme
+        "harsha-purple": {
+          50: "#f8f6ff",
+          100: "#f0ebff", 
+          200: "#e3daff",
+          300: "#d0bfff",
+          400: "#b89aff",
+          500: "#9c6eff", // Primary royal purple
+          600: "#8b4cf7",
+          700: "#7c3aed",
+          800: "#6b21a8",
+          900: "#581c87",
         },
-        "harsha-yellow": {
-          50: "#fefce8",
-          100: "#fef9c3",
-          200: "#fef08a",
-          300: "#fde047",
-          400: "#facc15",
-          500: "#eab308",
-          600: "#ca8a04",
-          700: "#a16207",
-          800: "#854d0e",
-          900: "#713f12",
+        "harsha-gold": {
+          50: "#fffdf7",
+          100: "#fff9e6",
+          200: "#fff2cc", 
+          300: "#ffe699",
+          400: "#ffd633",
+          500: "#ffc107", // Primary luxury gold
+          600: "#e6ac00",
+          700: "#cc9900", 
+          800: "#b38600",
+          900: "#996600",
         },
       },
       borderRadius: {

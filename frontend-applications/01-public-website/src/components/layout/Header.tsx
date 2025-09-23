@@ -51,7 +51,7 @@ export default function Header() {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-harsha-orange-500 text-white py-2 px-4 text-sm">
+      <div className="bg-harsha-purple-500 text-white py-2 px-4 text-sm">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center space-y-1 sm:space-y-0">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
@@ -88,13 +88,17 @@ export default function Header() {
           <div className="flex justify-between items-center h-16 lg:h-20">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-10 h-10 bg-harsha-orange-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">HD</span>
-                </div>
+              <Link href="/" className="flex items-center space-x-3">
+                <Image
+                  src="/assets/branding/logos/elegant_monogram_logo_for_harsha_delights_a-removebg-preview.png"
+                  alt="Harsha Delights"
+                  width={50}
+                  height={50}
+                  className="drop-shadow-sm"
+                />
                 <div className="hidden sm:block">
                   <span className="text-xl font-bold text-gray-900">Harsha Delights</span>
-                  <p className="text-xs text-gray-500">Premium Confectionery</p>
+                  <p className="text-xs text-harsha-purple-600">Premium Confectionery</p>
                 </div>
               </Link>
             </div>
@@ -124,7 +128,7 @@ export default function Header() {
                         <Link
                           key={child.name}
                           href={child.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-harsha-orange-50 hover:text-harsha-orange-600 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-harsha-purple-50 hover:text-harsha-purple-600 transition-colors"
                         >
                           {child.name}
                         </Link>
@@ -143,9 +147,9 @@ export default function Header() {
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-harsha-orange-500 focus:border-transparent"
+                    className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-harsha-purple-500 focus:border-transparent"
                   />
-                  <button className="absolute right-2 top-2 text-gray-400 hover:text-harsha-orange-500">
+                  <button className="absolute right-2 top-2 text-gray-400 hover:text-harsha-purple-500">
                     <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M12.9 14.32a8 8 0 111.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 108 2a6 6 0 000 12z" clipRule="evenodd" />
                     </svg>
@@ -161,7 +165,7 @@ export default function Header() {
 
                 <Button variant="ghost" size="icon" className="relative">
                   <ShoppingCart className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 bg-harsha-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-harsha-purple-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     0
                   </span>
                 </Button>
@@ -201,7 +205,7 @@ export default function Header() {
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-harsha-orange-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-harsha-purple-500"
                   />
                 </div>
 
@@ -211,7 +215,7 @@ export default function Header() {
                     <div key={item.name}>
                       <Link
                         href={item.href}
-                        className="block px-4 py-2 text-gray-700 hover:bg-harsha-orange-50 hover:text-harsha-orange-600 transition-colors rounded-lg mx-2"
+                        className="block px-4 py-2 text-gray-700 hover:bg-harsha-purple-50 hover:text-harsha-purple-600 transition-colors rounded-lg mx-2"
                         onClick={closeMenu}
                       >
                         {item.name}
@@ -224,7 +228,7 @@ export default function Header() {
                             <Link
                               key={child.name}
                               href={child.href}
-                              className="block px-4 py-2 text-sm text-gray-600 hover:bg-harsha-orange-50 hover:text-harsha-orange-600 transition-colors rounded-lg mx-2"
+                              className="block px-4 py-2 text-sm text-gray-600 hover:bg-harsha-purple-50 hover:text-harsha-purple-600 transition-colors rounded-lg mx-2"
                               onClick={closeMenu}
                             >
                               {child.name}

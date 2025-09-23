@@ -12,10 +12,13 @@ const stats = [
 ];
 
 const heroImages = [
-  '/images/hero/sweets-collection.jpg',
-  '/images/hero/chocolates-display.jpg',
-  '/images/hero/traditional-sweets.jpg',
-  '/images/hero/gift-boxes.jpg',
+  '/assets/branding/backgrounds/BG01.png',
+  '/assets/branding/backgrounds/BG-02.png',
+  '/assets/branding/backgrounds/BG-03.png',
+  '/assets/branding/backgrounds/BG-04.png',
+  '/assets/branding/backgrounds/BG-5.png',
+  '/assets/branding/backgrounds/BG-06.png',
+  '/assets/branding/backgrounds/BG-07.png',
 ];
 
 export default function Hero() {
@@ -33,33 +36,40 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-harsha-orange-50 via-white to-harsha-yellow-50">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+    <section className="relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+          style={{ backgroundImage: `url(${heroImages[currentImageIndex]})` }}
+        />
+        {/* Royal overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-harsha-purple-900/70 via-harsha-purple-800/50 to-harsha-gold-900/60" />
+      </div>
 
       {/* Background Decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-harsha-orange-100 rounded-full -translate-y-48 translate-x-48 opacity-50" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-harsha-yellow-100 rounded-full translate-y-40 -translate-x-40 opacity-50" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-harsha-purple-100 rounded-full -translate-y-48 translate-x-48 opacity-30" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-harsha-gold-100 rounded-full translate-y-40 -translate-x-40 opacity-30" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[600px] py-16 lg:py-24">
           {/* Content Side */}
           <div className="space-y-8 animate-slide-up">
             {/* Badge */}
-            <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm border border-harsha-orange-200 rounded-full px-4 py-2 text-sm font-medium text-harsha-orange-700">
+            <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm border border-harsha-gold-200 rounded-full px-4 py-2 text-sm font-medium text-harsha-gold-700">
               <Award className="h-4 w-4" />
               <span>Premium Quality Since 1998</span>
             </div>
 
             {/* Main Heading */}
             <div className="space-y-4">
-              <h1 className="heading-responsive font-bold text-gray-900 leading-tight">
+              <h1 className="heading-responsive font-bold text-white leading-tight">
                 Authentic Flavors,{' '}
-                <span className="hero-text-gradient">
+                <span className="bg-gradient-to-r from-harsha-gold-300 to-harsha-gold-100 bg-clip-text text-transparent">
                   Premium Quality
                 </span>
               </h1>
-              <p className="body-responsive text-gray-600 max-w-lg">
+              <p className="body-responsive text-gray-200 max-w-lg">
                 Experience the finest traditional sweets, premium chocolates, and artisanal confectionery.
                 Made with love, delivered fresh to your doorstep across India.
               </p>
@@ -76,7 +86,7 @@ export default function Hero() {
                 <span>Fresh Daily Production</span>
               </div>
               <div className="flex items-center space-x-2 bg-white/60 backdrop-blur-sm rounded-full px-3 py-1">
-                <div className="w-2 h-2 bg-harsha-orange-500 rounded-full" />
+                <div className="w-2 h-2 bg-harsha-purple-500 rounded-full" />
                 <span>Pan-India Delivery</span>
               </div>
             </div>
@@ -120,12 +130,12 @@ export default function Hero() {
             {/* Main Product Image */}
             <div className="relative">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-                <div className="relative w-full h-full bg-gradient-to-br from-harsha-orange-100 to-harsha-yellow-100">
+                <div className="relative w-full h-full bg-gradient-to-br from-harsha-purple-100 to-harsha-gold-100">
                   {/* Placeholder for product image */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center space-y-4">
-                      <div className="w-32 h-32 bg-harsha-orange-200 rounded-full mx-auto flex items-center justify-center">
-                        <div className="w-16 h-16 bg-harsha-orange-500 rounded-full flex items-center justify-center">
+                      <div className="w-32 h-32 bg-harsha-purple-200 rounded-full mx-auto flex items-center justify-center">
+                        <div className="w-16 h-16 bg-harsha-purple-500 rounded-full flex items-center justify-center">
                           <span className="text-2xl font-bold text-white">HD</span>
                         </div>
                       </div>
@@ -146,7 +156,7 @@ export default function Hero() {
 
                   <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg animate-float animate-delay-300">
                     <div className="text-center">
-                      <div className="text-lg font-bold text-harsha-orange-600">₹199</div>
+                      <div className="text-lg font-bold text-harsha-purple-600">₹199</div>
                       <div className="text-xs text-gray-600">Starting from</div>
                     </div>
                   </div>
@@ -154,26 +164,43 @@ export default function Hero() {
               </div>
 
               {/* Decorative Elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-harsha-yellow-200 rounded-full opacity-60 animate-pulse" />
-              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-harsha-orange-200 rounded-full opacity-60 animate-pulse animate-delay-500" />
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-harsha-gold-200 rounded-full opacity-60 animate-pulse" />
+              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-harsha-purple-200 rounded-full opacity-60 animate-pulse animate-delay-500" />
             </div>
 
             {/* Product Categories Preview */}
             <div className="grid grid-cols-2 gap-4 mt-8">
               {[
-                { name: 'Traditional Sweets', image: '🍯', color: 'bg-yellow-100' },
-                { name: 'Premium Chocolates', image: '🍫', color: 'bg-amber-100' },
-                { name: 'Crunchy Namkeens', image: '🥜', color: 'bg-orange-100' },
-                { name: 'Dry Fruits', image: '🌰', color: 'bg-red-100' },
+                { name: 'Traditional Sweets', image: '/assets/products/categories/traditional-sweets.jpg', color: 'bg-harsha-gold-100' },
+                { name: 'Premium Chocolates', image: '/assets/products/categories/premium-chocolates.jpg', color: 'bg-harsha-purple-100' },
+                { name: 'Crunchy Namkeens', image: '/assets/products/categories/namkeens.jpg', color: 'bg-harsha-gold-100' },
+                { name: 'Dry Fruits', image: '/assets/products/categories/dry-fruits.jpg', color: 'bg-harsha-purple-100' },
               ].map((category, index) => (
                 <div
                   key={category.name}
-                  className={`${category.color} rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer animate-slide-up`}
+                  className={`${category.color} rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer animate-slide-up relative overflow-hidden`}
                   style={{ animationDelay: `${(index + 1) * 100}ms` }}
                 >
-                  <div className="text-2xl mb-2">{category.image}</div>
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-lg bg-white/80 flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gray-300 rounded" />
+                  </div>
                   <div className="text-sm font-medium text-gray-700">{category.name}</div>
                 </div>
+              ))}
+            </div>
+            
+            {/* Background Rotation Indicators */}
+            <div className="flex justify-center gap-2 mt-6">
+              {heroImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === currentImageIndex 
+                      ? 'bg-harsha-gold-400' 
+                      : 'bg-white/50 hover:bg-white/70'
+                  }`}
+                />
               ))}
             </div>
           </div>
@@ -188,8 +215,8 @@ export default function Hero() {
                 className="text-center space-y-2 animate-slide-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-harsha-orange-100 rounded-lg">
-                  <stat.icon className="h-6 w-6 text-harsha-orange-600" />
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-harsha-purple-100 rounded-lg">
+                  <stat.icon className="h-6 w-6 text-harsha-purple-600" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
                 <div className="text-sm text-gray-600">{stat.label}</div>

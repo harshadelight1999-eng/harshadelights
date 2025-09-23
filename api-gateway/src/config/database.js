@@ -11,7 +11,10 @@ const config = {
   // PostgreSQL - API Gateway Database
   apiGateway: {
     client: 'pg',
-    connection: process.env.DATABASE_URL || {
+    connection: process.env.DATABASE_URL ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
+    } : {
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT) || 5432,
       database: process.env.DB_NAME || 'harsha_delights_gateway',
@@ -87,8 +90,10 @@ const initializeDatabases = async () => {
       try {
         apiGatewayDB = knex(config.apiGateway);
         logger.info('✅ API Gateway PostgreSQL connection initialized');
+        logger.info('🔗 Using DATABASE_URL:', process.env.DATABASE_URL ? 'Yes' : 'No');
       } catch (error) {
         logger.error('❌ API Gateway database connection failed:', error.message);
+        apiGatewayDB = null;
       }
     } else {
       logger.warn('⚠️  No API Gateway database configuration found');
