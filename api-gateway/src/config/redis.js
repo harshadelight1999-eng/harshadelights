@@ -29,10 +29,13 @@ class RedisManager {
         // Use the full Redis URL (for Upstash, Render, etc.)
         clientConfig = {
           url: process.env.REDIS_URL,
-          connectTimeout: 10000,
-          commandTimeout: 5000,
+          socket: {
+            tls: true,
+            rejectUnauthorized: false,
+            connectTimeout: 10000
+          },
           retryDelayOnFailover: 100,
-          maxRetriesPerRequest: 3,
+          maxRetriesPerRequest: 2,
           lazyConnect: true
         };
       } else {
@@ -81,8 +84,13 @@ class RedisManager {
         logger.info('🔄 Reconnecting to Redis...');
       });
 
-      // Connect to Redis
-      await this.client.connect();
+      // Connect to Redis with timeout
+      const connectPromise = this.client.connect();
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Redis connection timeout')), 15000)
+      );
+      
+      await Promise.race([connectPromise, timeoutPromise]);
 
       // Test connection
       await this.client.ping();
