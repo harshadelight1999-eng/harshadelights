@@ -18,6 +18,7 @@ const nextConfig = {
   }
 };
 
-const withNextIntl = require('next-intl/plugin')();
+// Temporarily disable next-intl for immediate Diwali deployment
+// const withNextIntl = require('next-intl/plugin')();
 
-module.exports = withNextIntl(nextConfig);
+module.exports = nextConfig;

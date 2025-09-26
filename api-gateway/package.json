@@ -5,8 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "build": "mkdir -p dist && cp -r src/* dist/",
-    "start": "npm run migrate:prod && node dist/server.js",
-    "start:js": "npm run migrate:prod && node dist/server.js",
+    "start": "npm run migrate:prod && node src/server.js",
+    "start:js": "npm run migrate:prod && node src/server.js",
     "dev": "nodemon src/server.js",
     "dev:js": "nodemon src/server.js",
     "test": "jest",
