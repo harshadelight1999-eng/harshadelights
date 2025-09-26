@@ -57,9 +57,10 @@ const errorFormat = winston.format.errors({ stack: true });
 const jsonFormat = winston.format.json();
 
 const consoleFormat = winston.format.combine(
+  timestampFormat,
   winston.format.colorize(),
   winston.format.printf(({ timestamp, level, message, service, requestId, userId, ...meta }) => {
-    let log = `${timestamp} [${level}]`;
+    let log = `${timestamp || new Date().toISOString()} [${level}]`;
 
     if (service) log += ` [${service}]`;
     if (requestId) log += ` [${requestId}]`;

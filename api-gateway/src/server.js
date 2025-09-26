@@ -28,6 +28,7 @@ const compression = require('compression');
 const morgan = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const path = require('path');
 
 // Import configuration and services
 console.log('📊 Loading configuration...');
@@ -470,6 +471,9 @@ class ApiGatewayServer {
 
       logger.info('✅ API Documentation available at /api/docs');
     }
+
+    // Serve uploaded files
+    this.app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
     // Apply appropriate rate limiting to different route groups
     this.app.use('/api/auth', this.rateLimiters.auth);

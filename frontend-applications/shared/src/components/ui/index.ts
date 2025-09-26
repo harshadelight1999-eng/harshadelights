@@ -13,9 +13,4 @@ export {
   type CardProps,
   type ProductCardProps
 } from "./Card";
-export {
-  default as Rating,
-  DisplayRating,
-  type RatingProps,
-  type DisplayRatingProps
-} from "./Rating";
+export { default as Rating } from "./Rating";

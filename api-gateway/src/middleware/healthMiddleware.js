@@ -532,10 +532,16 @@ function startPeriodicHealthChecks(intervalMs = 30000) {
     try {
       const results = await healthRegistry.executeAllChecks();
 
-      if (results.status !== 'healthy') {
-        logger.warn('Periodic health check detected issues', {
-          unhealthyChecks: results.checks.unhealthy,
-          errorChecks: results.checks.errors
+      // Only warn about critical services being unhealthy
+      const criticalUnhealthy = results.results.filter(r => 
+        r.status !== 'healthy' && 
+        healthRegistry.checks.get(r.name)?.critical === true
+      );
+      
+      if (criticalUnhealthy.length > 0) {
+        logger.warn('Critical health check issues detected', {
+          criticalUnhealthyChecks: criticalUnhealthy.length,
+          services: criticalUnhealthy.map(r => r.name)
         });
       }
     } catch (error) {

@@ -11,6 +11,9 @@ const router = express.Router();
 const authRoutes = require('./auth');
 const adminRoutes = require('./admin');
 const proxyRoutes = require('./proxy');
+const productsRoutes = require('./products');
+const categoriesRoutes = require('./categories');
+const whatsappRoutes = require('./whatsapp');
 
 // Import middleware
 const authMiddleware = require('../middleware/auth');
@@ -339,6 +342,15 @@ v1Router.use(authMiddleware.applicationContext);
 
 // Authentication routes (public)
 v1Router.use('/auth', authRoutes);
+
+// Products routes (public read, protected write)
+v1Router.use('/products', productsRoutes);
+
+// Categories routes (public read, protected write)
+v1Router.use('/categories', categoriesRoutes);
+
+// WhatsApp order routes (public - for customer use)
+v1Router.use('/whatsapp', whatsappRoutes);
 
 // Admin routes (protected)
 v1Router.use('/admin',

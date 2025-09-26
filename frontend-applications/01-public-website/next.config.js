@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 
+const withNextIntl = require('next-intl/plugin')(
+  // This is the default location for the i18n config
+  './src/i18n.ts'
+);
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -19,7 +24,16 @@ const nextConfig = {
 
   // Image optimization
   images: {
-    domains: ['localhost', 'harshadelights.com'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+      {
+        protocol: 'https',
+        hostname: 'harshadelights.com',
+      },
+    ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -92,4 +106,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withNextIntl(withBundleAnalyzer(nextConfig));

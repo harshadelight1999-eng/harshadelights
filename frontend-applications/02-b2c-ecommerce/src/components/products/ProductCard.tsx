@@ -64,7 +64,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
       {/* Product Image */}
       <div className="relative aspect-square bg-gray-50 overflow-hidden">
         <img
-          src={product.thumbnail || '/assets/products/confectionery/placeholder-product.jpg'}
+          src={product.thumbnail || '/shared/assets/products/confectionery/colorful-indian-sweets.png'}
           alt={product.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />

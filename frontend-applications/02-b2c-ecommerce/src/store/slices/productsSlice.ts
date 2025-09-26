@@ -252,12 +252,13 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params: { limit?: number; offset?: number; q?: string; category_id?: string[] } = {}, { rejectWithValue }) => {
     try {
-      // Try to fetch from Medusa backend first
-      const response = await fetch('/api/products?' + new URLSearchParams({
+      // Try to fetch from API Gateway first
+      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const response = await fetch(`${apiGatewayUrl}/api/v1/products?` + new URLSearchParams({
         limit: (params.limit || 12).toString(),
-        offset: (params.offset || 0).toString(),
-        ...(params.q && { q: params.q }),
-        ...(params.category_id && { category_id: params.category_id.join(',') })
+        page: Math.floor((params.offset || 0) / (params.limit || 12) + 1).toString(),
+        ...(params.q && { search: params.q }),
+        ...(params.category_id && { category: params.category_id[0] }) // Use first category for now
       }));
 
       if (response.ok) {
@@ -265,12 +266,12 @@ export const fetchProducts = createAsyncThunk(
         return data.products || mockProducts;
       } else {
         // Fallback to mock data
-        console.warn('Medusa backend not available, using mock data');
+        console.warn('API Gateway not available, using mock data');
         return mockProducts;
       }
     } catch (error) {
-      // Fallback to mock data if Medusa is not available
-      console.warn('Medusa backend error, using mock data:', error);
+      // Fallback to mock data if API Gateway is not available
+      console.warn('API Gateway error, using mock data:', error);
       return mockProducts;
     }
   }
@@ -285,14 +286,15 @@ export const getProducts = createAsyncThunk(
     search?: string
   } = {}, { rejectWithValue }) => {
     try {
+      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
       const params = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
         ...(category && { category }),
-        ...(search && { q: search }),
+        ...(search && { search }),
       });
 
-      const response = await fetch(`/api/products?${params.toString()}`);
+      const response = await fetch(`${apiGatewayUrl}/api/v1/products?${params.toString()}`);
 
       if (!response.ok) {
         throw new Error('Failed to get products');
@@ -310,7 +312,8 @@ export const getProduct = createAsyncThunk(
   'products/getProduct',
   async (productId: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/products/${productId}`);
+      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const response = await fetch(`${apiGatewayUrl}/api/v1/products/${productId}`);
 
       if (!response.ok) {
         throw new Error('Failed to get product');
@@ -328,7 +331,8 @@ export const getCategories = createAsyncThunk(
   'products/getCategories',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/categories');
+      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const response = await fetch(`${apiGatewayUrl}/api/v1/categories`);
 
       if (!response.ok) {
         throw new Error('Failed to get categories');
@@ -346,7 +350,8 @@ export const getFeaturedProducts = createAsyncThunk(
   'products/getFeaturedProducts',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/products/featured');
+      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const response = await fetch(`${apiGatewayUrl}/api/v1/products/featured`);
 
       if (!response.ok) {
         throw new Error('Failed to get featured products');

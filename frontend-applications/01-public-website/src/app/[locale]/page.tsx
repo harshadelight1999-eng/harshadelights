@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Hero from '@/components/sections/Hero';
+import LuxuryHeroClient from '@/components/sections/LuxuryHeroClient';
 import FeaturedProducts from '@/components/sections/FeaturedProducts';
 import AboutUs from '@/components/sections/AboutUs';
 import Categories from '@/components/sections/Categories';
@@ -26,7 +26,7 @@ export default function HomePage() {
 
       <main id="main-content" className="flex-1">
         {/* Hero Section */}
-        <Hero />
+        <LuxuryHeroClient />
 
         {/* Featured Products */}
         <FeaturedProducts />

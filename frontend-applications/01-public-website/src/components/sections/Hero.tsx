@@ -12,13 +12,13 @@ const stats = [
 ];
 
 const heroImages = [
-  '/assets/branding/backgrounds/BG01.png',
-  '/assets/branding/backgrounds/BG-02.png',
-  '/assets/branding/backgrounds/BG-03.png',
-  '/assets/branding/backgrounds/BG-04.png',
-  '/assets/branding/backgrounds/BG-5.png',
-  '/assets/branding/backgrounds/BG-06.png',
-  '/assets/branding/backgrounds/BG-07.png',
+  '/shared/assets/branding/backgrounds/BG01.png',
+  '/shared/assets/branding/backgrounds/BG-02.png',
+  '/shared/assets/branding/backgrounds/BG-03.png',
+  '/shared/assets/branding/backgrounds/BG-04.png',
+  '/shared/assets/branding/backgrounds/BG-5.png',
+  '/shared/assets/branding/backgrounds/BG-06.png',
+  '/shared/assets/branding/backgrounds/BG-07.png',
 ];
 
 export default function Hero() {
@@ -171,10 +171,10 @@ export default function Hero() {
             {/* Product Categories Preview */}
             <div className="grid grid-cols-2 gap-4 mt-8">
               {[
-                { name: 'Traditional Sweets', image: '/assets/products/categories/traditional-sweets.jpg', color: 'bg-harsha-gold-100' },
-                { name: 'Premium Chocolates', image: '/assets/products/categories/premium-chocolates.jpg', color: 'bg-harsha-purple-100' },
-                { name: 'Crunchy Namkeens', image: '/assets/products/categories/namkeens.jpg', color: 'bg-harsha-gold-100' },
-                { name: 'Dry Fruits', image: '/assets/products/categories/dry-fruits.jpg', color: 'bg-harsha-purple-100' },
+                { name: 'Traditional Sweets', image: '/shared/assets/products/categories/traditional-sweets.png', color: 'bg-harsha-gold-100' },
+                { name: 'Premium Chocolates', image: '/shared/assets/products/categories/premium-chocolates.png', color: 'bg-harsha-purple-100' },
+                { name: 'Crunchy Namkeens', image: '/shared/assets/products/categories/namkeens.png', color: 'bg-harsha-gold-100' },
+                { name: 'Dry Fruits', image: '/shared/assets/products/categories/dry-fruits.png', color: 'bg-harsha-purple-100' },
               ].map((category, index) => (
                 <div
                   key={category.name}

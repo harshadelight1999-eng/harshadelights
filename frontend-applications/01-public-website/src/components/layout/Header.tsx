@@ -90,7 +90,7 @@ export default function Header() {
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center space-x-3">
                 <Image
-                  src="/assets/branding/logos/elegant_monogram_logo_for_harsha_delights_a-removebg-preview.png"
+                  src="/assets/logos/elegant-monogram-logo.png"
                   alt="Harsha Delights"
                   width={50}
                   height={50}
