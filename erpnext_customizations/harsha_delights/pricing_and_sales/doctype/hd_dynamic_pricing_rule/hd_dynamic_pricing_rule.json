@@ -1,0 +1,518 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "rule_code",
+  "rule_name",
+  "rule_type",
+  "priority",
+  "column_break_4",
+  "is_active",
+  "valid_from",
+  "valid_to",
+  "status",
+  "applicability_section",
+  "applicable_for",
+  "apply_on",
+  "apply_on_value",
+  "column_break_applicability",
+  "customer_group",
+  "territory",
+  "customer_segment",
+  "item_group",
+  "conditions_section",
+  "min_qty",
+  "max_qty", 
+  "min_amount",
+  "max_amount",
+  "column_break_conditions",
+  "applicable_days",
+  "time_based",
+  "start_time",
+  "end_time",
+  "pricing_section",
+  "rate_or_discount",
+  "rate",
+  "discount_percentage",
+  "discount_amount",
+  "column_break_pricing",
+  "is_cumulative",
+  "max_discount_amount",
+  "round_to_nearest",
+  "volume_discounts_section",
+  "volume_discount_enabled",
+  "volume_slabs",
+  "promotional_section",
+  "is_promotional",
+  "promotional_message",
+  "auto_apply",
+  "column_break_promotional",
+  "requires_coupon",
+  "coupon_code",
+  "usage_limit",
+  "used_count",
+  "advanced_section",
+  "rule_condition",
+  "mixed_conditions",
+  "threshold_for_suggestion",
+  "column_break_advanced",
+  "disable_other_rules",
+  "compound_with_other_rules",
+  "selling_price_list",
+  "buying_price_list",
+  "analytics_section",
+  "track_usage",
+  "usage_analytics",
+  "revenue_impact",
+  "column_break_analytics",
+  "created_by",
+  "approved_by",
+  "approval_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "rule_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rule Code",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "rule_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rule Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rule_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Rule Type",
+   "options": "Volume Discount\nCustomer Segment\nPromotional\nSeasonal\nBulk Order\nClearance\nEarly Payment\nLoyalty Reward",
+   "reqd": 1
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Priority",
+   "description": "Higher number = Higher priority",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active",
+   "default": 1
+  },
+  {
+   "fieldname": "valid_from",
+   "fieldtype": "Date",
+   "label": "Valid From",
+   "reqd": 1
+  },
+  {
+   "fieldname": "valid_to",
+   "fieldtype": "Date",
+   "label": "Valid To"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nActive\nInactive\nExpired\nSuspended",
+   "default": "Draft"
+  },
+  {
+   "fieldname": "applicability_section",
+   "fieldtype": "Section Break",
+   "label": "Applicability"
+  },
+  {
+   "fieldname": "applicable_for",
+   "fieldtype": "Select",
+   "label": "Applicable For",
+   "options": "Customer\nCustomer Group\nCustomer Segment\nTerritory\nItem Code\nItem Group\nAll Customers\nAll Items",
+   "reqd": 1
+  },
+  {
+   "fieldname": "apply_on",
+   "fieldtype": "Select",
+   "label": "Apply On",
+   "options": "Customer\nCustomer Group\nCustomer Segment\nTerritory\nItem Code\nItem Group\nBrand\nTransaction Total",
+   "reqd": 1
+  },
+  {
+   "fieldname": "apply_on_value",
+   "fieldtype": "Data",
+   "label": "Apply On Value",
+   "description": "Specific value for the 'Apply On' field"
+  },
+  {
+   "fieldname": "column_break_applicability",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_group",
+   "fieldtype": "Link",
+   "label": "Customer Group",
+   "options": "Customer Group",
+   "depends_on": "eval:in_list(['Customer Group'], doc.applicable_for)"
+  },
+  {
+   "fieldname": "territory",
+   "fieldtype": "Link",
+   "label": "Territory",
+   "options": "Territory",
+   "depends_on": "eval:in_list(['Territory'], doc.applicable_for)"
+  },
+  {
+   "fieldname": "customer_segment",
+   "fieldtype": "Link",
+   "label": "Customer Segment",
+   "options": "HD Customer Segment",
+   "depends_on": "eval:in_list(['Customer Segment'], doc.applicable_for)"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Item Group",
+   "options": "Item Group",
+   "depends_on": "eval:in_list(['Item Group'], doc.applicable_for)"
+  },
+  {
+   "fieldname": "conditions_section",
+   "fieldtype": "Section Break",
+   "label": "Conditions"
+  },
+  {
+   "fieldname": "min_qty",
+   "fieldtype": "Float",
+   "label": "Min Quantity",
+   "precision": 3
+  },
+  {
+   "fieldname": "max_qty",
+   "fieldtype": "Float",
+   "label": "Max Quantity",
+   "precision": 3
+  },
+  {
+   "fieldname": "min_amount",
+   "fieldtype": "Currency",
+   "label": "Min Amount"
+  },
+  {
+   "fieldname": "max_amount",
+   "fieldtype": "Currency",
+   "label": "Max Amount"
+  },
+  {
+   "fieldname": "column_break_conditions",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "applicable_days",
+   "fieldtype": "Select",
+   "label": "Applicable Days",
+   "options": "All Days\nWeekdays\nWeekends\nSpecific Days\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday"
+  },
+  {
+   "fieldname": "time_based",
+   "fieldtype": "Check",
+   "label": "Time Based Pricing"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Start Time",
+   "depends_on": "time_based"
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "label": "End Time",
+   "depends_on": "time_based"
+  },
+  {
+   "fieldname": "pricing_section",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "rate_or_discount",
+   "fieldtype": "Select",
+   "label": "Rate or Discount",
+   "options": "Rate\nDiscount Percentage\nDiscount Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate",
+   "depends_on": "eval:doc.rate_or_discount=='Rate'"
+  },
+  {
+   "fieldname": "discount_percentage",
+   "fieldtype": "Percent",
+   "label": "Discount Percentage",
+   "depends_on": "eval:doc.rate_or_discount=='Discount Percentage'"
+  },
+  {
+   "fieldname": "discount_amount",
+   "fieldtype": "Currency",
+   "label": "Discount Amount",
+   "depends_on": "eval:doc.rate_or_discount=='Discount Amount'"
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_cumulative",
+   "fieldtype": "Check",
+   "label": "Is Cumulative",
+   "description": "Can be combined with other pricing rules"
+  },
+  {
+   "fieldname": "max_discount_amount",
+   "fieldtype": "Currency",
+   "label": "Max Discount Amount",
+   "description": "Maximum discount amount allowed"
+  },
+  {
+   "fieldname": "round_to_nearest",
+   "fieldtype": "Float",
+   "label": "Round To Nearest",
+   "description": "Round final price to nearest value"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "volume_discounts_section",
+   "fieldtype": "Section Break",
+   "label": "Volume Discounts"
+  },
+  {
+   "fieldname": "volume_discount_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Volume Discounts"
+  },
+  {
+   "fieldname": "volume_slabs",
+   "fieldtype": "Table",
+   "label": "Volume Discount Slabs",
+   "options": "HD Volume Discount Slab",
+   "depends_on": "volume_discount_enabled"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "promotional_section",
+   "fieldtype": "Section Break",
+   "label": "Promotional Settings"
+  },
+  {
+   "fieldname": "is_promotional",
+   "fieldtype": "Check",
+   "label": "Is Promotional Rule"
+  },
+  {
+   "fieldname": "promotional_message",
+   "fieldtype": "Text",
+   "label": "Promotional Message",
+   "depends_on": "is_promotional"
+  },
+  {
+   "fieldname": "auto_apply",
+   "fieldtype": "Check",
+   "label": "Auto Apply",
+   "description": "Automatically apply without user intervention"
+  },
+  {
+   "fieldname": "column_break_promotional",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "requires_coupon",
+   "fieldtype": "Check",
+   "label": "Requires Coupon Code"
+  },
+  {
+   "fieldname": "coupon_code",
+   "fieldtype": "Data",
+   "label": "Coupon Code",
+   "depends_on": "requires_coupon"
+  },
+  {
+   "fieldname": "usage_limit",
+   "fieldtype": "Int",
+   "label": "Usage Limit",
+   "depends_on": "requires_coupon"
+  },
+  {
+   "fieldname": "used_count",
+   "fieldtype": "Int",
+   "label": "Used Count",
+   "read_only": 1,
+   "depends_on": "requires_coupon"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "advanced_section",
+   "fieldtype": "Section Break",
+   "label": "Advanced Settings"
+  },
+  {
+   "fieldname": "rule_condition",
+   "fieldtype": "Code",
+   "label": "Rule Condition (Python Expression)",
+   "description": "Advanced condition using Python expression"
+  },
+  {
+   "fieldname": "mixed_conditions",
+   "fieldtype": "Check",
+   "label": "Mixed Conditions",
+   "description": "Allow mixing with quantity and amount conditions"
+  },
+  {
+   "fieldname": "threshold_for_suggestion",
+   "fieldtype": "Currency",
+   "label": "Threshold For Suggestion",
+   "description": "Show suggestion to customer when close to this threshold"
+  },
+  {
+   "fieldname": "column_break_advanced",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "disable_other_rules",
+   "fieldtype": "Check",
+   "label": "Disable Other Rules",
+   "description": "Disable other pricing rules when this is applied"
+  },
+  {
+   "fieldname": "compound_with_other_rules",
+   "fieldtype": "Check",
+   "label": "Compound With Other Rules",
+   "description": "Allow compounding with other rules"
+  },
+  {
+   "fieldname": "selling_price_list",
+   "fieldtype": "Link",
+   "label": "Selling Price List",
+   "options": "Price List"
+  },
+  {
+   "fieldname": "buying_price_list",
+   "fieldtype": "Link",
+   "label": "Buying Price List",
+   "options": "Price List"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "analytics_section",
+   "fieldtype": "Section Break",
+   "label": "Analytics & Tracking"
+  },
+  {
+   "fieldname": "track_usage",
+   "fieldtype": "Check",
+   "label": "Track Usage Analytics",
+   "default": 1
+  },
+  {
+   "fieldname": "usage_analytics",
+   "fieldtype": "Text",
+   "label": "Usage Analytics",
+   "read_only": 1
+  },
+  {
+   "fieldname": "revenue_impact",
+   "fieldtype": "Currency",
+   "label": "Revenue Impact",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_analytics",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "label": "Approval Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Pricing and Sales",
+ "name": "HD Dynamic Pricing Rule",
+ "naming_rule": "By fieldname",
+ "naming_series_field": "rule_code",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Pricing Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1
+  }
+ ],
+ "sort_field": "priority",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "rule_name",
+ "track_changes": 1
+}

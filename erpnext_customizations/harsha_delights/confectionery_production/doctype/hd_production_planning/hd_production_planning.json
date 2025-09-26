@@ -1,0 +1,234 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "planning_name",
+  "planning_date",
+  "planned_for_date",
+  "production_line",
+  "shift",
+  "column_break_5",
+  "priority",
+  "status",
+  "supervisor",
+  "total_planned_qty",
+  "section_break_items",
+  "planned_items",
+  "section_break_resources",
+  "required_resources",
+  "section_break_capacity",
+  "line_capacity_per_hour",
+  "total_planned_hours",
+  "capacity_utilization_percent",
+  "column_break_capacity",
+  "start_time",
+  "end_time",
+  "break_time_minutes",
+  "notes_section",
+  "production_notes",
+  "special_instructions"
+ ],
+ "fields": [
+  {
+   "fieldname": "planning_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Planning Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "planning_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Planning Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "planned_for_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Planned For Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "production_line",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Production Line",
+   "options": "Line 1 - Sweets\nLine 2 - Chocolates\nLine 3 - Baked Items\nLine 4 - Namkeens\nLine 5 - Packaging"
+  },
+  {
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "label": "Shift",
+   "options": "Morning (6AM-2PM)\nAfternoon (2PM-10PM)\nNight (10PM-6AM)"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Low\nMedium\nHigh\nUrgent"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nScheduled\nIn Progress\nCompleted\nCancelled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "supervisor",
+   "fieldtype": "Link",
+   "label": "Supervisor",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "total_planned_qty",
+   "fieldtype": "Float",
+   "label": "Total Planned Quantity",
+   "precision": 3,
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_items",
+   "fieldtype": "Section Break",
+   "label": "Planned Items"
+  },
+  {
+   "fieldname": "planned_items",
+   "fieldtype": "Table",
+   "label": "Planned Items",
+   "options": "HD Production Planning Item",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_resources",
+   "fieldtype": "Section Break",
+   "label": "Required Resources"
+  },
+  {
+   "fieldname": "required_resources",
+   "fieldtype": "Table",
+   "label": "Required Resources",
+   "options": "HD Production Resource"
+  },
+  {
+   "fieldname": "section_break_capacity",
+   "fieldtype": "Section Break",
+   "label": "Capacity Planning"
+  },
+  {
+   "fieldname": "line_capacity_per_hour",
+   "fieldtype": "Float",
+   "label": "Line Capacity Per Hour",
+   "precision": 2
+  },
+  {
+   "fieldname": "total_planned_hours",
+   "fieldtype": "Float",
+   "label": "Total Planned Hours",
+   "precision": 2,
+   "read_only": 1
+  },
+  {
+   "fieldname": "capacity_utilization_percent",
+   "fieldtype": "Percent",
+   "label": "Capacity Utilization %",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_capacity",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Start Time"
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "label": "End Time"
+  },
+  {
+   "fieldname": "break_time_minutes",
+   "fieldtype": "Int",
+   "label": "Break Time (Minutes)"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "production_notes",
+   "fieldtype": "Text",
+   "label": "Production Notes"
+  },
+  {
+   "fieldname": "special_instructions",
+   "fieldtype": "Text",
+   "label": "Special Instructions"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Confectionery Production",
+ "name": "HD Production Planning",
+ "naming_rule": "Expression",
+ "naming_rule_expression": "PROD-PLAN-.YYYY.-.MM.-.DD.-.###",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Production Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Manufacturing User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock User",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "planning_name",
+ "track_changes": 1
+}

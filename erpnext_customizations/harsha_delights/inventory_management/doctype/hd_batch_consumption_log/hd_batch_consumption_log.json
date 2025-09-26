@@ -1,0 +1,194 @@
+{
+ "actions": [],
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "batch_id",
+  "item_code",
+  "item_name",
+  "warehouse",
+  "column_break_4",
+  "consumption_date",
+  "consumption_type",
+  "qty_consumed",
+  "remaining_qty",
+  "consumption_section",
+  "reference_type",
+  "reference_name",
+  "consumed_by",
+  "column_break_consumption",
+  "unit_rate",
+  "total_value",
+  "batch_expiry_date",
+  "notes_section",
+  "consumption_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "batch_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Batch ID",
+   "options": "HD Batch Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "consumption_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Consumption Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "consumption_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Consumption Type",
+   "options": "Sale\nProduction\nWriteOff\nQuality Test\nSample\nReturn\nTransfer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "qty_consumed",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Qty Consumed",
+   "precision": 3,
+   "reqd": 1
+  },
+  {
+   "fieldname": "remaining_qty",
+   "fieldtype": "Float",
+   "label": "Remaining Qty After Consumption",
+   "precision": 3,
+   "read_only": 1
+  },
+  {
+   "fieldname": "consumption_section",
+   "fieldtype": "Section Break",
+   "label": "Consumption Reference"
+  },
+  {
+   "fieldname": "reference_type",
+   "fieldtype": "Select",
+   "label": "Reference Document Type",
+   "options": "Sales Invoice\nDelivery Note\nStock Entry\nWork Order\nQuality Inspection"
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Document",
+   "options": "reference_type"
+  },
+  {
+   "fieldname": "consumed_by",
+   "fieldtype": "Link",
+   "label": "Consumed By",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_consumption",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "unit_rate",
+   "fieldtype": "Currency",
+   "label": "Unit Rate",
+   "precision": 3
+  },
+  {
+   "fieldname": "total_value",
+   "fieldtype": "Currency",
+   "label": "Total Value",
+   "precision": 2,
+   "read_only": 1
+  },
+  {
+   "fieldname": "batch_expiry_date",
+   "fieldtype": "Date",
+   "label": "Batch Expiry Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "consumption_notes",
+   "fieldtype": "Text",
+   "label": "Consumption Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Inventory Management",
+ "name": "HD Batch Consumption Log",
+ "naming_rule": "Expression",
+ "naming_rule_expression": "BCL-.YYYY.-.MM.-.#####",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock User",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Production Manager",
+   "share": 1
+  }
+ ],
+ "sort_field": "consumption_date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

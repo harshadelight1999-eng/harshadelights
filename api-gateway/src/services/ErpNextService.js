@@ -537,6 +537,25 @@ class ErpNextService {
 
       // Apply pricing rules in priority order
       for (const rule of pricingRules) {
+        // Check for volume discount first
+        if (rule.volume_discount_enabled && rule.volume_slabs) {
+          const volumeDiscount = await this.applyVolumeDiscount(rule.volume_slabs, qty, baseRate);
+          if (volumeDiscount && volumeDiscount.applicable) {
+            finalRate = volumeDiscount.final_rate;
+            discountAmount = volumeDiscount.discount_amount;
+            appliedRules.push({
+              rule_code: rule.rule_code,
+              rule_name: rule.rule_name,
+              volume_slab: volumeDiscount.slab_name,
+              discount_type: volumeDiscount.discount_type,
+              savings_per_unit: volumeDiscount.savings_per_unit,
+              total_savings: volumeDiscount.total_savings
+            });
+            continue; // Volume discount takes precedence
+          }
+        }
+
+        // Standard pricing rules
         if (rule.rate_or_discount === 'Discount Percentage') {
           discountPercentage += rule.discount_percentage;
           appliedRules.push({
@@ -649,6 +668,7 @@ class ErpNextService {
           dpr.*
         FROM \`tabHD Dynamic Pricing Rule\` dpr
         WHERE dpr.is_active = 1
+          AND dpr.status = 'Active'
           AND dpr.valid_from <= ?
           AND (dpr.valid_to IS NULL OR dpr.valid_to >= ?)
           AND (dpr.min_qty IS NULL OR dpr.min_qty <= ?)
@@ -657,7 +677,6 @@ class ErpNextService {
       `;
 
       const [rules] = await connection.execute(query, [date, date, qty, qty]);
-      connection.release();
 
       // Filter rules based on customer, segments, and items
       const applicableRules = [];
@@ -666,24 +685,32 @@ class ErpNextService {
         let isApplicable = false;
 
         // Check customer/segment applicability
-        if (rule.applicable_for === 'Customer' && rule.apply_on === customer) {
+        if (rule.applicable_for === 'All Customers') {
+          isApplicable = true;
+        } else if (rule.applicable_for === 'Customer' && rule.apply_on_value === customer) {
           isApplicable = true;
         } else if (rule.applicable_for === 'Customer Group') {
-          // Check if customer belongs to the group
-          isApplicable = await this.checkCustomerGroup(customer, rule.apply_on);
-        } else if (customerSegments.some(seg => seg.segment_code === rule.apply_on)) {
-          isApplicable = true;
+          isApplicable = await this.checkCustomerGroup(customer, rule.customer_group);
+        } else if (rule.applicable_for === 'Customer Segment') {
+          isApplicable = customerSegments.some(seg => seg.segment_code === rule.customer_segment);
+        } else if (rule.applicable_for === 'Territory') {
+          isApplicable = await this.checkCustomerTerritory(customer, rule.territory);
         }
 
         if (isApplicable) {
           // Check item applicability
           const itemApplicable = await this.checkItemApplicability(rule, itemCode);
           if (itemApplicable) {
+            // Get volume discount slabs if enabled
+            if (rule.volume_discount_enabled) {
+              rule.volume_slabs = await this.getVolumeDiscountSlabs(rule.name);
+            }
             applicableRules.push(rule);
           }
         }
       }
 
+      connection.release();
       return applicableRules;
 
     } catch (error) {
@@ -705,21 +732,133 @@ class ErpNextService {
   }
 
   /**
+   * Check if customer belongs to specified territory
+   */
+  async checkCustomerTerritory(customer, territory) {
+    try {
+      const customerData = await this.getCustomer(customer);
+      return customerData.customer?.territory === territory;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Get volume discount slabs for a pricing rule
+   */
+  async getVolumeDiscountSlabs(ruleId) {
+    try {
+      const connection = await this.dbPool.getConnection();
+
+      const [slabs] = await connection.execute(`
+        SELECT
+          slab_name,
+          min_quantity,
+          max_quantity,
+          discount_type,
+          discount_percentage,
+          discount_amount,
+          discounted_rate,
+          is_active,
+          effective_from,
+          effective_to,
+          sort_order
+        FROM \`tabHD Volume Discount Slab\`
+        WHERE parent = ?
+          AND is_active = 1
+          AND (effective_from IS NULL OR effective_from <= CURDATE())
+          AND (effective_to IS NULL OR effective_to >= CURDATE())
+        ORDER BY sort_order ASC, min_quantity ASC
+      `, [ruleId]);
+
+      connection.release();
+      return slabs;
+
+    } catch (error) {
+      logger.error('Get volume discount slabs error:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Apply volume discount to pricing
+   */
+  async applyVolumeDiscount(volumeSlabs, qty, baseRate) {
+    if (!volumeSlabs || volumeSlabs.length === 0) {
+      return null;
+    }
+
+    // Find applicable slab
+    let applicableSlab = null;
+    for (const slab of volumeSlabs.sort((a, b) => b.min_quantity - a.min_quantity)) {
+      if (qty >= slab.min_quantity && (!slab.max_quantity || qty <= slab.max_quantity)) {
+        applicableSlab = slab;
+        break;
+      }
+    }
+
+    if (!applicableSlab) {
+      return null;
+    }
+
+    let finalRate = baseRate;
+    let discountAmount = 0;
+
+    if (applicableSlab.discount_type === 'Percentage') {
+      discountAmount = baseRate * (applicableSlab.discount_percentage / 100);
+      finalRate = baseRate - discountAmount;
+    } else if (applicableSlab.discount_type === 'Fixed Amount') {
+      discountAmount = Math.min(applicableSlab.discount_amount, baseRate);
+      finalRate = baseRate - discountAmount;
+    } else if (applicableSlab.discount_type === 'Fixed Rate') {
+      finalRate = applicableSlab.discounted_rate;
+      discountAmount = Math.max(0, baseRate - finalRate);
+    }
+
+    return {
+      applicable: true,
+      slab_name: applicableSlab.slab_name,
+      discount_type: applicableSlab.discount_type,
+      discount_percentage: applicableSlab.discount_percentage,
+      discount_amount: discountAmount,
+      final_rate: Math.max(0, finalRate),
+      volume_discount_applied: true,
+      savings_per_unit: discountAmount,
+      total_savings: discountAmount * qty
+    };
+  }
+
+  /**
    * Check if item is applicable for pricing rule
    */
   async checkItemApplicability(rule, itemCode) {
-    if (rule.apply_on === 'Item Code') {
-      // Check in rule items table
-      return true; // Simplified - would check against tabHD Pricing Rule Item
-    }
+    try {
+      if (rule.apply_on === 'Item Code') {
+        // Check if specific item is applicable
+        return rule.apply_on_value === itemCode;
+      }
 
-    if (rule.apply_on === 'Item Group') {
-      // Get item group and check
-      const itemData = await this.getItem(itemCode);
-      return itemData.item?.item_group === rule.apply_on;
-    }
+      if (rule.apply_on === 'Item Group') {
+        // Get item group and check
+        const itemData = await this.getItem(itemCode);
+        return itemData.item?.item_group === rule.item_group;
+      }
 
-    return false;
+      if (rule.apply_on === 'Brand') {
+        // Get item brand and check
+        const itemData = await this.getItem(itemCode);
+        return itemData.item?.brand === rule.apply_on_value;
+      }
+
+      if (rule.apply_on === 'All Items') {
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      logger.error('Check item applicability error:', error);
+      return false;
+    }
   }
 
   /**

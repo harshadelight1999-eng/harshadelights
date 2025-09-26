@@ -1,0 +1,1 @@
+# HD Dynamic Pricing Rule DocType

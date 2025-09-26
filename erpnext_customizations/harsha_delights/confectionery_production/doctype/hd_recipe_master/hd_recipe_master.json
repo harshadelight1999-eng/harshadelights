@@ -1,0 +1,331 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "recipe_code",
+  "recipe_name",
+  "finished_item",
+  "finished_item_name",
+  "version",
+  "column_break_4",
+  "recipe_category",
+  "difficulty_level",
+  "preparation_time_minutes",
+  "cooking_time_minutes",
+  "total_time_minutes",
+  "section_break_10",
+  "yield_quantity",
+  "yield_uom",
+  "cost_per_unit",
+  "column_break_13",
+  "temperature_celsius",
+  "humidity_percentage",
+  "special_equipment",
+  "ingredients_section",
+  "ingredients",
+  "instructions_section",
+  "preparation_instructions",
+  "cooking_instructions",
+  "quality_parameters_section",
+  "target_sugar_content",
+  "target_fat_content",
+  "target_moisture_content",
+  "column_break_quality",
+  "target_ph_level",
+  "shelf_life_days",
+  "storage_conditions",
+  "status_section",
+  "status",
+  "approved_by",
+  "approved_date",
+  "column_break_status",
+  "created_by",
+  "last_modified_by",
+  "revision_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "recipe_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Recipe Code",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "recipe_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Recipe Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "finished_item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Finished Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "finished_item_name",
+   "fieldtype": "Data",
+   "label": "Finished Item Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Data",
+   "label": "Version",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "recipe_category",
+   "fieldtype": "Select",
+   "label": "Recipe Category",
+   "options": "Sweets & Desserts\nChocolates\nBaked Items\nDry Fruits\nNamkeens\nSpecial Occasion"
+  },
+  {
+   "fieldname": "difficulty_level",
+   "fieldtype": "Select",
+   "label": "Difficulty Level",
+   "options": "Easy\nMedium\nHard\nExpert"
+  },
+  {
+   "fieldname": "preparation_time_minutes",
+   "fieldtype": "Int",
+   "label": "Preparation Time (Minutes)"
+  },
+  {
+   "fieldname": "cooking_time_minutes",
+   "fieldtype": "Int",
+   "label": "Cooking Time (Minutes)"
+  },
+  {
+   "fieldname": "total_time_minutes",
+   "fieldtype": "Int",
+   "label": "Total Time (Minutes)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "yield_quantity",
+   "fieldtype": "Float",
+   "label": "Yield Quantity",
+   "precision": 3,
+   "reqd": 1
+  },
+  {
+   "fieldname": "yield_uom",
+   "fieldtype": "Link",
+   "label": "Yield UOM",
+   "options": "UOM",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cost_per_unit",
+   "fieldtype": "Currency",
+   "label": "Cost Per Unit",
+   "precision": 3,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "temperature_celsius",
+   "fieldtype": "Data",
+   "label": "Temperature Range (°C)"
+  },
+  {
+   "fieldname": "humidity_percentage",
+   "fieldtype": "Data",
+   "label": "Humidity Range (%)"
+  },
+  {
+   "fieldname": "special_equipment",
+   "fieldtype": "Text",
+   "label": "Special Equipment Required"
+  },
+  {
+   "fieldname": "ingredients_section",
+   "fieldtype": "Section Break",
+   "label": "Ingredients"
+  },
+  {
+   "fieldname": "ingredients",
+   "fieldtype": "Table",
+   "label": "Ingredients",
+   "options": "HD Recipe Ingredient",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "instructions_section",
+   "fieldtype": "Section Break",
+   "label": "Instructions"
+  },
+  {
+   "fieldname": "preparation_instructions",
+   "fieldtype": "Text Editor",
+   "label": "Preparation Instructions"
+  },
+  {
+   "fieldname": "cooking_instructions",
+   "fieldtype": "Text Editor",
+   "label": "Cooking Instructions"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "quality_parameters_section",
+   "fieldtype": "Section Break",
+   "label": "Target Quality Parameters"
+  },
+  {
+   "fieldname": "target_sugar_content",
+   "fieldtype": "Float",
+   "label": "Target Sugar Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "target_fat_content",
+   "fieldtype": "Float",
+   "label": "Target Fat Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "target_moisture_content",
+   "fieldtype": "Float",
+   "label": "Target Moisture Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "column_break_quality",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "target_ph_level",
+   "fieldtype": "Float",
+   "label": "Target pH Level",
+   "precision": 2
+  },
+  {
+   "fieldname": "shelf_life_days",
+   "fieldtype": "Int",
+   "label": "Expected Shelf Life (Days)"
+  },
+  {
+   "fieldname": "storage_conditions",
+   "fieldtype": "Text",
+   "label": "Storage Conditions"
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Status & Approval"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nUnder Review\nApproved\nActive\nInactive\nObsolete",
+   "reqd": 1
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approved_date",
+   "fieldtype": "Date",
+   "label": "Approved Date"
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Last Modified By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "revision_notes",
+   "fieldtype": "Text",
+   "label": "Revision Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Confectionery Production",
+ "name": "HD Recipe Master",
+ "naming_rule": "By fieldname",
+ "naming_series_field": "recipe_code",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Production Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Quality Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Manufacturing User",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "recipe_name",
+ "track_changes": 1
+}

@@ -1,0 +1,270 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "alert_type",
+  "item_code",
+  "item_name",
+  "warehouse",
+  "batch_id",
+  "column_break_5",
+  "alert_date",
+  "alert_level",
+  "status",
+  "acknowledged_by",
+  "acknowledged_date",
+  "stock_section",
+  "current_stock",
+  "minimum_stock",
+  "maximum_stock",
+  "column_break_stock",
+  "reorder_level",
+  "reorder_qty",
+  "last_purchase_rate",
+  "expiry_section",
+  "expiry_date",
+  "days_to_expiry",
+  "potential_loss_value",
+  "column_break_expiry",
+  "manufacturing_date",
+  "shelf_life_days",
+  "suggested_action",
+  "details_section",
+  "alert_message",
+  "action_taken",
+  "resolution_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "alert_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Alert Type",
+   "options": "Low Stock\nHigh Stock\nExpiry Warning\nExpired Stock\nZero Stock\nNegative Stock\nQuality Alert",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch_id",
+   "fieldtype": "Link",
+   "label": "Batch ID",
+   "options": "HD Batch Master"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "alert_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Alert Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "alert_level",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Alert Level",
+   "options": "Info\nWarning\nCritical\nUrgent",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Open\nAcknowledged\nIn Progress\nResolved\nClosed",
+   "reqd": 1
+  },
+  {
+   "fieldname": "acknowledged_by",
+   "fieldtype": "Link",
+   "label": "Acknowledged By",
+   "options": "User"
+  },
+  {
+   "fieldname": "acknowledged_date",
+   "fieldtype": "Datetime",
+   "label": "Acknowledged Date"
+  },
+  {
+   "fieldname": "stock_section",
+   "fieldtype": "Section Break",
+   "label": "Stock Information"
+  },
+  {
+   "fieldname": "current_stock",
+   "fieldtype": "Float",
+   "label": "Current Stock",
+   "precision": 3
+  },
+  {
+   "fieldname": "minimum_stock",
+   "fieldtype": "Float",
+   "label": "Minimum Stock",
+   "precision": 3
+  },
+  {
+   "fieldname": "maximum_stock",
+   "fieldtype": "Float",
+   "label": "Maximum Stock",
+   "precision": 3
+  },
+  {
+   "fieldname": "column_break_stock",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reorder_level",
+   "fieldtype": "Float",
+   "label": "Reorder Level",
+   "precision": 3
+  },
+  {
+   "fieldname": "reorder_qty",
+   "fieldtype": "Float",
+   "label": "Suggested Reorder Qty",
+   "precision": 3
+  },
+  {
+   "fieldname": "last_purchase_rate",
+   "fieldtype": "Currency",
+   "label": "Last Purchase Rate"
+  },
+  {
+   "depends_on": "eval:in_list(['Expiry Warning', 'Expired Stock'], doc.alert_type)",
+   "fieldname": "expiry_section",
+   "fieldtype": "Section Break",
+   "label": "Expiry Information"
+  },
+  {
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "label": "Expiry Date"
+  },
+  {
+   "fieldname": "days_to_expiry",
+   "fieldtype": "Int",
+   "label": "Days to Expiry"
+  },
+  {
+   "fieldname": "potential_loss_value",
+   "fieldtype": "Currency",
+   "label": "Potential Loss Value"
+  },
+  {
+   "fieldname": "column_break_expiry",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "manufacturing_date",
+   "fieldtype": "Date",
+   "label": "Manufacturing Date"
+  },
+  {
+   "fieldname": "shelf_life_days",
+   "fieldtype": "Int",
+   "label": "Shelf Life Days"
+  },
+  {
+   "fieldname": "suggested_action",
+   "fieldtype": "Select",
+   "label": "Suggested Action",
+   "options": "Purchase Order\nStock Transfer\nDiscount Sale\nReturn to Supplier\nWrite Off\nQuality Check"
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Alert Details"
+  },
+  {
+   "fieldname": "alert_message",
+   "fieldtype": "Text",
+   "label": "Alert Message"
+  },
+  {
+   "fieldname": "action_taken",
+   "fieldtype": "Text",
+   "label": "Action Taken"
+  },
+  {
+   "fieldname": "resolution_notes",
+   "fieldtype": "Text",
+   "label": "Resolution Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Inventory Management",
+ "name": "HD Stock Alert",
+ "naming_rule": "Expression",
+ "naming_rule_expression": "ALERT-.YYYY.-.MM.-.DD.-.#####",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Purchase Manager",
+   "share": 1
+  }
+ ],
+ "sort_field": "alert_date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

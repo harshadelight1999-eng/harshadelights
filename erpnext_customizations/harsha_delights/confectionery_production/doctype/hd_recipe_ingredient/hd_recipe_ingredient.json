@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ingredient_item",
+  "ingredient_name",
+  "quantity",
+  "uom",
+  "rate",
+  "amount",
+  "source_warehouse",
+  "preparation_method",
+  "processing_notes"
+ ],
+ "fields": [
+  {
+   "columns": 3,
+   "fieldname": "ingredient_item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Ingredient Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "ingredient_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Ingredient Name",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Quantity",
+   "precision": 3,
+   "reqd": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "UOM",
+   "options": "UOM",
+   "reqd": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Rate",
+   "precision": 3,
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Amount",
+   "precision": 3,
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "source_warehouse",
+   "fieldtype": "Link",
+   "label": "Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "preparation_method",
+   "fieldtype": "Select",
+   "label": "Preparation Method",
+   "options": "As Is\nChopped\nGround\nMelted\nSifted\nMixed\nHeated"
+  },
+  {
+   "fieldname": "processing_notes",
+   "fieldtype": "Small Text",
+   "label": "Processing Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Confectionery Production",
+ "name": "HD Recipe Ingredient",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

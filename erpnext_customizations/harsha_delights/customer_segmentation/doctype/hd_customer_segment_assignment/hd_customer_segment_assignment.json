@@ -1,0 +1,249 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "customer_name",
+  "customer_segment",
+  "segment_name",
+  "column_break_4",
+  "assignment_date",
+  "assignment_type",
+  "is_primary",
+  "status",
+  "effective_section",
+  "effective_from",
+  "effective_to",
+  "review_date",
+  "column_break_effective",
+  "assigned_by",
+  "approved_by",
+  "approval_date",
+  "metrics_section",
+  "annual_purchase_at_assignment",
+  "order_frequency_at_assignment",
+  "credit_limit_at_assignment",
+  "column_break_metrics",
+  "discount_percentage_applied",
+  "loyalty_points_earned",
+  "special_pricing_applied",
+  "notes_section",
+  "assignment_notes",
+  "review_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "customer_segment",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer Segment",
+   "options": "HD Customer Segment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "segment_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Segment Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "assignment_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Assignment Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assignment_type",
+   "fieldtype": "Select",
+   "label": "Assignment Type",
+   "options": "Manual\nAuto\nUpgraded\nDowngraded",
+   "reqd": 1
+  },
+  {
+   "fieldname": "is_primary",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Primary Segment"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nInactive\nPending Review\nExpired",
+   "reqd": 1
+  },
+  {
+   "fieldname": "effective_section",
+   "fieldtype": "Section Break",
+   "label": "Effective Period"
+  },
+  {
+   "fieldname": "effective_from",
+   "fieldtype": "Date",
+   "label": "Effective From"
+  },
+  {
+   "fieldname": "effective_to",
+   "fieldtype": "Date",
+   "label": "Effective To"
+  },
+  {
+   "fieldname": "review_date",
+   "fieldtype": "Date",
+   "label": "Next Review Date"
+  },
+  {
+   "fieldname": "column_break_effective",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "assigned_by",
+   "fieldtype": "Link",
+   "label": "Assigned By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "label": "Approval Date"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "metrics_section",
+   "fieldtype": "Section Break",
+   "label": "Metrics at Assignment"
+  },
+  {
+   "fieldname": "annual_purchase_at_assignment",
+   "fieldtype": "Currency",
+   "label": "Annual Purchase at Assignment"
+  },
+  {
+   "fieldname": "order_frequency_at_assignment",
+   "fieldtype": "Float",
+   "label": "Order Frequency at Assignment",
+   "precision": 2
+  },
+  {
+   "fieldname": "credit_limit_at_assignment",
+   "fieldtype": "Currency",
+   "label": "Credit Limit at Assignment"
+  },
+  {
+   "fieldname": "column_break_metrics",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "discount_percentage_applied",
+   "fieldtype": "Percent",
+   "label": "Discount % Applied"
+  },
+  {
+   "fieldname": "loyalty_points_earned",
+   "fieldtype": "Float",
+   "label": "Loyalty Points Earned",
+   "precision": 2
+  },
+  {
+   "fieldname": "special_pricing_applied",
+   "fieldtype": "Check",
+   "label": "Special Pricing Applied"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "assignment_notes",
+   "fieldtype": "Text",
+   "label": "Assignment Notes"
+  },
+  {
+   "fieldname": "review_notes",
+   "fieldtype": "Text",
+   "label": "Review Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Customer Segmentation",
+ "name": "HD Customer Segment Assignment",
+ "naming_rule": "Expression",
+ "naming_rule_expression": "CSA-.YYYY.-.MM.-.###",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Customer Service Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

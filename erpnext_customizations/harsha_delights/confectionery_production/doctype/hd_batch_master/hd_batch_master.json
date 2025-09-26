@@ -1,0 +1,326 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "batch_id",
+  "item",
+  "item_name",
+  "warehouse",
+  "manufacturing_date",
+  "expiry_date",
+  "shelf_life_days",
+  "column_break_7",
+  "batch_qty",
+  "available_qty",
+  "unit_cost",
+  "quality_section",
+  "quality_grade",
+  "sugar_content_percentage",
+  "fat_content_percentage",
+  "moisture_content_percentage",
+  "column_break_quality",
+  "ph_level",
+  "texture_rating",
+  "color_consistency",
+  "flavor_intensity",
+  "production_section",
+  "production_order",
+  "production_line",
+  "production_supervisor",
+  "production_notes",
+  "column_break_production",
+  "temperature_during_production",
+  "humidity_during_production",
+  "production_duration_hours",
+  "status_section",
+  "status",
+  "last_inspection_date",
+  "next_inspection_date",
+  "column_break_status",
+  "created_by",
+  "approved_by",
+  "approved_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "batch_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Batch ID",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "manufacturing_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Manufacturing Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Expiry Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "shelf_life_days",
+   "fieldtype": "Int",
+   "label": "Shelf Life (Days)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "batch_qty",
+   "fieldtype": "Float",
+   "label": "Batch Quantity",
+   "precision": 3,
+   "reqd": 1
+  },
+  {
+   "fieldname": "available_qty",
+   "fieldtype": "Float",
+   "label": "Available Quantity",
+   "precision": 3,
+   "reqd": 1
+  },
+  {
+   "fieldname": "unit_cost",
+   "fieldtype": "Currency",
+   "label": "Unit Cost",
+   "precision": 2
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "quality_section",
+   "fieldtype": "Section Break",
+   "label": "Quality Parameters"
+  },
+  {
+   "fieldname": "quality_grade",
+   "fieldtype": "Select",
+   "label": "Quality Grade",
+   "options": "A+\nA\nB+\nB\nC\nReject"
+  },
+  {
+   "fieldname": "sugar_content_percentage",
+   "fieldtype": "Float",
+   "label": "Sugar Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "fat_content_percentage",
+   "fieldtype": "Float",
+   "label": "Fat Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "moisture_content_percentage",
+   "fieldtype": "Float",
+   "label": "Moisture Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "column_break_quality",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ph_level",
+   "fieldtype": "Float",
+   "label": "pH Level",
+   "precision": 2
+  },
+  {
+   "fieldname": "texture_rating",
+   "fieldtype": "Select",
+   "label": "Texture Rating",
+   "options": "Excellent\nGood\nAverage\nPoor"
+  },
+  {
+   "fieldname": "color_consistency",
+   "fieldtype": "Select",
+   "label": "Color Consistency",
+   "options": "Excellent\nGood\nAverage\nPoor"
+  },
+  {
+   "fieldname": "flavor_intensity",
+   "fieldtype": "Select",
+   "label": "Flavor Intensity",
+   "options": "Strong\nMedium\nMild\nWeak"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "production_section",
+   "fieldtype": "Section Break",
+   "label": "Production Details"
+  },
+  {
+   "fieldname": "production_order",
+   "fieldtype": "Link",
+   "label": "Production Order",
+   "options": "Work Order"
+  },
+  {
+   "fieldname": "production_line",
+   "fieldtype": "Data",
+   "label": "Production Line"
+  },
+  {
+   "fieldname": "production_supervisor",
+   "fieldtype": "Link",
+   "label": "Production Supervisor",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "production_notes",
+   "fieldtype": "Text",
+   "label": "Production Notes"
+  },
+  {
+   "fieldname": "column_break_production",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "temperature_during_production",
+   "fieldtype": "Float",
+   "label": "Temperature During Production (°C)",
+   "precision": 1
+  },
+  {
+   "fieldname": "humidity_during_production",
+   "fieldtype": "Float",
+   "label": "Humidity During Production (%)",
+   "precision": 1
+  },
+  {
+   "fieldname": "production_duration_hours",
+   "fieldtype": "Float",
+   "label": "Production Duration (Hours)",
+   "precision": 2
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Status & Approval"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nQuarantine\nExpired\nRejected\nConsumed",
+   "reqd": 1
+  },
+  {
+   "fieldname": "last_inspection_date",
+   "fieldtype": "Date",
+   "label": "Last Inspection Date"
+  },
+  {
+   "fieldname": "next_inspection_date",
+   "fieldtype": "Date",
+   "label": "Next Inspection Date"
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approved_date",
+   "fieldtype": "Date",
+   "label": "Approved Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Confectionery Production",
+ "name": "HD Batch Master",
+ "naming_rule": "By fieldname",
+ "naming_series_field": "batch_id",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Quality Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Production Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock User",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "batch_id",
+ "track_changes": 1
+}

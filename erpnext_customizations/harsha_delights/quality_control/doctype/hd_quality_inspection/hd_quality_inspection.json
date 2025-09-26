@@ -1,0 +1,438 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "inspection_id",
+  "inspection_date",
+  "inspection_type",
+  "batch_id",
+  "column_break_4",
+  "item_code",
+  "item_name",
+  "inspector",
+  "inspection_status",
+  "batch_section",
+  "manufacturing_date",
+  "expiry_date",
+  "batch_qty",
+  "column_break_batch",
+  "warehouse",
+  "supplier",
+  "production_order",
+  "quality_parameters_section",
+  "sugar_content",
+  "fat_content",
+  "moisture_content",
+  "ph_level",
+  "column_break_quality",
+  "texture_score",
+  "color_score",
+  "flavor_score",
+  "overall_score",
+  "sensory_section",
+  "appearance",
+  "taste",
+  "aroma",
+  "column_break_sensory",
+  "texture_notes",
+  "color_consistency",
+  "packaging_quality",
+  "safety_section",
+  "microbiological_test",
+  "allergen_check",
+  "contamination_check",
+  "column_break_safety",
+  "heavy_metals_test",
+  "pesticide_residue_test",
+  "shelf_life_test",
+  "results_section",
+  "quality_grade",
+  "pass_fail_status",
+  "defects_found",
+  "column_break_results",
+  "corrective_action_required",
+  "recommended_action",
+  "batch_disposition",
+  "notes_section",
+  "inspection_notes",
+  "defect_details",
+  "corrective_actions"
+ ],
+ "fields": [
+  {
+   "fieldname": "inspection_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Inspection ID",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "inspection_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Inspection Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "inspection_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Inspection Type",
+   "options": "Incoming\nIn-Process\nFinal\nPeriodic\nComplaint Investigation\nRecall Investigation",
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Batch ID",
+   "options": "HD Batch Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "inspector",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Inspector",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "inspection_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Inspection Status",
+   "options": "Draft\nIn Progress\nCompleted\nApproved\nRejected",
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch_section",
+   "fieldtype": "Section Break",
+   "label": "Batch Information"
+  },
+  {
+   "fieldname": "manufacturing_date",
+   "fieldtype": "Date",
+   "label": "Manufacturing Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "label": "Expiry Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "batch_qty",
+   "fieldtype": "Float",
+   "label": "Batch Quantity",
+   "precision": 3,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_batch",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "production_order",
+   "fieldtype": "Link",
+   "label": "Production Order",
+   "options": "Work Order"
+  },
+  {
+   "fieldname": "quality_parameters_section",
+   "fieldtype": "Section Break",
+   "label": "Quality Parameters"
+  },
+  {
+   "fieldname": "sugar_content",
+   "fieldtype": "Float",
+   "label": "Sugar Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "fat_content",
+   "fieldtype": "Float",
+   "label": "Fat Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "moisture_content",
+   "fieldtype": "Float",
+   "label": "Moisture Content (%)",
+   "precision": 2
+  },
+  {
+   "fieldname": "ph_level",
+   "fieldtype": "Float",
+   "label": "pH Level",
+   "precision": 2
+  },
+  {
+   "fieldname": "column_break_quality",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "texture_score",
+   "fieldtype": "Int",
+   "label": "Texture Score (1-10)"
+  },
+  {
+   "fieldname": "color_score",
+   "fieldtype": "Int",
+   "label": "Color Score (1-10)"
+  },
+  {
+   "fieldname": "flavor_score",
+   "fieldtype": "Int",
+   "label": "Flavor Score (1-10)"
+  },
+  {
+   "fieldname": "overall_score",
+   "fieldtype": "Float",
+   "label": "Overall Score (1-10)",
+   "precision": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sensory_section",
+   "fieldtype": "Section Break",
+   "label": "Sensory Evaluation"
+  },
+  {
+   "fieldname": "appearance",
+   "fieldtype": "Select",
+   "label": "Appearance",
+   "options": "Excellent\nGood\nAcceptable\nPoor\nUnacceptable"
+  },
+  {
+   "fieldname": "taste",
+   "fieldtype": "Select",
+   "label": "Taste",
+   "options": "Excellent\nGood\nAcceptable\nPoor\nUnacceptable"
+  },
+  {
+   "fieldname": "aroma",
+   "fieldtype": "Select",
+   "label": "Aroma",
+   "options": "Excellent\nGood\nAcceptable\nPoor\nUnacceptable"
+  },
+  {
+   "fieldname": "column_break_sensory",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "texture_notes",
+   "fieldtype": "Small Text",
+   "label": "Texture Notes"
+  },
+  {
+   "fieldname": "color_consistency",
+   "fieldtype": "Select",
+   "label": "Color Consistency",
+   "options": "Uniform\nSlightly Uneven\nUneven\nHighly Variable"
+  },
+  {
+   "fieldname": "packaging_quality",
+   "fieldtype": "Select",
+   "label": "Packaging Quality",
+   "options": "Excellent\nGood\nAcceptable\nPoor"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "safety_section",
+   "fieldtype": "Section Break",
+   "label": "Safety & Compliance Tests"
+  },
+  {
+   "fieldname": "microbiological_test",
+   "fieldtype": "Select",
+   "label": "Microbiological Test",
+   "options": "Pass\nFail\nPending\nNot Required"
+  },
+  {
+   "fieldname": "allergen_check",
+   "fieldtype": "Select",
+   "label": "Allergen Check",
+   "options": "Pass\nFail\nPending\nNot Required"
+  },
+  {
+   "fieldname": "contamination_check",
+   "fieldtype": "Select",
+   "label": "Foreign Material Check",
+   "options": "Pass\nFail\nPending\nNot Required"
+  },
+  {
+   "fieldname": "column_break_safety",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "heavy_metals_test",
+   "fieldtype": "Select",
+   "label": "Heavy Metals Test",
+   "options": "Pass\nFail\nPending\nNot Required"
+  },
+  {
+   "fieldname": "pesticide_residue_test",
+   "fieldtype": "Select",
+   "label": "Pesticide Residue Test",
+   "options": "Pass\nFail\nPending\nNot Required"
+  },
+  {
+   "fieldname": "shelf_life_test",
+   "fieldtype": "Select",
+   "label": "Shelf Life Validation",
+   "options": "Pass\nFail\nPending\nNot Required"
+  },
+  {
+   "fieldname": "results_section",
+   "fieldtype": "Section Break",
+   "label": "Inspection Results"
+  },
+  {
+   "fieldname": "quality_grade",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Quality Grade",
+   "options": "A+\nA\nB+\nB\nC\nReject"
+  },
+  {
+   "fieldname": "pass_fail_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Pass/Fail Status",
+   "options": "Pass\nFail\nConditional Pass"
+  },
+  {
+   "fieldname": "defects_found",
+   "fieldtype": "Check",
+   "label": "Defects Found"
+  },
+  {
+   "fieldname": "column_break_results",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "corrective_action_required",
+   "fieldtype": "Check",
+   "label": "Corrective Action Required"
+  },
+  {
+   "fieldname": "recommended_action",
+   "fieldtype": "Select",
+   "label": "Recommended Action",
+   "options": "Accept\nReject\nRework\nDowngrade\nQuarantine\nReturn to Supplier"
+  },
+  {
+   "fieldname": "batch_disposition",
+   "fieldtype": "Select",
+   "label": "Batch Disposition",
+   "options": "Released\nRejected\nQuarantined\nReworked\nReturned"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes & Actions"
+  },
+  {
+   "fieldname": "inspection_notes",
+   "fieldtype": "Text",
+   "label": "Inspection Notes"
+  },
+  {
+   "fieldname": "defect_details",
+   "fieldtype": "Text",
+   "label": "Defect Details"
+  },
+  {
+   "fieldname": "corrective_actions",
+   "fieldtype": "Text",
+   "label": "Corrective Actions Taken"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Quality Control",
+ "name": "HD Quality Inspection",
+ "naming_rule": "Expression",
+ "naming_rule_expression": "QI-.YYYY.-.MM.-.#####",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Quality Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Quality Inspector",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Production Manager",
+   "share": 1
+  }
+ ],
+ "sort_field": "inspection_date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

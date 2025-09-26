@@ -1,0 +1,1 @@
+# HD Batch Consumption Log DocType

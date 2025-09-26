@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@/store/store'
 import { addToCart } from '@/store/slices/cartSlice'
 import { Product } from '@/store/slices/productsSlice'
+import WhatsAppOrderButton from '@/components/whatsapp/WhatsAppOrderButton'
 import { 
   ShoppingCart, 
   Star, 
@@ -238,10 +239,16 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           </button>
         </div>
 
-        {/* Quick Buy Option */}
-        <button className="w-full mt-2 border border-yellow-600 text-yellow-600 hover:bg-yellow-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-          Buy Now
-        </button>
+        {/* WhatsApp Order Option */}
+        <div className="mt-2">
+          <WhatsAppOrderButton
+            variant="inline"
+            productId={product.id}
+            variantId={selectedVariant.id}
+            quantity={quantity}
+            className="w-full text-sm"
+          />
+        </div>
       </div>
     </div>
   )

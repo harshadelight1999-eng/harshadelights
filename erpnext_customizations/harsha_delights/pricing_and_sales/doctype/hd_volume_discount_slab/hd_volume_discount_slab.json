@@ -1,0 +1,130 @@
+{
+ "actions": [],
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "slab_name",
+  "min_quantity",
+  "max_quantity",
+  "column_break_3",
+  "discount_type",
+  "discount_percentage",
+  "discount_amount",
+  "discounted_rate",
+  "section_break_7",
+  "is_active",
+  "effective_from",
+  "effective_to",
+  "column_break_10",
+  "description",
+  "sort_order"
+ ],
+ "fields": [
+  {
+   "fieldname": "slab_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Slab Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "min_quantity",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Min Quantity",
+   "precision": 3,
+   "reqd": 1
+  },
+  {
+   "fieldname": "max_quantity",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Max Quantity",
+   "precision": 3,
+   "description": "Leave blank for unlimited"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "discount_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Discount Type",
+   "options": "Percentage\\nFixed Amount\\nFixed Rate",
+   "default": "Percentage",
+   "reqd": 1
+  },
+  {
+   "fieldname": "discount_percentage",
+   "fieldtype": "Percent",
+   "label": "Discount Percentage",
+   "depends_on": "eval:doc.discount_type=='Percentage'"
+  },
+  {
+   "fieldname": "discount_amount",
+   "fieldtype": "Currency",
+   "label": "Discount Amount",
+   "depends_on": "eval:doc.discount_type=='Fixed Amount'"
+  },
+  {
+   "fieldname": "discounted_rate",
+   "fieldtype": "Currency",
+   "label": "Fixed Rate",
+   "depends_on": "eval:doc.discount_type=='Fixed Rate'"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break",
+   "label": "Additional Settings"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": 1
+  },
+  {
+   "fieldname": "effective_from",
+   "fieldtype": "Date",
+   "label": "Effective From"
+  },
+  {
+   "fieldname": "effective_to",
+   "fieldtype": "Date",
+   "label": "Effective To"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order",
+   "default": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Pricing and Sales",
+ "name": "HD Volume Discount Slab",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "sort_order",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}

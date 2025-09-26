@@ -1,0 +1,299 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-01 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "segment_code",
+  "segment_name",
+  "segment_type",
+  "segment_description",
+  "column_break_4",
+  "status",
+  "priority",
+  "color_code",
+  "icon",
+  "criteria_section",
+  "segmentation_criteria",
+  "benefits_section",
+  "discount_percentage",
+  "credit_limit_multiplier",
+  "payment_terms",
+  "column_break_benefits",
+  "special_pricing_enabled",
+  "volume_discount_enabled",
+  "loyalty_points_multiplier",
+  "free_shipping_threshold",
+  "conditions_section",
+  "min_annual_purchase",
+  "min_order_value",
+  "min_order_frequency",
+  "column_break_conditions",
+  "geographic_restriction",
+  "item_group_restriction",
+  "validity_from",
+  "validity_to",
+  "auto_assignment_section",
+  "auto_assignment_enabled",
+  "auto_assignment_rules",
+  "manual_review_required",
+  "column_break_auto",
+  "escalation_segment",
+  "demotion_segment",
+  "review_frequency_days"
+ ],
+ "fields": [
+  {
+   "fieldname": "segment_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Segment Code",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "segment_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Segment Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "segment_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Segment Type",
+   "options": "Volume Based\nValue Based\nGeographic\nBehavioral\nLoyalty Based\nCustom",
+   "reqd": 1
+  },
+  {
+   "fieldname": "segment_description",
+   "fieldtype": "Text",
+   "label": "Segment Description"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nInactive\nDraft",
+   "reqd": 1
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Int",
+   "label": "Priority",
+   "description": "Higher number = Higher priority"
+  },
+  {
+   "fieldname": "color_code",
+   "fieldtype": "Color",
+   "label": "Color Code"
+  },
+  {
+   "fieldname": "icon",
+   "fieldtype": "Data",
+   "label": "Icon Class"
+  },
+  {
+   "fieldname": "criteria_section",
+   "fieldtype": "Section Break",
+   "label": "Segmentation Criteria"
+  },
+  {
+   "fieldname": "segmentation_criteria",
+   "fieldtype": "Text Editor",
+   "label": "Segmentation Criteria"
+  },
+  {
+   "fieldname": "benefits_section",
+   "fieldtype": "Section Break",
+   "label": "Segment Benefits"
+  },
+  {
+   "fieldname": "discount_percentage",
+   "fieldtype": "Percent",
+   "label": "Default Discount %"
+  },
+  {
+   "fieldname": "credit_limit_multiplier",
+   "fieldtype": "Float",
+   "label": "Credit Limit Multiplier",
+   "precision": 2
+  },
+  {
+   "fieldname": "payment_terms",
+   "fieldtype": "Link",
+   "label": "Default Payment Terms",
+   "options": "Payment Terms Template"
+  },
+  {
+   "fieldname": "column_break_benefits",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "special_pricing_enabled",
+   "fieldtype": "Check",
+   "label": "Special Pricing Enabled"
+  },
+  {
+   "fieldname": "volume_discount_enabled",
+   "fieldtype": "Check",
+   "label": "Volume Discount Enabled"
+  },
+  {
+   "fieldname": "loyalty_points_multiplier",
+   "fieldtype": "Float",
+   "label": "Loyalty Points Multiplier",
+   "precision": 2
+  },
+  {
+   "fieldname": "free_shipping_threshold",
+   "fieldtype": "Currency",
+   "label": "Free Shipping Threshold"
+  },
+  {
+   "fieldname": "conditions_section",
+   "fieldtype": "Section Break",
+   "label": "Qualification Conditions"
+  },
+  {
+   "fieldname": "min_annual_purchase",
+   "fieldtype": "Currency",
+   "label": "Min Annual Purchase"
+  },
+  {
+   "fieldname": "min_order_value",
+   "fieldtype": "Currency",
+   "label": "Min Order Value"
+  },
+  {
+   "fieldname": "min_order_frequency",
+   "fieldtype": "Int",
+   "label": "Min Orders Per Month"
+  },
+  {
+   "fieldname": "column_break_conditions",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "geographic_restriction",
+   "fieldtype": "Link",
+   "label": "Geographic Restriction",
+   "options": "Territory"
+  },
+  {
+   "fieldname": "item_group_restriction",
+   "fieldtype": "Link",
+   "label": "Item Group Restriction",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "validity_from",
+   "fieldtype": "Date",
+   "label": "Valid From"
+  },
+  {
+   "fieldname": "validity_to",
+   "fieldtype": "Date",
+   "label": "Valid To"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "auto_assignment_section",
+   "fieldtype": "Section Break",
+   "label": "Auto Assignment Rules"
+  },
+  {
+   "fieldname": "auto_assignment_enabled",
+   "fieldtype": "Check",
+   "label": "Auto Assignment Enabled"
+  },
+  {
+   "fieldname": "auto_assignment_rules",
+   "fieldtype": "Text",
+   "label": "Auto Assignment Rules (JSON)"
+  },
+  {
+   "fieldname": "manual_review_required",
+   "fieldtype": "Check",
+   "label": "Manual Review Required"
+  },
+  {
+   "fieldname": "column_break_auto",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "escalation_segment",
+   "fieldtype": "Link",
+   "label": "Escalation Segment",
+   "options": "HD Customer Segment"
+  },
+  {
+   "fieldname": "demotion_segment",
+   "fieldtype": "Link",
+   "label": "Demotion Segment",
+   "options": "HD Customer Segment"
+  },
+  {
+   "fieldname": "review_frequency_days",
+   "fieldtype": "Int",
+   "label": "Review Frequency (Days)"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Customer Segmentation",
+ "name": "HD Customer Segment",
+ "naming_rule": "By fieldname",
+ "naming_series_field": "segment_code",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Customer Service Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1
+  }
+ ],
+ "sort_field": "priority",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "segment_name",
+ "track_changes": 1
+}

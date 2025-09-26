@@ -1,0 +1,1 @@
+# HD Stock Alert DocType
