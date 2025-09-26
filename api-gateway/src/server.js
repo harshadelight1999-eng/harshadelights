@@ -56,7 +56,7 @@ const User = require('./models/User');
 console.log('✅ User model loaded');
 
 console.log('🔐 Loading auth middleware...');
-const createAuthMiddleware = require('./middleware/auth');
+const authMiddleware = require('./middleware/auth');
 console.log('✅ Auth middleware loaded');
 
 console.log('🛡️ Loading security middleware...');
@@ -297,7 +297,7 @@ class ApiGatewayServer {
       if (this.db) {
         try {
           this.userModel = new User(this.db);
-          this.authMiddleware = createAuthMiddleware(this.db);
+          this.authMiddleware = authMiddleware;
 
           // Create database tables if they don't exist
           await User.createSchema(this.db);
@@ -306,12 +306,12 @@ class ApiGatewayServer {
           logger.error('Authentication system initialization failed:', error);
           logger.warn('🚨 Authentication will be disabled - API running in limited mode');
           this.userModel = null;
-          this.authMiddleware = createAuthMiddleware(); // Use fallback auth middleware
+          this.authMiddleware = authMiddleware; // Use fallback auth middleware
         }
       } else {
         logger.warn('🚨 Database not available - Authentication disabled, API running in limited mode');
         this.userModel = null;
-        this.authMiddleware = createAuthMiddleware(); // Use fallback auth middleware
+        this.authMiddleware = authMiddleware; // Use fallback auth middleware
       }
 
       // Initialize legacy Redis (for backward compatibility)
