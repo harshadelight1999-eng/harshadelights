@@ -34,8 +34,7 @@
     "clean:builds": "find . -name '.next' -type d -exec rm -rf {} + && find . -name 'dist' -type d -exec rm -rf {} + && find . -name 'build' -type d -exec rm -rf {} +",
     "dev:all": "concurrently \"npm run dev:public\" \"npm run dev:b2c\" \"npm run dev:b2b\"",
     "storybook": "npm run storybook --workspace=@harshadelights/shared-components",
-    "build-storybook": "npm run build-storybook --workspace=@harshadelights/shared-components",
-    "prepare": "npm run build:shared"
+    "build-storybook": "npm run build-storybook --workspace=@harshadelights/shared-components"
   },
   "devDependencies": {
     "@types/node": "^22.8.0",

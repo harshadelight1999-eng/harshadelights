@@ -58,7 +58,7 @@ exports.up = async function(knex) {
     table.integer('used_count').defaultTo(0);
     
     // Advanced
-    table.longtext('rule_condition');
+    table.text('rule_condition');
     table.integer('mixed_conditions').defaultTo(0);
     table.decimal('threshold_for_suggestion', 18, 2);
     table.integer('disable_other_rules').defaultTo(0);
@@ -68,7 +68,7 @@ exports.up = async function(knex) {
     
     // Analytics
     table.integer('track_usage').defaultTo(1);
-    table.longtext('usage_analytics');
+    table.text('usage_analytics');
     table.decimal('revenue_impact', 18, 2).defaultTo(0);
     table.string('created_by', 140);
     table.string('approved_by', 140);

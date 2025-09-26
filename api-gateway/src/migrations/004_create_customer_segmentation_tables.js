@@ -17,7 +17,7 @@ exports.up = async function(knex) {
     table.integer('priority').defaultTo(1);
     table.integer('is_active').defaultTo(1);
     table.integer('auto_assignment_enabled').defaultTo(0);
-    table.longtext('auto_assignment_rules');
+    table.text('auto_assignment_rules');
     table.string('created_by', 140);
     table.integer('customer_count').defaultTo(0);
     table.decimal('total_revenue', 18, 2).defaultTo(0);

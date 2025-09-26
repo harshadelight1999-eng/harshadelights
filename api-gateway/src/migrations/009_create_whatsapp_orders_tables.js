@@ -31,7 +31,7 @@ exports.up = async function(knex) {
     table.string('from_status', 50).nullable();
     table.string('to_status', 50).notNullable();
     table.text('notes').nullable();
-    table.timestamp('created_at').defaultTo(knex.now());
+    table.timestamp('created_at').defaultTo(knex.fn.now());
 
     // Indexes
     table.index('order_id');
