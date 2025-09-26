@@ -38,8 +38,9 @@ class RateLimitMiddleware {
         retryAfter: Math.ceil(config.rateLimit.windowMs / 1000)
       },
       standardHeaders: true,
-      legacyHeaders: false,
-      store: this.rateLimitStore
+      legacyHeaders: false
+      // Temporarily remove Redis store for immediate deployment
+      // store: this.rateLimitStore
     });
   }
 

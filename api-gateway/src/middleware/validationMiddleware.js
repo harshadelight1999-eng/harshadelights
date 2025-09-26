@@ -462,6 +462,23 @@ function contentSecurityPolicy() {
   };
 }
 
+// Express-validator result handler middleware  
+function validate(req, res, next) {
+  const { validationResult } = require('express-validator');
+  const result = validationResult(req);
+  
+  if (!result.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      error: 'Validation failed',
+      code: 'VALIDATION_ERROR',
+      details: result.array()
+    });
+  }
+  
+  next();
+}
+
 module.exports = {
   commonSchemas,
   requestSchemas,
@@ -469,5 +486,6 @@ module.exports = {
   sanitizeInput,
   validateRateLimit,
   contentSecurityPolicy,
-  securityRefinements
+  securityRefinements,
+  validate
 };

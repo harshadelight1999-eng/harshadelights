@@ -216,7 +216,7 @@ const upload = multer({
  *                       type: integer
  */
 router.get('/',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     query('page').optional().isInt({ min: 1 }).toInt(),
     query('limit').optional().isInt({ min: 1, max: 100 }).toInt(),
@@ -351,7 +351,7 @@ router.get('/',
  *         description: Featured products
  */
 router.get('/featured',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     query('limit').optional().isInt({ min: 1, max: 50 }).toInt()
   ],
@@ -413,7 +413,7 @@ router.get('/featured',
  *         description: Product not found
  */
 router.get('/:id',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     param('id').isUUID().withMessage('Invalid product ID')
   ],

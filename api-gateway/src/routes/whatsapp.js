@@ -99,7 +99,7 @@ const { getApiGatewayDB } = require('../config/database');
  *                   type: string
  */
 router.post('/generate-order-link',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     body('items').isArray().withMessage('Items must be an array'),
     body('items.*.product_id').notEmpty().withMessage('Product ID is required'),
@@ -130,7 +130,7 @@ router.post('/generate-order-link',
           )
           .leftJoin('product_variants as variants', 'products.id', 'variants.product_id')
           .where('products.id', item.product_id)
-          .where('variants.id', item.variant_id || variants => variants.where('product_id', item.product_id).first())
+          .where('variants.id', item.variant_id)
           .first();
 
         if (product) {
@@ -250,7 +250,7 @@ router.post('/generate-order-link',
  *         description: WhatsApp orders list
  */
 router.get('/orders',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     query('status').optional().isIn(['inquiry', 'confirmed', 'preparing', 'ready', 'delivered']),
     query('date_from').optional().isDate(),
@@ -335,7 +335,7 @@ router.get('/orders',
  *         description: Order status updated
  */
 router.put('/orders/:order_id/status',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     body('status').isIn(['inquiry', 'confirmed', 'preparing', 'ready', 'delivered']).withMessage('Invalid status'),
     body('notes').optional().isString()
@@ -422,7 +422,7 @@ router.put('/orders/:order_id/status',
  *         description: Quick WhatsApp order link generated
  */
 router.post('/generate-quick-order',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     body('product_id').notEmpty().withMessage('Product ID is required'),
     body('quantity').isInt({ min: 1 }).withMessage('Quantity must be positive')

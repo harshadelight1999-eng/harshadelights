@@ -88,7 +88,7 @@ const upload = multer({
  *                     $ref: '#/components/schemas/Category'
  */
 router.get('/',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     query('parent_id').optional().isUUID(),
     query('include_products').optional().isBoolean().toBoolean(),
@@ -184,7 +184,7 @@ router.get('/',
  *         description: Category not found
  */
 router.get('/:id',
-  rateLimitMiddleware.standardRateLimit(),
+  rateLimitMiddleware.basicRateLimit(),
   [
     param('id').isUUID().withMessage('Invalid category ID'),
     query('include_products').optional().isBoolean().toBoolean()
