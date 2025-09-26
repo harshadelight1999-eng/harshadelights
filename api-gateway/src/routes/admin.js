@@ -7,7 +7,6 @@ const express = require('express');
 const { logger } = require("../utils/logger");
 const router = express.Router();
 const Joi = require('joi');
-const authMiddleware = require('../middleware/auth');
 const { getApiGatewayDB, getSyncDB } = require('../config/database');
 
 /**
@@ -51,8 +50,8 @@ const { getApiGatewayDB, getSyncDB } = require('../config/database');
  *           type: number
  */
 
-// All admin routes require administrator role
-router.use(authMiddleware.authorizeRole(['admin']));
+// Note: Authentication and authorization is handled at the router level in routes/index.js
+// All admin routes are already protected by authMiddleware.authenticate() and authMiddleware.authorizeRole(['administrator'])
 
 /**
  * @swagger

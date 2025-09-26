@@ -1,22 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
   experimental: {
-    serverActions: true,
+    serverActions: false, // Disable for static export
+    externalDir: false
   },
   images: {
-    domains: ['localhost', 'harshadelights.com'],
+    unoptimized: true,
+    domains: ['localhost', 'harshadelights.com', 'harshadelights.onrender.com'],
   },
   env: {
-    CUSTOM_KEY: 'my-value',
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:3000/api/:path*',
-      },
-    ];
-  },
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://harshadelights.onrender.com'
+  }
 };
 
 module.exports = nextConfig;
