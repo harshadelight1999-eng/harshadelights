@@ -56,7 +56,7 @@ const User = require('./models/User');
 console.log('✅ User model loaded');
 
 console.log('🔐 Loading auth middleware...');
-const authMiddleware = require('./middleware/auth');
+const createAuthMiddleware = require('./middleware/auth');
 console.log('✅ Auth middleware loaded');
 
 console.log('🛡️ Loading security middleware...');
@@ -259,6 +259,19 @@ class ApiGatewayServer {
 
           if (this.db) {
             logger.info('✅ Database connections established successfully');
+            
+            // Run database migrations
+            logger.info('🔄 Running database migrations...');
+            try {
+              const { runMigrations } = require('./scripts/run-migrations');
+              const migrationResults = await runMigrations(this.db);
+              logger.info('✅ Database migrations completed', migrationResults);
+            } catch (error) {
+              logger.error('❌ Database migrations failed:', error);
+              // Continue startup even if migrations fail to allow manual intervention
+              logger.warn('⚠️  Server starting with potentially incomplete database schema');
+            }
+            
             dbInitialized = true;
           } else {
             throw new Error('Database connection returned null');
@@ -284,7 +297,7 @@ class ApiGatewayServer {
       if (this.db) {
         try {
           this.userModel = new User(this.db);
-          this.authMiddleware = authMiddleware;
+          this.authMiddleware = createAuthMiddleware(this.db);
 
           // Create database tables if they don't exist
           await User.createSchema(this.db);
@@ -293,12 +306,12 @@ class ApiGatewayServer {
           logger.error('Authentication system initialization failed:', error);
           logger.warn('🚨 Authentication will be disabled - API running in limited mode');
           this.userModel = null;
-          this.authMiddleware = null;
+          this.authMiddleware = createAuthMiddleware(); // Use fallback auth middleware
         }
       } else {
         logger.warn('🚨 Database not available - Authentication disabled, API running in limited mode');
         this.userModel = null;
-        this.authMiddleware = null;
+        this.authMiddleware = createAuthMiddleware(); // Use fallback auth middleware
       }
 
       // Initialize legacy Redis (for backward compatibility)

@@ -513,4 +513,32 @@ class AuthMiddleware {
   }
 }
 
-module.exports = new AuthMiddleware();
+// Export a factory function that creates the middleware with proper database connection
+module.exports = (db = null) => {
+  if (db) {
+    return new AuthMiddleware(db);
+  }
+  // Return a basic middleware that doesn't require database for public routes
+  return {
+    applicationContext: (req, res, next) => {
+      const appContext = req.headers['x-application-context'] || 'unknown';
+      req.applicationContext = appContext;
+      next();
+    },
+    authenticate: () => (req, res, next) => {
+      // When no database is available, reject authentication-required routes
+      return res.status(503).json({
+        success: false,
+        error: 'Authentication service unavailable',
+        code: 'AUTH_SERVICE_UNAVAILABLE'
+      });
+    },
+    authorizeRole: () => (req, res, next) => {
+      return res.status(503).json({
+        success: false,
+        error: 'Authorization service unavailable', 
+        code: 'AUTH_SERVICE_UNAVAILABLE'
+      });
+    }
+  };
+};
