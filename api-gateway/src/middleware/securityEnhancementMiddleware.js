@@ -442,10 +442,7 @@ function createApiKeyValidator() {
       { method: 'GET', pattern: /^\/api\/v1\/products\/[a-f0-9-]{36}$/ },
       { method: 'GET', pattern: /^\/api\/v1\/categories$/ },
       { method: 'GET', pattern: /^\/api\/v1\/categories\/[a-f0-9-]{36}$/ },
-      { method: 'POST', pattern: /^\/api\/v1\/whatsapp\/generate-order-link$/ },
-      { method: 'POST', pattern: /^\/api\/v1\/whatsapp\/generate-quick-order$/ },
-      { method: 'GET', pattern: /^\/api\/v1\/whatsapp\/orders$/ },
-      { method: 'PUT', pattern: /^\/api\/v1\/whatsapp\/orders\/[A-Z0-9-]+\/status$/ }
+      { method: 'GET', pattern: /^\/api\/v1\/whatsapp\/orders$/ }
     ];
 
     // Check for exact public endpoints
