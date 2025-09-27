@@ -229,7 +229,7 @@ export default function SupportPage() {
         <div className="flex space-x-1 mb-8 bg-white rounded-lg p-1 border border-gray-200 w-fit">
           {[
             { key: 'tickets', label: 'Support Tickets', icon: HelpCircle },
-            { key: 'chat', label: 'Live Chat', icon: MessageCircle },
+            { key: 'chat', label: 'Live Chat', icon: MessageCircle2 },
             { key: 'faq', label: 'FAQ', icon: Search },
             { key: 'contact', label: 'Contact Info', icon: Phone }
           ].map((tab) => (

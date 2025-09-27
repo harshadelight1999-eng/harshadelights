@@ -16,7 +16,7 @@ export default function ProductsPage() {
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts({}));
   }, [dispatch]);
 
   // Debounce search query

@@ -229,7 +229,7 @@ export default function RegisterPage() {
                   type="checkbox"
                   checked={acceptTerms}
                   onChange={(e) => setAcceptTerms(e.target.checked)}
-                  className="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500”
+                  className="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
                   disabled={isLoading}
                 />
               </div>
