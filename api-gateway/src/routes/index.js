@@ -340,6 +340,84 @@ const v1Router = express.Router();
 // Apply common middleware to all v1 routes
 v1Router.use(authMiddleware.applicationContext);
 
+// Service proxy routes (protected, must come FIRST to avoid catching public routes)
+v1Router.use('/proxy',
+  authMiddleware.authenticate(), // Require authentication for proxied requests
+  rateLimitMiddleware.authenticatedRateLimit(),
+  rateLimitMiddleware.apiKeyRateLimit(),
+  proxyRoutes
+);
+
+// Health endpoints (public)
+v1Router.get('/health', async (req, res) => {
+  try {
+    const { getApiGatewayDB } = require('../config/database');
+    const redisManager = require('../config/redis');
+
+    // Check database connectivity
+    let dbStatus = 'healthy';
+    try {
+      await getApiGatewayDB().raw('SELECT 1');
+    } catch (error) {
+      dbStatus = 'unhealthy';
+      logger.error('Database health check failed:', error.message);
+    }
+
+    // Check Redis connectivity
+    let redisStatus = 'healthy';
+    try {
+      const pingResult = await redisManager.ping();
+      if (!pingResult) {
+        redisStatus = 'degraded';
+      }
+    } catch (error) {
+      redisStatus = 'degraded';
+      logger.error('Redis health check failed:', error.message);
+    }
+
+    const health = {
+      success: true,
+      status: dbStatus === 'healthy' ? 'healthy' : 'degraded',
+      timestamp: new Date().toISOString(),
+      uptime: Math.floor(process.uptime()),
+      version: process.env.APP_VERSION || '1.0.0',
+      services: {
+        database: dbStatus,
+        redis: redisStatus
+      }
+    };
+
+    const statusCode = health.status === 'healthy' ? 200 : 503;
+    res.status(statusCode).json(health);
+
+  } catch (error) {
+    logger.error('Health check error:', error);
+    res.status(503).json({
+      success: false,
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      error: 'Health check failed'
+    });
+  }
+});
+
+v1Router.get('/ready', (req, res) => {
+  res.json({
+    success: true,
+    status: 'ready',
+    timestamp: new Date().toISOString()
+  });
+});
+
+v1Router.get('/live', (req, res) => {
+  res.json({
+    success: true,
+    status: 'live',
+    timestamp: new Date().toISOString(),
+    uptime: Math.floor(process.uptime())
+  });
+});
+
 // Authentication routes (public)
 v1Router.use('/auth', authRoutes);
 
@@ -357,14 +435,6 @@ v1Router.use('/admin',
   authMiddleware.authenticate(),
   authMiddleware.authorizeRole(['administrator']),
   adminRoutes
-);
-
-// Service proxy routes (protected, comes last to catch all other routes)
-v1Router.use('/',
-  authMiddleware.authenticate(), // Require authentication for all proxied requests
-  rateLimitMiddleware.authenticatedRateLimit(),
-  rateLimitMiddleware.apiKeyRateLimit(),
-  proxyRoutes
 );
 
 // Mount v1 routes

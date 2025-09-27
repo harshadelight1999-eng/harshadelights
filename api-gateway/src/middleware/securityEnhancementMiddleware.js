@@ -423,10 +423,21 @@ function createRequestSizeLimiter() {
 function createApiKeyValidator() {
   return (req, res, next) => {
     const apiKey = req.get('X-API-Key');
-    const publicPaths = ['/health', '/metrics', '/api/auth/login', '/api/auth/register'];
+    const publicPaths = [
+      '/health', 
+      '/metrics', 
+      '/api/auth/login', 
+      '/api/auth/register',
+      '/api/v1/health',
+      '/api/v1/ready', 
+      '/api/v1/live',
+      '/api/v1/products',
+      '/api/v1/categories',
+      '/api/v1/whatsapp'
+    ];
 
-    // Skip API key validation for public paths
-    if (publicPaths.includes(req.path)) {
+    // Skip API key validation for public paths and their sub-paths
+    if (publicPaths.some(path => req.path.startsWith(path))) {
       return next();
     }
 
