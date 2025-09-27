@@ -58,7 +58,7 @@ export default function RegisterPage() {
     passwordsMatch &&
     acceptTerms
   );
-
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-yellow-50 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full space-y-8">
