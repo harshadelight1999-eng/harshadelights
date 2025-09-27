@@ -32,7 +32,8 @@ export default function ProductsPage() {
                          product.description.toLowerCase().includes(debouncedSearchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || 
                            product.categories.some(cat => cat.name.toLowerCase() === selectedCategory.toLowerCase());
-    const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
+    const productPrice = product.variants[0]?.price || 0;
+    const matchesPrice = productPrice >= priceRange.min && productPrice <= priceRange.max;
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
@@ -44,7 +45,7 @@ export default function ProductsPage() {
       variant_id: product.variants?.[0]?.id || `${product.id}-default`,
       quantity: 1,
       title: product.title,
-      unit_price: product.price
+      unit_price: product.variants[0]?.price || 0
     }));
   };
 
@@ -188,9 +189,9 @@ export default function ProductsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <span className="text-lg font-bold text-gray-900">₹{product.price}</span>
-                        {product.compare_at_price && (
-                          <span className="text-sm text-gray-500 line-through">₹{product.compare_at_price}</span>
+                        <span className="text-lg font-bold text-gray-900">₹{product.variants[0]?.price || 0}</span>
+                        {product.variants[0]?.compare_at_price && (
+                          <span className="text-sm text-gray-500 line-through">₹{product.variants[0]?.compare_at_price}</span>
                         )}
                       </div>
                       <button
