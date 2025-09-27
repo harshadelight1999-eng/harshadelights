@@ -423,21 +423,42 @@ function createRequestSizeLimiter() {
 function createApiKeyValidator() {
   return (req, res, next) => {
     const apiKey = req.get('X-API-Key');
-    const publicPaths = [
+    
+    // Define specific public endpoints (not entire resource trees)
+    const publicEndpoints = [
       '/health', 
       '/metrics', 
       '/api/auth/login', 
       '/api/auth/register',
       '/api/v1/health',
       '/api/v1/ready', 
-      '/api/v1/live',
-      '/api/v1/products',
-      '/api/v1/categories',
-      '/api/v1/whatsapp'
+      '/api/v1/live'
     ];
 
-    // Skip API key validation for public paths and their sub-paths
-    if (publicPaths.some(path => req.path.startsWith(path))) {
+    // Define public read-only endpoints with specific method restrictions
+    const publicReadOnlyPatterns = [
+      { method: 'GET', pattern: /^\/api\/v1\/products$/ },
+      { method: 'GET', pattern: /^\/api\/v1\/products\/featured$/ },
+      { method: 'GET', pattern: /^\/api\/v1\/products\/[a-f0-9-]{36}$/ },
+      { method: 'GET', pattern: /^\/api\/v1\/categories$/ },
+      { method: 'GET', pattern: /^\/api\/v1\/categories\/[a-f0-9-]{36}$/ },
+      { method: 'POST', pattern: /^\/api\/v1\/whatsapp\/generate-order-link$/ },
+      { method: 'POST', pattern: /^\/api\/v1\/whatsapp\/generate-quick-order$/ },
+      { method: 'GET', pattern: /^\/api\/v1\/whatsapp\/orders$/ },
+      { method: 'PUT', pattern: /^\/api\/v1\/whatsapp\/orders\/[A-Z0-9-]+\/status$/ }
+    ];
+
+    // Check for exact public endpoints
+    if (publicEndpoints.includes(req.path)) {
+      return next();
+    }
+
+    // Check for public read-only endpoints with method restrictions
+    const isPublicReadOnly = publicReadOnlyPatterns.some(({ method, pattern }) => 
+      req.method === method && pattern.test(req.path)
+    );
+
+    if (isPublicReadOnly) {
       return next();
     }
 
