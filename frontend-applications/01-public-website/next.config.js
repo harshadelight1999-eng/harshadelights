@@ -24,6 +24,7 @@ const nextConfig = {
 
   // Image optimization
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'http',
@@ -88,7 +89,8 @@ const nextConfig = {
   },
 
   // Output configuration for deployment
-  output: 'standalone',
+  output: 'export',
+  trailingSlash: true,
 
   // Compiler options
   compiler: {
