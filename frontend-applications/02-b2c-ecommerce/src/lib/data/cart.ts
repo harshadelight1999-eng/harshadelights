@@ -140,3 +140,23 @@ export const updateShippingAddress = async (cartId: string, address: any) => {
     throw error
   }
 }
+
+export const setAddresses = async (cartId: string, addresses: { shipping?: any, billing?: any }) => {
+  try {
+    const promises = []
+    
+    if (addresses.shipping) {
+      promises.push(updateShippingAddress(cartId, addresses.shipping))
+    }
+    
+    if (addresses.billing) {
+      promises.push(updateBillingAddress(cartId, addresses.billing))
+    }
+    
+    await Promise.all(promises)
+    return true
+  } catch (error) {
+    console.error('Error setting addresses:', error)
+    throw error
+  }
+}

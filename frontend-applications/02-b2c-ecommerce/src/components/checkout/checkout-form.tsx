@@ -325,7 +325,7 @@ export default function CheckoutForm({ cart, onStepChange, currentStep }: Checko
   const renderShippingStep = () => (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold mb-4">Shipping Method</h2>
-      <RadioGroup value={formData.selectedShipping} onValueChange={(value) => handleInputChange('selectedShipping', value)}>
+      <RadioGroup value={formData.selectedShipping} onChange={(value) => handleInputChange('selectedShipping', value)}>
         {shippingOptions.map((option: any) => (
           <div key={option.id} className="flex items-center space-x-2 border rounded-lg p-4">
             <RadioGroup.Option value={option.id} className="flex items-center space-x-2">
@@ -353,7 +353,7 @@ export default function CheckoutForm({ cart, onStepChange, currentStep }: Checko
   const renderPaymentStep = () => (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
-      <RadioGroup value={formData.selectedPayment} onValueChange={(value) => handleInputChange('selectedPayment', value)}>
+      <RadioGroup value={formData.selectedPayment} onChange={(value) => handleInputChange('selectedPayment', value)}>
         {paymentMethods.map((method) => (
           <div key={method.id} className="flex items-center space-x-2 border rounded-lg p-4">
             <RadioGroup.Option value={method.id} className="flex items-center space-x-2 w-full">
