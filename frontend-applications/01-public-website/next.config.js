@@ -20,6 +20,8 @@ const nextConfig = {
   experimental: {
     // Enable PPR for better performance
     ppr: false,
+    // Remove dependency on shared package for production build
+    externalDir: false
   },
 
   // Image optimization
