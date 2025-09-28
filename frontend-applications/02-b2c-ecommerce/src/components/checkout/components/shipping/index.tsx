@@ -92,14 +92,16 @@ const Shipping: React.FC<ShippingProps> = ({
     if (_shippingMethods?.length) {
       const promises = _shippingMethods
         .filter((sm) => sm.price_type === "calculated")
-        .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
+        .map((sm) => ({ id: sm.id, promise: calculatePriceForShippingOption(sm.id, cart.id) }))
 
       if (promises.length) {
-        Promise.allSettled(promises).then((res) => {
+        Promise.allSettled(promises.map(p => p.promise)).then((res) => {
           const pricesMap: Record<string, number> = {}
-          res
-            .filter((r) => r.status === "fulfilled")
-            .forEach((p) => (pricesMap[p.value?.id || ""] = p.value?.amount!))
+          res.forEach((result, index) => {
+            if (result.status === "fulfilled") {
+              pricesMap[promises[index].id] = result.value
+            }
+          })
 
           setCalculatedPricesMap(pricesMap)
           setIsLoadingPrices(false)
