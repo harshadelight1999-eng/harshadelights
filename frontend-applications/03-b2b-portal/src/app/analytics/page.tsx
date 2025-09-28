@@ -150,7 +150,11 @@ export default function AnalyticsPage() {
         <div className="flex items-center space-x-2">
           <DatePickerWithRange
             date={dateRange}
-            onDateChange={setDateRange}
+            onDateChange={(date) => {
+              if (date?.from && date?.to) {
+                setDateRange({ from: date.from, to: date.to })
+              }
+            }}
           />
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />

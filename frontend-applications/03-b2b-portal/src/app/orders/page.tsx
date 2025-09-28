@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { Eye, Download, Package, Clock, CheckCircle, Truck } from 'lucide-react';
 
@@ -87,10 +88,10 @@ const getStatusIcon = (status: string) => {
 
 const getStatusBadge = (status: string) => {
   const variants = {
-    delivered: 'success',
-    shipped: 'default',
-    processing: 'warning',
-    pending: 'secondary',
+    delivered: 'default',
+    shipped: 'secondary',
+    processing: 'destructive',
+    pending: 'outline',
   } as const;
 
   return (

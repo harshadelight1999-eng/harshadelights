@@ -90,9 +90,7 @@ const nextConfig = {
       : 'http://localhost:3001',
   },
 
-  // Output configuration for deployment
-  output: 'export',
-  trailingSlash: true,
+  // Standard build for i18n support
 
   // Compiler options
   compiler: {
