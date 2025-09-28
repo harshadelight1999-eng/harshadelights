@@ -1,8 +1,9 @@
-export const calculatePriceForShippingOption = (shippingOption: any) => {
-  if (!shippingOption) return 0
+export const calculatePriceForShippingOption = (shippingOptionId: string, cartId: string) => {
+  if (!shippingOptionId || !cartId) return Promise.resolve(0)
   
   // Basic price calculation for shipping option
-  return shippingOption.amount || 0
+  // This would normally make an API call to calculate shipping
+  return Promise.resolve(0)
 }
 
 export const getShippingOptions = async (cartId: string) => {
