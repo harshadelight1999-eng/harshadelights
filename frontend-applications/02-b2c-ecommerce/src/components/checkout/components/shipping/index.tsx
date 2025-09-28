@@ -350,8 +350,7 @@ const Shipping: React.FC<ShippingProps> = ({
                               </span>
                               <span className="text-base-regular text-ui-fg-muted">
                                 {formatAddress(
-                                  option.service_zone?.fulfillment_set?.location
-                                    ?.address
+                                  option.service_zone_id ? { address_1: "Service Zone Address" } : {}
                                 )}
                               </span>
                             </div>
