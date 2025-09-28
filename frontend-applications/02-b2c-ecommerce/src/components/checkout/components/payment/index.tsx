@@ -1,14 +1,14 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, paymentInfoMap } from "@lib/constants"
-import { initiatePaymentSession } from "@lib/data/cart"
+import { isStripe as isStripeFunc, paymentInfoMap } from "@/lib/constants"
+import { initiatePaymentSession } from "@/lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
-import ErrorMessage from "@modules/checkout/components/error-message"
+import ErrorMessage from "../error-message"
 import PaymentContainer, {
   StripeCardContainer,
-} from "@modules/checkout/components/payment-container"
+} from "../payment-container"
 import Divider from "@modules/common/components/divider"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"

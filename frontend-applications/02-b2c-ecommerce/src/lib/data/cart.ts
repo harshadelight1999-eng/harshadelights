@@ -160,3 +160,40 @@ export const setAddresses = async (cartId: string, addresses: { shipping?: any, 
     throw error
   }
 }
+
+export const applyPromotions = async (codes: string[]) => {
+  try {
+    // Note: This would need to be updated with actual cart ID from context
+    // For now, implementing a basic structure
+    const response = await medusa.store.cart.update('cart_id', {
+      promo_codes: codes,
+    })
+    return response.cart
+  } catch (error) {
+    console.error('Error applying promotions:', error)
+    throw error
+  }
+}
+
+export const placeOrder = async () => {
+  try {
+    // Note: This would need actual cart ID from context
+    const response = await medusa.store.cart.complete('cart_id')
+    return response.order
+  } catch (error) {
+    console.error('Error placing order:', error)
+    throw error
+  }
+}
+
+export const setShippingMethod = async (cartId: string, shippingMethodId: string) => {
+  try {
+    const { cart } = await medusa.store.cart.shippingMethod.create(cartId, {
+      option_id: shippingMethodId,
+    })
+    return cart
+  } catch (error) {
+    console.error('Error setting shipping method:', error)
+    throw error
+  }
+}
