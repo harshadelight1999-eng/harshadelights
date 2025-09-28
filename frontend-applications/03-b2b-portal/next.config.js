@@ -3,7 +3,9 @@ const nextConfig = {
   output: 'export',
   trailingSlash: true,
   experimental: {
-    serverActions: false, // Disable for static export
+    serverActions: {
+      allowedOrigins: ["localhost:3003"]
+    },
     externalDir: false
   },
   images: {
