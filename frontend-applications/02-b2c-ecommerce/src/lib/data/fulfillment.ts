@@ -16,3 +16,14 @@ export const getShippingOptions = async (cartId: string) => {
     return []
   }
 }
+
+export const listCartShippingMethods = async (cartId: string) => {
+  try {
+    // This would integrate with Medusa cart shipping methods API
+    // For now, return empty array
+    return []
+  } catch (error) {
+    console.error('Error fetching cart shipping methods:', error)
+    return []
+  }
+}
