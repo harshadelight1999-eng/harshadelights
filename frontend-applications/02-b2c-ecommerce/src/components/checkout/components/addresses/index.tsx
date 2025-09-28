@@ -37,7 +37,33 @@ const Addresses = ({
     router.push(pathname + "?step=address")
   }
 
-  const [message, formAction] = useActionState(setAddresses, null)
+  // Action wrapper that matches useActionState signature
+  const addressAction = async (
+    prevState: any,
+    formData: FormData | { shipping?: any, billing?: any }
+  ) => {
+    if (!cart?.id) {
+      return { success: false, error: "Cart not found" }
+    }
+
+    try {
+      let addresses: { shipping?: any, billing?: any } = {}
+      
+      if (formData instanceof FormData) {
+        // Extract addresses from FormData if needed
+        addresses = { shipping: null, billing: null }
+      } else {
+        addresses = formData
+      }
+
+      await setAddresses(cart.id, addresses)
+      return { success: true, error: null }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : "An error occurred" }
+    }
+  }
+
+  const [message, formAction] = useActionState(addressAction, null)
 
   return (
     <div className="bg-white">
@@ -86,7 +112,7 @@ const Addresses = ({
             <SubmitButton className="mt-6" data-testid="submit-address-button">
               Continue to delivery
             </SubmitButton>
-            <ErrorMessage error={message} data-testid="address-error-message" />
+            <ErrorMessage error={message?.error} data-testid="address-error-message" />
           </div>
         </form>
       ) : (
