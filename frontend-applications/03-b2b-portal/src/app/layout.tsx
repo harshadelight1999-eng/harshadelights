@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AuthProvider } from '@/components/auth-provider';
@@ -12,8 +15,12 @@ export const metadata: Metadata = {
   description: 'Wholesale ordering and account management for Harsha Delights partners',
   keywords: ['wholesale', 'confectionery', 'ordering', 'B2B', 'Harsha Delights'],
   authors: [{ name: 'Harsha Delights' }],
-  viewport: 'width=device-width, initial-scale=1',
 };
+
+export const generateViewport = () => ({
+  width: 'device-width',
+  initialScale: 1,
+});
 
 export default function RootLayout({
   children,

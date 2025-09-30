@@ -112,7 +112,7 @@ export function ProductFilters() {
                 <Checkbox
                   id="in-stock"
                   checked={inStockOnly}
-                  onCheckedChange={setInStockOnly}
+                  onCheckedChange={(checked: boolean) => setInStockOnly(checked)}
                 />
                 <Label htmlFor="in-stock" className="text-sm cursor-pointer">
                   In Stock Only

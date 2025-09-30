@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser, getCurrentOrganization } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 import { Navbar } from '@/components/layout/navbar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';

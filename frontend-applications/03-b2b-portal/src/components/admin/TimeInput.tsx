@@ -130,7 +130,7 @@ export type TimeInputProps = CommonInputProps &
 
 const leftPad =
     (nb = 2) =>
-    value =>
+    (value: any) =>
         ('0'.repeat(nb) + value).slice(-nb);
 const leftPad2 = leftPad(2);
 

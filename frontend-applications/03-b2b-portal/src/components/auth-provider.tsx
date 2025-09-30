@@ -1,5 +1,6 @@
 'use client';
 
+import { AuthKitProvider } from '@workos-inc/authkit-nextjs/components';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@/types';
 

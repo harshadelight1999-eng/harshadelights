@@ -147,7 +147,7 @@ export const InPlaceEditor = <
                 undoable: mutationMode === 'undoable',
             });
         },
-        onError = error => {
+        onError = (error: any) => {
             notify('ra.notification.http_error', {
                 type: 'error',
                 messageArgs: { _: error.message },
@@ -157,7 +157,7 @@ export const InPlaceEditor = <
         ...otherMutationOptions
     } = mutationOptions;
 
-    const handleSave = async values => {
+    const handleSave = async (values: any) => {
         if (!record) {
             throw new Error('No record found');
         }
@@ -179,7 +179,7 @@ export const InPlaceEditor = <
                 onError,
                 mutationMode,
                 ...otherMutationOptions,
-            }
+            } as any
         );
     };
 

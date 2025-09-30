@@ -219,7 +219,7 @@ export const SelectInput = (inProps: SelectInputProps) => {
     }, [emptyText, translate]);
 
     const renderMenuItemOption = useCallback(
-        choice => getChoiceText(choice),
+        (choice: any) => getChoiceText(choice),
         [getChoiceText]
     );
 
@@ -261,7 +261,7 @@ export const SelectInput = (inProps: SelectInputProps) => {
     const createItem = create || onCreate ? getCreateItem() : null;
 
     const renderMenuItem = useCallback(
-        choice => {
+        (choice: any) => {
             return choice ? (
                 <MenuItem
                     key={getChoiceValue(choice)}

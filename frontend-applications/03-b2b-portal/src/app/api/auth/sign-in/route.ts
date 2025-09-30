@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-// TODO: Fix WorkOS AuthKit imports after version compatibility resolved
-// import { getSignInUrl } from '@workos-inc/authkit-nextjs';
+import { getSignInUrl } from '@workos-inc/authkit-nextjs';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Implement actual WorkOS sign-in after fixing import issues
-    // const signInUrl = await getSignInUrl({
-    //   // Optional: Specify organization ID for direct sign-in to specific org
-    //   // organization: 'org_123',
-    // });
+    const signInUrl = await getSignInUrl({
+      // Optional: Specify organization ID for direct sign-in to specific org
+      organizationId: request.nextUrl.searchParams.get('organization') || undefined,
+      // Add return URL for post-auth redirect  
+      redirectUri: request.nextUrl.searchParams.get('returnTo') || '/dashboard',
+    });
 
-    // Temporary redirect to dashboard for demo
-    const signInUrl = `${request.nextUrl.origin}/dashboard`;
     return NextResponse.redirect(signInUrl);
   } catch (error) {
     console.error('Error creating sign-in URL:', error);

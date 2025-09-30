@@ -402,7 +402,7 @@ If you provided a React element for the optionText prop, you must also provide t
     });
 
     const getOptionDisabled = useCallback(
-        option => {
+        (option: any) => {
             return (
                 getOptionDisabledWithCreateSupport(option) ||
                 (getOptionDisabledProp && getOptionDisabledProp(option))
@@ -462,7 +462,7 @@ If you provided a React element for the optionText prop, you must also provide t
     );
 
     const finalOnBlur = useCallback(
-        (event): void => {
+        (event: any): void => {
             if (clearOnBlur && !multiple) {
                 const optionLabel = getOptionLabel(selectedChoice);
                 if (!isEqual(optionLabel, filterValue)) {
@@ -530,7 +530,7 @@ If you provided a React element for the optionText prop, you must also provide t
             let selectedItemTexts;
 
             if (multiple) {
-                selectedItemTexts = selectedChoice.map(item =>
+                selectedItemTexts = selectedChoice.map((item: any) =>
                     getOptionLabel(item)
                 );
             } else {
@@ -542,9 +542,9 @@ If you provided a React element for the optionText prop, you must also provide t
         [getOptionLabel, multiple, selectedChoice]
     );
     const doesQueryMatchSuggestion = useCallback(
-        filter => {
+        (filter: any) => {
             const hasOption = finalChoices
-                ? finalChoices.some(choice => getOptionLabel(choice) === filter)
+                ? finalChoices.some((choice: any) => getOptionLabel(choice) === filter)
                 : false;
 
             return doesQueryMatchSelection(filter) || hasOption;
@@ -552,7 +552,7 @@ If you provided a React element for the optionText prop, you must also provide t
         [finalChoices, getOptionLabel, doesQueryMatchSelection]
     );
 
-    const filterOptions = (options, params) => {
+    const filterOptions = (options: any, params: any) => {
         let filteredOptions =
             isFromReference || // When used inside a reference, AutocompleteInput shouldn't do the filtering as it's done by the reference input
             matchSuggestion || // When using element as optionText (and matchSuggestion), options are filtered by getSuggestions, so they shouldn't be filtered here
@@ -620,7 +620,7 @@ If you provided a React element for the optionText prop, you must also provide t
         isFromReference,
     ]);
 
-    const isOptionEqualToValue = (option, value) => {
+    const isOptionEqualToValue = (option: any, value: any) => {
         return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
     const renderHelperText = !!fetchError || helperText !== false || invalid;
@@ -665,16 +665,13 @@ If you provided a React element for the optionText prop, you must also provide t
                         ...params.InputProps,
                         ...TextFieldProps?.InputProps,
                     };
-                    // @ts-expect-error slotProps do not yet exist in MUI v5
                     const mergedSlotProps = TextFieldProps?.slotProps
                         ? {
                               slotProps: {
-                                  // @ts-expect-error slotProps do not yet exist in MUI v5
                                   ...TextFieldProps?.slotProps,
                                   input: {
                                       readOnly,
                                       ...params.InputProps,
-                                      // @ts-expect-error slotProps do not yet exist in MUI v5
                                       ...TextFieldProps?.slotProps?.input,
                                   },
                               },
@@ -908,18 +905,18 @@ const useSelectedChoice = <
 
 const getSelectedItems = (
     choices: RaRecord[] = [],
-    value,
+    value: any,
     optionValue = 'id',
-    multiple
+    multiple: any
 ) => {
     if (multiple) {
         return (Array.isArray(value ?? []) ? value : [value])
-            .map(item =>
+            .map((item: any) =>
                 choices.find(
-                    choice => String(item) === String(get(choice, optionValue))
+                    (choice: any) => String(item) === String(get(choice, optionValue))
                 )
             )
-            .filter(item => !!item);
+            .filter((item: any) => !!item);
     }
     return (
         choices.find(
@@ -953,7 +950,7 @@ const areSelectedItemsEqual = (
     );
 };
 
-const DefaultFilterToQuery = searchText => ({ q: searchText });
+const DefaultFilterToQuery = (searchText: any) => ({ q: searchText });
 const defaultOffline = <Offline variant="inline" />;
 
 declare module '@mui/material/styles' {

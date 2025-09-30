@@ -1,60 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-// TODO: Fix WorkOS AuthKit imports after version compatibility resolved
-// import { getUser } from '@workos-inc/authkit-nextjs';
+import { withAuth } from '@workos-inc/authkit-nextjs';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Implement actual WorkOS auth after fixing import issues
-    // const { user } = await getUser();
+    const { user } = await withAuth();
     
-    // Temporary stub for demo functionality
-    const user = {
-      id: 'temp-user-id',
-      email: 'demo@harshadelights.com',
-      firstName: 'Demo',
-      lastName: 'User',
-      organizationId: 'temp-org-id',
-      organizationName: 'Demo Organization',
-      lastSignInAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      customAttributes: { role: 'admin' }
-    };
-    
-    // if (!user) {
-    //   return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
-    // }
+    if (!user) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    }
 
     // Transform WorkOS user to our User type
     const formattedUser = {
       id: user.id,
       email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      role: user.customAttributes?.role as 'admin' | 'purchaser' | 'viewer' || 'viewer',
-      organizationId: user.organizationId,
-      lastLoginAt: user.lastSignInAt,
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      role: 'viewer' as 'admin' | 'purchaser' | 'viewer', // TODO: Get role from user metadata or your business system
+      organizationId: (user as any).organizationId || null, // TODO: Get from WorkOS organization membership
+      lastLoginAt: user.updatedAt,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
 
-    // TODO: Fetch organization details from API
-    const organization = {
-      id: user.organizationId,
-      name: user.organizationName || 'Demo Organization',
-      slug: user.organizationId?.substring(0, 8) || 'demo-org',
-      customerTier: 'gold',
-      creditLimit: 100000,
-      creditUtilized: 25000,
-      paymentTerms: 'Net 30',
+    // TODO: Replace with actual API call to your business system
+    // This should fetch organization details from your backend:
+    // const orgResponse = await fetch(`${process.env.BUSINESS_API_URL}/organizations/${user.organizationId}`)
+    // const organization = await orgResponse.json()
+    
+    const organization = formattedUser.organizationId ? {
+      id: formattedUser.organizationId,
+      name: `Organization ${formattedUser.organizationId}`, // TODO: Get from your business system
+      slug: formattedUser.organizationId?.substring(0, 8) || 'unknown',
+      customerTier: 'silver', // Get from your business system
+      creditLimit: 50000, // Get from your business system  
+      creditUtilized: 12000, // Calculate from your order system
+      paymentTerms: 'Net 30', // Business rule from your system
       contactInfo: {
-        phone: '+91-9876543210',
-        address: 'Mumbai, Maharashtra',
-        gstNumber: '27AABCU9603R1ZX',
+        phone: '+91-0000000000', // From organization profile
+        address: 'Address not set', // From organization profile
+        gstNumber: 'GST-NOT-SET', // From organization profile
       },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    } : null;
 
     return NextResponse.json({
       user: formattedUser,

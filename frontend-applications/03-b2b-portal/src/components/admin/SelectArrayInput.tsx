@@ -187,9 +187,9 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                 // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
                 // this snippet removes a value if it is present twice
                 eventOrChoice.target.value = eventOrChoice.target.value.reduce(
-                    (acc, value) => {
+                    (acc: any, value: any) => {
                         // eslint-disable-next-line eqeqeq
-                        const index = acc.findIndex(v => v == value);
+                        const index = acc.findIndex((v: any) => v == value);
                         return index < 0
                             ? [...acc, value]
                             : [...acc.slice(0, index), ...acc.slice(index + 1)];
@@ -228,7 +228,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
             : allChoices || [];
 
     const renderMenuItemOption = useCallback(
-        choice =>
+        (choice: any) =>
             !!createItem &&
             choice?.id === createItem.id &&
             typeof optionText === 'function'
@@ -238,7 +238,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     );
 
     const renderMenuItem = useCallback(
-        choice => {
+        (choice: any) => {
             return choice ? (
                 <MenuItem
                     key={getChoiceValue(choice)}

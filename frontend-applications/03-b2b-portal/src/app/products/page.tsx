@@ -1,145 +1,57 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
+import { getB2BProductsList } from '@/lib/data/products';
+
+export const dynamic = 'force-dynamic';
 import { Navbar } from '@/components/layout/navbar';
 import { ProductGrid } from '@/components/products/product-grid';
 import { ProductFilters } from '@/components/products/product-filters';
 import { ProductSearch } from '@/components/products/product-search';
 
-// Mock products data - replace with actual API calls
-const mockProducts = [
-  {
-    id: '1',
-    sku: 'HD-KK-001',
-    name: 'Kaju Katli',
-    description: 'Premium cashew-based sweet delicacy',
-    category: 'Sweets',
-    images: ['/api/placeholder/300/300'],
-    basePrice: 1500,
-    customerPrice: 1350,
-    discount: 10,
-    discountType: 'percentage' as const,
-    unit: 'kg',
-    minimumOrderQuantity: 5,
-    inStock: true,
-    stockQuantity: 100,
-    specifications: {
-      'Shelf Life': '15 days',
-      'Ingredients': 'Cashew, Sugar, Ghee',
-      'Packaging': 'Premium box',
-    },
-  },
-  {
-    id: '2',
-    sku: 'HD-MC-001',
-    name: 'Milk Chocolate Bar',
-    description: 'Rich milk chocolate with 35% cocoa',
-    category: 'Chocolates',
-    images: ['/api/placeholder/300/300'],
-    basePrice: 800,
-    customerPrice: 720,
-    discount: 10,
-    discountType: 'percentage' as const,
-    unit: 'kg',
-    minimumOrderQuantity: 10,
-    inStock: true,
-    stockQuantity: 200,
-    specifications: {
-      'Shelf Life': '12 months',
-      'Cocoa Content': '35%',
-      'Packaging': 'Foil wrapper',
-    },
-  },
-  {
-    id: '3',
-    sku: 'HD-NM-001',
-    name: 'Namkeen Mix',
-    description: 'Traditional Indian savory snack mix',
-    category: 'Namkeens',
-    images: ['/api/placeholder/300/300'],
-    basePrice: 600,
-    customerPrice: 540,
-    discount: 10,
-    discountType: 'percentage' as const,
-    unit: 'kg',
-    minimumOrderQuantity: 10,
-    inStock: true,
-    stockQuantity: 150,
-    specifications: {
-      'Shelf Life': '6 months',
-      'Type': 'Spicy mix',
-      'Packaging': 'Sealed pouch',
-    },
-  },
-  {
-    id: '4',
-    sku: 'HD-AC-001',
-    name: 'Almond Cookies',
-    description: 'Buttery cookies with premium almonds',
-    category: 'Cookies',
-    images: ['/api/placeholder/300/300'],
-    basePrice: 1200,
-    customerPrice: 1080,
-    discount: 10,
-    discountType: 'percentage' as const,
-    unit: 'kg',
-    minimumOrderQuantity: 5,
-    inStock: true,
-    stockQuantity: 80,
-    specifications: {
-      'Shelf Life': '3 months',
-      'Main Ingredient': 'Almond',
-      'Packaging': 'Cookie tin',
-    },
-  },
-  {
-    id: '5',
-    sku: 'HD-DF-001',
-    name: 'Premium Almonds',
-    description: 'California almonds, premium grade',
-    category: 'Dry Fruits',
-    images: ['/api/placeholder/300/300'],
-    basePrice: 2500,
-    customerPrice: 2250,
-    discount: 10,
-    discountType: 'percentage' as const,
-    unit: 'kg',
-    minimumOrderQuantity: 2,
-    inStock: true,
-    stockQuantity: 50,
-    specifications: {
-      'Origin': 'California',
-      'Grade': 'Premium',
-      'Packaging': 'Vacuum sealed',
-    },
-  },
-  {
-    id: '6',
-    sku: 'HD-BU-001',
-    name: 'Sweet Buns',
-    description: 'Fresh sweet buns with cardamom flavor',
-    category: 'Buns',
-    images: ['/api/placeholder/300/300'],
-    basePrice: 400,
-    customerPrice: 360,
-    discount: 10,
-    discountType: 'percentage' as const,
-    unit: 'dozen',
-    minimumOrderQuantity: 20,
-    inStock: true,
-    stockQuantity: 300,
-    specifications: {
-      'Shelf Life': '2 days',
-      'Flavor': 'Cardamom',
-      'Packaging': 'Paper box',
-    },
-  },
-];
+interface PageProps {
+  searchParams: {
+    page?: string;
+    limit?: string;
+    category?: string;
+    search?: string;
+  };
+}
 
-export default async function ProductsPage() {
+export default async function ProductsPage({ searchParams }: PageProps) {
   const user = await getCurrentUser();
 
   if (!user) {
     redirect('/auth/sign-in');
+  }
+
+  // Parse search parameters
+  const page = parseInt(searchParams.page || '1');
+  const limit = parseInt(searchParams.limit || '12');
+  const offset = (page - 1) * limit;
+
+  let products: any[] = [];
+  let pagination = {
+    count: 0,
+    offset: 0,
+    limit: 12,
+    hasMore: false,
+    totalPages: 0
+  };
+  let error: string | null = null;
+
+  try {
+    const result = await getB2BProductsList({
+      limit,
+      offset,
+      q: searchParams.search,
+      category_id: searchParams.category ? [searchParams.category] : undefined,
+    });
+    
+    products = result.products;
+    pagination = result.pagination;
+  } catch (err) {
+    console.error('Failed to fetch products:', err);
+    error = 'Failed to load products. Please try again later.';
   }
 
   return (
@@ -154,6 +66,12 @@ export default async function ProductsPage() {
           </p>
         </div>
 
+        {error ? (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <p className="text-red-800">{error}</p>
+          </div>
+        ) : null}
+
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
           <aside className="lg:w-64">
@@ -165,7 +83,49 @@ export default async function ProductsPage() {
             <div className="mb-6">
               <ProductSearch />
             </div>
-            <ProductGrid products={mockProducts} />
+            
+            {products.length > 0 ? (
+              <>
+                <div className="mb-4 text-sm text-gray-600">
+                  Showing {pagination.offset + 1}-{Math.min(pagination.offset + pagination.limit, pagination.count)} of {pagination.count} products
+                </div>
+                <ProductGrid products={products} />
+                
+                {/* Pagination */}
+                {pagination.totalPages > 1 && (
+                  <div className="mt-8 flex justify-center">
+                    <div className="flex gap-2">
+                      {page > 1 && (
+                        <a
+                          href={`?page=${page - 1}&limit=${limit}${searchParams.search ? `&search=${searchParams.search}` : ''}${searchParams.category ? `&category=${searchParams.category}` : ''}`}
+                          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                        >
+                          Previous
+                        </a>
+                      )}
+                      <span className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                        Page {page} of {pagination.totalPages}
+                      </span>
+                      {pagination.hasMore && (
+                        <a
+                          href={`?page=${page + 1}&limit=${limit}${searchParams.search ? `&search=${searchParams.search}` : ''}${searchParams.category ? `&category=${searchParams.category}` : ''}`}
+                          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                        >
+                          Next
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">No products found.</p>
+                {searchParams.search && (
+                  <p className="text-gray-400 mt-2">Try adjusting your search criteria.</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </main>

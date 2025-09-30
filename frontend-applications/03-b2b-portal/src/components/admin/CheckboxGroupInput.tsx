@@ -196,7 +196,7 @@ export const CheckboxGroupInput = (inProps: CheckboxGroupInputProps) => {
     const getRecordRepresentation = useGetRecordRepresentation(resource);
 
     const handleCheck = useCallback(
-        (event, isChecked) => {
+        (event: any, isChecked: any) => {
             let newValue;
 
             if (
@@ -219,7 +219,7 @@ export const CheckboxGroupInput = (inProps: CheckboxGroupInputProps) => {
             if (isChecked) {
                 formOnChange([...(value || []), ...[newValue]]);
             } else {
-                formOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
+                formOnChange(value.filter((v: any) => v != newValue)); // eslint-disable-line eqeqeq
             }
             formOnBlur(); // Ensure field is flagged as touched
         },

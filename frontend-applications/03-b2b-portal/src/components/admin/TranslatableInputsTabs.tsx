@@ -22,7 +22,7 @@ export const TranslatableInputsTabs = (
     const { groupKey, TabsProps: tabsProps } = props;
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
 
-    const handleChange = (event, newLocale): void => {
+    const handleChange = (event: any, newLocale: any): void => {
         selectLocale(newLocale);
     };
 

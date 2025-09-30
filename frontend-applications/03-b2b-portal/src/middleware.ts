@@ -3,13 +3,8 @@ import { authkitMiddleware } from '@workos-inc/authkit-nextjs';
 export default authkitMiddleware({
   // Middleware will run for all routes except those defined here
   middlewareAuth: {
-    ignoredRoutes: [
-      '/',
-      '/auth/callback',
-      '/auth/error',
-      '/favicon.ico',
-      '/api/health',
-    ],
+    enabled: true,
+    unauthenticatedPaths: ['/api', '/auth'],
   },
 });
 

@@ -75,7 +75,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     const { trigger, getValues } = useFormContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
-    const initialDefaultValue = useRef({});
+    const initialDefaultValue = useRef({} as Record<string, any>);
 
     const removeField = useCallback(
         (index: number) => {
@@ -94,7 +94,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
 
     if (fields.length > 0) {
         const { id, ...rest } = fields[0];
-        initialDefaultValue.current = rest;
+        initialDefaultValue.current = rest as Record<string, any>;
         for (const k in initialDefaultValue.current)
             initialDefaultValue.current[k] = null;
     }

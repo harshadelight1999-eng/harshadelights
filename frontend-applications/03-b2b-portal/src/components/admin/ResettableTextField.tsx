@@ -46,7 +46,7 @@ export const ResettableTextField = forwardRef(
 
         const { onChange } = props;
         const handleClickClearButton = useCallback(
-            event => {
+            (event: any) => {
                 event.preventDefault();
                 onChange && onChange('');
             },
@@ -173,7 +173,7 @@ export const ResettableTextField = forwardRef(
 
 ResettableTextField.displayName = 'ResettableTextField';
 
-const handleMouseDownClearButton = event => {
+const handleMouseDownClearButton = (event: any) => {
     event.preventDefault();
 };
 

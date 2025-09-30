@@ -62,7 +62,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
     });
 
     const handleChange = useCallback(
-        event => {
+        (event: any) => {
             field.onChange(event);
             // Ensure field is considered as touched
             field.onBlur();

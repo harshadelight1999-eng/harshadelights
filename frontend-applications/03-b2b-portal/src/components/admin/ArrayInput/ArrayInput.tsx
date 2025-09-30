@@ -242,7 +242,7 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     );
 };
 
-export const getArrayInputError = error => {
+export const getArrayInputError = (error: any) => {
     if (Array.isArray(error)) {
         return undefined;
     }

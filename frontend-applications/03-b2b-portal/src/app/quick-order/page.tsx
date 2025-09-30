@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 import { Navbar } from '@/components/layout/navbar';
 import { QuickOrderForm } from '@/components/orders/quick-order-form';
 

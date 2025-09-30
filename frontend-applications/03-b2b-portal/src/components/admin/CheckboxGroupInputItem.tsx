@@ -60,7 +60,7 @@ export const CheckboxGroupInputItem = (
                     className={CheckboxGroupInputItemClasses.checkbox}
                     checked={
                         value
-                            ? value.find(v => v == getChoiceValue(choice)) !== // eslint-disable-line eqeqeq
+                            ? value.find((v: any) => v == getChoiceValue(choice)) !== // eslint-disable-line eqeqeq
                               undefined
                             : false
                     }

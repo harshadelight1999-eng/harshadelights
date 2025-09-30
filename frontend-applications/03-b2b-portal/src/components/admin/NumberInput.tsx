@@ -84,7 +84,7 @@ export const NumberInput = (props: NumberInputProps) => {
     React.useEffect(() => {
         if (!hasFocus.current) {
             const stringValue = format(field.value);
-            setValue(value => (value !== stringValue ? stringValue : value));
+            setValue((value: any) => (value !== stringValue ? stringValue : value));
         }
     }, [field.value, format]);
 
@@ -127,7 +127,7 @@ export const NumberInput = (props: NumberInputProps) => {
         }
         hasFocus.current = false;
         const stringValue = format(field.value);
-        setValue(value => (value !== stringValue ? stringValue : value));
+        setValue((value: any) => (value !== stringValue ? stringValue : value));
     };
 
     const renderHelperText = helperText !== false || invalid;
@@ -191,7 +191,7 @@ export interface NumberInputProps
     max?: string | number;
 }
 
-const convertStringToNumber = value => {
+const convertStringToNumber = (value: any) => {
     if (value == null || value === '') {
         return null;
     }
@@ -200,7 +200,7 @@ const convertStringToNumber = value => {
     return isNaN(float) ? 0 : float;
 };
 
-const convertNumberToString = value =>
+const convertNumberToString = (value: any) =>
     value == null || isNaN(value) ? '' : value.toString();
 
 const PREFIX = 'RaNumberInput';

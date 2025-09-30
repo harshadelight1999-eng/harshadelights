@@ -19,7 +19,7 @@ export const delayedDataProvider = (
     delay = process.env.NODE_ENV === 'test' ? 100 : 300
 ) =>
     new Proxy(dataProvider, {
-        get: (target, name) => (resource, params) => {
+        get: (target, name) => (resource: any, params: any) => {
             if (typeof name === 'symbol' || name === 'then') {
                 return;
             }

@@ -124,7 +124,7 @@ export const TextArrayInput = (inProps: TextArrayInputProps) => {
     );
 };
 
-const emptyArray = [];
+const emptyArray: string[] = [];
 
 const PREFIX = 'RaTextArrayInput';
 

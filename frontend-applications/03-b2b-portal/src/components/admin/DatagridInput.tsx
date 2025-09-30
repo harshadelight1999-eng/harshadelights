@@ -99,7 +99,7 @@ export const DatagridInput = (inProps: DatagridInputProps) => {
     const onToggleItem = useCallback(
         (id: Identifier) => {
             if (field.value.includes(id)) {
-                field.onChange(field.value.filter(item => item !== id));
+                field.onChange(field.value.filter((item: any) => item !== id));
             } else {
                 field.onChange([...field.value, id]);
             }
@@ -190,19 +190,19 @@ const Root = styled('div', {
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        [PREFIX]: 'root';
+        RaDatagridInputCustom: 'root';
     }
 
     interface ComponentsPropsList {
-        [PREFIX]: Partial<DatagridInputProps>;
+        RaDatagridInputCustom: Partial<DatagridInputProps>;
     }
 
     interface Components {
-        [PREFIX]?: {
-            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        RaDatagridInputCustom?: {
+            defaultProps?: ComponentsPropsList['RaDatagridInputCustom'];
             styleOverrides?: ComponentsOverrides<
                 Omit<Theme, 'components'>
-            >[typeof PREFIX];
+            >['RaDatagridInputCustom'];
         };
     }
 }
