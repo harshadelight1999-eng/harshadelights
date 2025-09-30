@@ -1,0 +1,1 @@
+{"version":3,"file":"ProductListSec.d.ts","sourceRoot":"","sources":["../../src/components/ProductListSec.tsx"],"names":[],"mappings":"AAUA,OAAO,EAAE,OAAO,EAAE,MAAM,uBAAuB,CAAC;AAGhD,KAAK,mBAAmB,GAAG;IACzB,KAAK,EAAE,MAAM,CAAC;IACd,IAAI,EAAE,OAAO,EAAE,CAAC;IAChB,WAAW,CAAC,EAAE,MAAM,CAAC;CACtB,CAAC;AAEF,QAAA,MAAM,cAAc,GAAI,8BAA8B,mBAAmB,4CAmDxE,CAAC;AAEF,eAAe,cAAc,CAAC"}

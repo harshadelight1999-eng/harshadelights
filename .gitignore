@@ -31,6 +31,9 @@ build/
 *.tsbuildinfo
 tsconfig.tsbuildinfo
 
+# Exception: Allow shared components dist (pre-built for deployment)
+!frontend-applications/shared/dist/
+
 # Next.js build artifacts
 .next/
 **/.next/
