@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Temporarily remove static export for build testing
+  // Removed static export - using Web Service instead
   // output: 'export',
   trailingSlash: true,
   eslint: {
