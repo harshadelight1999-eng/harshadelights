@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getProductsList } from '@/lib/data/products'
 
+// API Gateway configuration  
+const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || 'http://localhost:3001'
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -13,6 +16,7 @@ export async function GET(request: NextRequest) {
       order: searchParams.get('order') || undefined,
     }
 
+    // Try to get products through the enhanced data service (which uses API Gateway)
     const { products, pagination } = await getProductsList(params)
 
     return NextResponse.json({
@@ -24,25 +28,11 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error in products API route:', error)
 
-    // Return mock data as fallback
-    const mockProducts = [
-      {
-        id: '1',
-        title: 'Premium Kaju Katli',
-        description: 'Handcrafted cashew diamonds made with pure ghee and silver leaf',
-        handle: 'premium-kaju-katli',
-        thumbnail: '/api/placeholder/300/300',
-        price: 450,
-        compare_at_price: 500,
-        variants: [{ id: '1-v1', price: 450, inventory_quantity: 50 }],
-        categories: [{ id: 'c1', name: 'Sweets', handle: 'sweets' }]
-      }
-    ]
-
     return NextResponse.json({
-      products: mockProducts,
-      pagination: { count: 1, offset: 0, limit: 12, hasMore: false, totalPages: 1 },
-      message: 'Using fallback data - Medusa backend unavailable'
-    })
+      error: 'Failed to fetch products',
+      message: 'Both API Gateway and Medusa backend are unavailable',
+      products: [],
+      pagination: { count: 0, offset: 0, limit: 12, hasMore: false, totalPages: 0 }
+    }, { status: 503 })
   }
 }

@@ -14,7 +14,11 @@ import {
   Plus, 
   Minus,
   Check,
-  Package
+  Package,
+  Leaf,
+  Shield,
+  Clock,
+  Thermometer
 } from 'lucide-react'
 
 interface ProductCardProps {
@@ -139,6 +143,52 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
           {product.description}
         </p>
+
+        {/* Confectionery-specific badges */}
+        {product.confectionery && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {product.confectionery.is_organic && (
+              <span className="inline-flex items-center text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                <Leaf className="w-3 h-3 mr-1" />
+                Organic
+              </span>
+            )}
+            {product.confectionery.is_vegan && (
+              <span className="inline-flex items-center text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                <Shield className="w-3 h-3 mr-1" />
+                Vegan
+              </span>
+            )}
+            {product.confectionery.is_gluten_free && (
+              <span className="inline-flex items-center text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                <Shield className="w-3 h-3 mr-1" />
+                Gluten Free
+              </span>
+            )}
+            {product.confectionery.is_sugar_free && (
+              <span className="inline-flex items-center text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                <Shield className="w-3 h-3 mr-1" />
+                Sugar Free
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Product details row */}
+        {product.confectionery && (
+          <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+            <div className="flex items-center">
+              <Clock className="w-3 h-3 mr-1" />
+              <span>Best before {product.confectionery.shelf_life_days} days</span>
+            </div>
+            {selectedVariant.weight && (
+              <div className="flex items-center">
+                <Package className="w-3 h-3 mr-1" />
+                <span>{selectedVariant.weight}{selectedVariant.weight_unit}</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Rating */}
         <div className="flex items-center mb-3">

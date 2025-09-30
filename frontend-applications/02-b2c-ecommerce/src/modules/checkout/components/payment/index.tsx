@@ -4,7 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 
 type PaymentProps = {
   cart: HttpTypes.StoreCart
-  availablePaymentMethods?: HttpTypes.StoreCartPaymentMethod[] | null
+  availablePaymentMethods?: any[] | null
 }
 
 const Payment = ({ cart, availablePaymentMethods }: PaymentProps) => {

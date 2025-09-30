@@ -21,6 +21,8 @@ export default function FeaturedProducts() {
       product_id: productId,
       variant_id: variantId,
       quantity: 1,
+      title: title,
+      unit_price: price,
     }));
   };
 

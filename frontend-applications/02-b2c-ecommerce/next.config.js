@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Temporarily remove static export for build testing
+  // output: 'export',
   trailingSlash: true,
   eslint: {
     dirs: ['src'],

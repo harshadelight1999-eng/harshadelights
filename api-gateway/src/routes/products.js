@@ -17,6 +17,7 @@ const router = express.Router();
 // Import database and services
 const { getApiGatewayDB } = require('../config/database');
 const ErpNextService = require('../services/ErpNextService');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 // Configure multer for image uploads
 const storage = multer.diskStorage({
@@ -803,6 +804,137 @@ router.post('/bulk-import',
       });
     }
   }
+);
+
+/**
+ * @swagger
+ * /api/v1/products/medusa:
+ *   get:
+ *     summary: Get products from Medusa backend
+ *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 12
+ *       - in: query
+ *         name: offset
+ *         schema:
+ *           type: integer
+ *           minimum: 0
+ *           default: 0
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         description: Search query
+ *       - in: query
+ *         name: category_id
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *         description: Category IDs to filter by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *         description: Sort order
+ *     responses:
+ *       200:
+ *         description: Products from Medusa backend
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *                 count:
+ *                   type: integer
+ *                 offset:
+ *                   type: integer
+ *                 limit:
+ *                   type: integer
+ */
+
+// Medusa proxy configuration
+const MEDUSA_BACKEND_URL = process.env.MEDUSA_BACKEND_URL || 'http://localhost:9000';
+
+const medusaProxy = createProxyMiddleware({
+  target: MEDUSA_BACKEND_URL,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api/v1/products/medusa': '/store/products'
+  },
+  onProxyReq: (proxyReq, req, res) => {
+    // Log the proxy request
+    logger.info(`Proxying request to Medusa: ${req.method} ${req.path} -> ${MEDUSA_BACKEND_URL}/store/products`);
+    
+    // Add any required headers for Medusa
+    proxyReq.setHeader('Content-Type', 'application/json');
+    
+    // Add CORS headers for frontend requests
+    if (req.headers.origin) {
+      proxyReq.setHeader('Origin', req.headers.origin);
+    }
+  },
+  onProxyRes: (proxyRes, req, res) => {
+    // Add CORS headers to the response
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    
+    logger.info(`Medusa proxy response: ${proxyRes.statusCode} for ${req.path}`);
+  },
+  onError: (err, req, res) => {
+    logger.error('Medusa proxy error:', err);
+    res.status(502).json({
+      success: false,
+      error: 'Medusa backend unavailable',
+      code: 'MEDUSA_PROXY_ERROR'
+    });
+  }
+});
+
+// Apply the Medusa proxy to the /medusa route
+router.use('/medusa',
+  rateLimitMiddleware.basicRateLimit(),
+  medusaProxy
+);
+
+// Alternative direct proxy route for product categories from Medusa
+router.get('/medusa/categories',
+  rateLimitMiddleware.basicRateLimit(),
+  createProxyMiddleware({
+    target: MEDUSA_BACKEND_URL,
+    changeOrigin: true,
+    pathRewrite: {
+      '^/api/v1/products/medusa/categories': '/store/product-categories'
+    },
+    onProxyReq: (proxyReq, req, res) => {
+      logger.info(`Proxying categories request to Medusa: ${req.method} ${req.path}`);
+      proxyReq.setHeader('Content-Type', 'application/json');
+    },
+    onProxyRes: (proxyRes, req, res) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    },
+    onError: (err, req, res) => {
+      logger.error('Medusa categories proxy error:', err);
+      res.status(502).json({
+        success: false,
+        error: 'Medusa backend unavailable',
+        code: 'MEDUSA_CATEGORIES_PROXY_ERROR'
+      });
+    }
+  })
 );
 
 module.exports = router;

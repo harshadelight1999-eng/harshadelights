@@ -1,0 +1,43 @@
+
+> @harshadelights/b2c-ecommerce@1.0.0 type-check
+> tsc --noEmit
+
+src/components/products/__tests__/ProductCard.test.tsx(64,52): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(65,97): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(66,38): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(72,38): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(80,47): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(105,40): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(112,29): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(113,33): error TS2551: Property 'toBeDisabled' does not exist on type 'Assertion'. Did you mean 'disabled'?
+src/components/products/__tests__/ProductCard.test.tsx(121,29): error TS2551: Property 'toBeDisabled' does not exist on type 'Assertion'. Did you mean 'disabled'?
+src/components/products/__tests__/ProductCard.test.tsx(128,26): error TS2339: Property 'toBeInTheDocument' does not exist on type 'Assertion'.
+src/components/products/__tests__/ProductCard.test.tsx(129,26): error TS2339: Property 'toHaveAttribute' does not exist on type 'Assertion'.
+src/components/ui/use-toast.ts(155,7): error TS2353: Object literal may only specify known properties, and 'open' does not exist in type 'ToasterToast'.
+src/components/ui/use-toast.ts(156,22): error TS7006: Parameter 'open' implicitly has an 'any' type.
+src/lib/__tests__/utils.test.ts(7,46): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/lib/__tests__/utils.test.ts(11,77): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/lib/__tests__/utils.test.ts(15,63): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/lib/__tests__/utils.test.ts(19,54): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/lib/data/cart.ts(32,46): error TS2339: Property 'lineItem' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'.
+src/lib/data/cart.ts(46,46): error TS2339: Property 'lineItem' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'.
+src/lib/data/cart.ts(58,46): error TS2339: Property 'lineItem' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'.
+src/lib/data/cart.ts(68,46): error TS2551: Property 'shippingMethod' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'. Did you mean 'addShippingMethod'?
+src/lib/data/cart.ts(80,46): error TS2339: Property 'paymentMethod' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'.
+src/lib/data/cart.ts(92,13): error TS2339: Property 'order' does not exist on type 'StoreCompleteCartResponse'.
+src/lib/data/cart.ts(102,46): error TS2339: Property 'paymentSession' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'.
+src/lib/data/cart.ts(112,58): error TS2339: Property 'shippingOption' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'.
+src/lib/data/cart.ts(182,21): error TS2339: Property 'order' does not exist on type 'StoreCompleteCartResponse'.
+  Property 'order' does not exist on type '{ type: "cart"; cart: StoreCart; error: { message: string; name: string; type: string; }; }'.
+src/lib/data/cart.ts(191,46): error TS2551: Property 'shippingMethod' does not exist on type '{ create: (body: StoreCreateCart, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<StoreCartResponse>; ... 7 more ...; transferCart: (id: string, query?: SelectParams | undefined, headers?: ClientHeaders | undefined) => Promise<...>; }'. Did you mean 'addShippingMethod'?
+src/lib/data/products.ts(24,7): error TS2353: Object literal may only specify known properties, and 'tags' does not exist in type 'StoreProductListParams'.
+src/lib/data/products.ts(75,55): error TS2339: Property 'productCategory' does not exist on type 'Store'.
+src/modules/checkout/components/payment/index.tsx(7,39): error TS2694: Namespace '"/Users/devji/harshadelights/frontend-applications/node_modules/@medusajs/types/dist/http/index"' has no exported member 'StoreCartPaymentMethod'.
+src/modules/common/components/native-select.tsx(49,15): error TS2484: Export declaration conflicts with exported declaration of 'NativeSelectProps'.
+npm error Lifecycle script `type-check` failed with error:
+npm error code 1
+npm error path /Users/devji/harshadelights/frontend-applications/02-b2c-ecommerce
+npm error workspace @harshadelights/b2c-ecommerce@1.0.0
+npm error location /Users/devji/harshadelights/frontend-applications/02-b2c-ecommerce
+npm error command failed
+npm error command sh -c tsc --noEmit

@@ -26,7 +26,7 @@ interface CheckoutFormProps {
 
 export default function CheckoutForm({ cart, onStepChange, currentStep }: CheckoutFormProps) {
   const [isLoading, setIsLoading] = useState(false)
-  const [shippingOptions, setShippingOptions] = useState([])
+  const [shippingOptions, setShippingOptions] = useState<any[]>([])
   const [paymentMethods] = useState([
     { id: 'stripe', name: 'Credit Card', icon: CreditCardIcon },
     { id: 'razorpay', name: 'Razorpay', icon: CreditCardIcon },
@@ -166,9 +166,7 @@ export default function CheckoutForm({ cart, onStepChange, currentStep }: Checko
 
     setIsLoading(true)
     try {
-      await initiatePaymentSession(cart, {
-        provider_id: formData.selectedPayment,
-      })
+      await initiatePaymentSession(cart.id, formData.selectedPayment)
       onStepChange('review')
     } catch (error) {
       toast({

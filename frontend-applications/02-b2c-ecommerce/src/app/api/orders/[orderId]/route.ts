@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function generateStaticParams() {
+  // For static export, we'll pre-generate some common order IDs
+  return [
+    { orderId: 'sample-order' },
+    { orderId: 'demo-order' },
+  ];
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { orderId: string } }
