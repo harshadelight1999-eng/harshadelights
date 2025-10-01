@@ -500,10 +500,24 @@ function createApiKeyValidator() {
 function createCorsConfiguration() {
   const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
 
+  // In development, allow localhost origins
+  const isDevelopment = process.env.NODE_ENV !== 'production';
+  const localhostOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:3003'
+  ];
+
   return {
     origin: (origin, callback) => {
       // Allow requests with no origin (mobile apps, curl, postman)
       if (!origin) return callback(null, true);
+
+      // Allow localhost in development
+      if (isDevelopment && localhostOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
@@ -511,6 +525,7 @@ function createCorsConfiguration() {
         logger.security('CORS violation', {
           origin,
           allowedOrigins,
+          isDevelopment,
           severity: 'medium'
         });
 
