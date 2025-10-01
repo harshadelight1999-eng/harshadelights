@@ -192,15 +192,19 @@ export const getFeaturedProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const apiGatewayUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      console.log('🔍 Fetching featured products from:', apiGatewayUrl);
       const response = await fetch(`${apiGatewayUrl}/api/v1/products/featured`);
 
+      console.log('📡 Response status:', response.status);
       if (!response.ok) {
         throw new Error('Failed to get featured products');
       }
 
       const data = await response.json();
+      console.log('✅ Featured products data:', data);
       return data.products;
     } catch (error) {
+      console.error('❌ Featured products error:', error);
       return rejectWithValue('Failed to get featured products');
     }
   }
