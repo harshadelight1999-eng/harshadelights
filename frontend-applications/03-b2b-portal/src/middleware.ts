@@ -1,6 +1,7 @@
 import { authkitMiddleware } from '@workos-inc/authkit-nextjs';
 
 export default authkitMiddleware({
+  redirectUri: process.env.WORKOS_REDIRECT_URI,
   // Middleware will run for all routes except those defined here
   middlewareAuth: {
     enabled: true,
