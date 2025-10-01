@@ -22,13 +22,13 @@ interface PageProps {
 const getStatusIcon = (status: string) => {
   switch (status) {
     case 'delivered':
-      return <CheckCircle className="h-4 w-4 text-green-600" />;
+      return <CheckCircle className="h-4 w-4 text-luxury-champagne-600" />;
     case 'shipped':
-      return <Truck className="h-4 w-4 text-blue-600" />;
+      return <Truck className="h-4 w-4 text-royal-600" />;
     case 'processing':
-      return <Package className="h-4 w-4 text-orange-600" />;
+      return <Package className="h-4 w-4 text-luxury-gold-600" />;
     case 'pending':
-      return <Clock className="h-4 w-4 text-yellow-600" />;
+      return <Clock className="h-4 w-4 text-luxury-gold-600" />;
     default:
       return <Clock className="h-4 w-4 text-gray-600" />;
   }
@@ -100,8 +100,8 @@ export default async function OrdersPage({ searchParams }: PageProps) {
         </div>
 
         {error ? (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <p className="text-red-800">{error}</p>
+          <div className="bg-luxury-burgundy-50 border border-luxury-burgundy-200 rounded-lg p-4 mb-6">
+            <p className="text-luxury-burgundy-800">{error}</p>
           </div>
         ) : null}
 
@@ -236,7 +236,7 @@ export default async function OrdersPage({ searchParams }: PageProps) {
                       Previous
                     </a>
                   )}
-                  <span className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                  <span className="px-4 py-2 bg-royal-600 text-white rounded-lg">
                     Page {page} of {pagination.totalPages}
                   </span>
                   {pagination.hasMore && (

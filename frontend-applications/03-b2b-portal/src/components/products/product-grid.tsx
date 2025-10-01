@@ -48,7 +48,7 @@ export function ProductGrid({ products }: ProductGridProps) {
               className="object-cover"
             />
             {product.discount > 0 && (
-              <Badge className="absolute top-2 right-2 bg-red-500">
+              <Badge className="absolute top-2 right-2 bg-luxury-burgundy-600">
                 {product.discount}% OFF
               </Badge>
             )}
@@ -79,7 +79,7 @@ export function ProductGrid({ products }: ProductGridProps) {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Stock:</span>
                 <span className={`text-sm font-medium ${
-                  product.inStock ? 'text-green-600' : 'text-red-600'
+                  product.inStock ? 'text-luxury-champagne-600' : 'text-luxury-burgundy-600'
                 }`}>
                   {product.inStock ? `${product.stockQuantity} available` : 'Out of stock'}
                 </span>
@@ -95,7 +95,7 @@ export function ProductGrid({ products }: ProductGridProps) {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Your Price:</span>
-                <span className="text-lg font-bold text-green-600">
+                <span className="text-lg font-bold text-luxury-gold-600">
                   {formatCurrency(product.customerPrice)}
                 </span>
               </div>

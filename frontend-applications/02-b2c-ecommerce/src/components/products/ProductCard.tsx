@@ -76,14 +76,14 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
         
         {/* Discount Badge */}
         {discountPercentage > 0 && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+          <div className="absolute top-3 left-3 bg-luxury-burgundy-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
             {discountPercentage}% OFF
           </div>
         )}
 
         {/* Stock Status */}
         {selectedVariant.inventory_quantity < 10 && selectedVariant.inventory_quantity > 0 && (
-          <div className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+          <div className="absolute top-3 right-3 bg-luxury-gold-600 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
             Only {selectedVariant.inventory_quantity} left
           </div>
         )}
@@ -101,18 +101,18 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           <button
             onClick={handleWishlist}
             className={`p-2 rounded-full shadow-lg transition-colors ${
-              isWishlisted 
-                ? 'bg-red-500 text-white' 
-                : 'bg-white text-gray-600 hover:text-red-500'
+              isWishlisted
+                ? 'bg-luxury-burgundy-600 text-white'
+                : 'bg-white text-gray-600 hover:text-luxury-burgundy-600'
             }`}
           >
             <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
           </button>
-          
+
           {onQuickView && (
             <button
               onClick={() => onQuickView(product)}
-              className="p-2 bg-white text-gray-600 hover:text-yellow-600 rounded-full shadow-lg transition-colors"
+              className="p-2 bg-white text-gray-600 hover:text-royal-600 rounded-full shadow-lg transition-colors"
             >
               <Eye className="w-4 h-4" />
             </button>
@@ -127,7 +127,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           {product.categories.slice(0, 2).map((category) => (
             <span
               key={category.id}
-              className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full"
+              className="text-xs bg-luxury-gold-100 text-luxury-gold-700 px-2 py-1 rounded-full"
             >
               {category.name}
             </span>
@@ -135,7 +135,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
         </div>
 
         {/* Product Title */}
-        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
+        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-royal-600 transition-colors">
           {product.title}
         </h3>
 
@@ -148,25 +148,25 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
         {product.confectionery && (
           <div className="flex flex-wrap gap-1 mb-3">
             {product.confectionery.is_organic && (
-              <span className="inline-flex items-center text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+              <span className="inline-flex items-center text-xs bg-luxury-champagne-100 text-luxury-champagne-700 px-2 py-1 rounded-full">
                 <Leaf className="w-3 h-3 mr-1" />
                 Organic
               </span>
             )}
             {product.confectionery.is_vegan && (
-              <span className="inline-flex items-center text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+              <span className="inline-flex items-center text-xs bg-luxury-champagne-100 text-luxury-champagne-700 px-2 py-1 rounded-full">
                 <Shield className="w-3 h-3 mr-1" />
                 Vegan
               </span>
             )}
             {product.confectionery.is_gluten_free && (
-              <span className="inline-flex items-center text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+              <span className="inline-flex items-center text-xs bg-royal-100 text-royal-700 px-2 py-1 rounded-full">
                 <Shield className="w-3 h-3 mr-1" />
                 Gluten Free
               </span>
             )}
             {product.confectionery.is_sugar_free && (
-              <span className="inline-flex items-center text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+              <span className="inline-flex items-center text-xs bg-royal-100 text-royal-700 px-2 py-1 rounded-full">
                 <Shield className="w-3 h-3 mr-1" />
                 Sugar Free
               </span>
@@ -215,7 +215,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
                   onClick={() => setSelectedVariant(variant)}
                   className={`text-xs px-2 py-1 rounded border transition-colors ${
                     selectedVariant.id === variant.id
-                      ? 'border-yellow-500 bg-yellow-50 text-yellow-700'
+                      ? 'border-luxury-gold-500 bg-luxury-gold-50 text-luxury-gold-700'
                       : 'border-gray-300 text-gray-600 hover:border-gray-400'
                   }`}
                 >
@@ -241,8 +241,8 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           
           {/* Stock Indicator */}
           <div className="flex items-center text-xs">
-            <Package className="w-3 h-3 mr-1 text-green-600" />
-            <span className="text-green-600 font-medium">In Stock</span>
+            <Package className="w-3 h-3 mr-1 text-luxury-champagne-600" />
+            <span className="text-luxury-champagne-600 font-medium">In Stock</span>
           </div>
         </div>
 
@@ -273,7 +273,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           <button
             onClick={handleAddToCart}
             disabled={selectedVariant.inventory_quantity === 0 || isAddingToCart}
-            className="flex-1 bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-colors font-medium"
+            className="flex-1 bg-gold-gradient hover:shadow-gold disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-all font-medium"
           >
             {isAddingToCart ? (
               <>

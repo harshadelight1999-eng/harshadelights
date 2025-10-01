@@ -113,7 +113,7 @@ export default function WhatsAppOrderButton({
         <button
           onClick={handleWhatsAppOrder}
           disabled={isGenerating}
-          className={`bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 disabled:opacity-50 ${className}`}
+          className={`bg-luxury-champagne-600 hover:bg-luxury-champagne-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 disabled:opacity-50 ${className}`}
           title="Order via WhatsApp"
         >
           <MessageCircle className="w-6 h-6" />
@@ -128,7 +128,7 @@ export default function WhatsAppOrderButton({
       <button
         onClick={handleWhatsAppOrder}
         disabled={isGenerating}
-        className={`bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors disabled:opacity-50 ${className}`}
+        className={`bg-luxury-champagne-600 hover:bg-luxury-champagne-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors disabled:opacity-50 ${className}`}
       >
         <MessageCircle className="w-4 h-4" />
         <span>{isGenerating ? 'Generating...' : 'Order via WhatsApp'}</span>
@@ -141,7 +141,7 @@ export default function WhatsAppOrderButton({
     <button
       onClick={handleWhatsAppOrder}
       disabled={isGenerating}
-      className={`w-full bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors font-medium disabled:opacity-50 ${className}`}
+      className={`w-full bg-luxury-champagne-600 hover:bg-luxury-champagne-700 text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors font-medium disabled:opacity-50 ${className}`}
     >
       <MessageCircle className="w-5 h-5" />
       <span>{isGenerating ? 'Generating Order...' : children || 'Order via WhatsApp'}</span>

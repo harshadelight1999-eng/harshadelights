@@ -67,8 +67,8 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         </div>
 
         {error ? (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <p className="text-red-800">{error}</p>
+          <div className="bg-luxury-burgundy-50 border border-luxury-burgundy-200 rounded-lg p-4 mb-6">
+            <p className="text-luxury-burgundy-800">{error}</p>
           </div>
         ) : null}
 
@@ -103,7 +103,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                           Previous
                         </a>
                       )}
-                      <span className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                      <span className="px-4 py-2 bg-royal-600 text-white rounded-lg">
                         Page {page} of {pagination.totalPages}
                       </span>
                       {pagination.hasMore && (

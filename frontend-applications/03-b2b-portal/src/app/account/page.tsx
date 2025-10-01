@@ -134,12 +134,12 @@ export default async function AccountPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Credit Available:</span>
-                    <span className="font-semibold text-green-600">
+                    <span className="font-semibold text-luxury-champagne-600">
                       {formatCurrency(accountSummary.creditAvailable)}
                     </span>
                   </div>
                   {accountSummary.overdueAmount > 0 && (
-                    <div className="flex justify-between text-red-600">
+                    <div className="flex justify-between text-luxury-burgundy-600">
                       <span>Overdue Amount:</span>
                       <span className="font-semibold">
                         {formatCurrency(accountSummary.overdueAmount)}
@@ -149,7 +149,7 @@ export default async function AccountPage() {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-blue-600 h-2 rounded-full"
+                    className="bg-royal-600 h-2 rounded-full"
                     style={{
                       width: `${(accountSummary.creditUtilized / accountSummary.creditLimit) * 100}%`,
                     }}
@@ -244,7 +244,7 @@ export default async function AccountPage() {
                 <ul className="space-y-2 text-sm">
                   {tierBenefits[customerTier as keyof typeof tierBenefits].map((benefit, index) => (
                     <li key={index} className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                      <div className="w-2 h-2 bg-luxury-champagne-500 rounded-full mr-3"></div>
                       {benefit}
                     </li>
                   ))}

@@ -32,20 +32,20 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-yellow-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-royal-50 to-luxury-champagne-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8">
         {/* Header with back button */}
         <div className="text-center">
           <Link
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-yellow-600 mb-6"
+            className="inline-flex items-center text-gray-600 hover:text-royal-600 mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
 
           {/* Logo */}
-          <div className="brand-primary px-6 py-3 rounded-lg font-bold text-xl mb-8 inline-block">
+          <div className="bg-royal-gradient shadow-royal px-6 py-3 rounded-lg font-bold text-xl mb-8 inline-block text-white font-royal">
             Harsha Delights
           </div>
 
@@ -115,13 +115,13 @@ export default function LoginPage() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+                  className="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                 />
                 <span className="ml-2 text-sm text-gray-600">Remember me</span>
               </label>
               <Link
                 href="/auth/forgot-password"
-                className="text-sm text-yellow-600 hover:text-yellow-500 font-medium"
+                className="text-sm text-royal-600 hover:text-royal-700 font-medium"
               >
                 Forgot password?
               </Link>
@@ -129,7 +129,7 @@ export default function LoginPage() {
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-luxury-burgundy-50 border border-luxury-burgundy-200 text-luxury-burgundy-700 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
@@ -141,7 +141,7 @@ export default function LoginPage() {
               className={`w-full btn-primary flex items-center justify-center ${
                 isLoading || !formData.email || !formData.password
                   ? 'opacity-70 cursor-not-allowed'
-                  : 'hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500'
+                  : 'hover:shadow-luxury focus:ring-2 focus:ring-royal-500'
               }`}
             >
               {isLoading ? (

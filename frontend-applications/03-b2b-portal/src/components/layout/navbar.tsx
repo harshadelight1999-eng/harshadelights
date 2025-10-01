@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -15,7 +16,6 @@ import {
 import { useAuth } from '@/components/auth-provider';
 import { cn } from '@/lib/utils';
 import {
-  Package,
   ShoppingCart,
   User,
   Settings,
@@ -23,12 +23,13 @@ import {
   CreditCard,
   BarChart3,
 } from 'lucide-react';
+import LuxuryLogo from '@harshadelights/shared-components/src/components/LuxuryLogo';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-  { name: 'Products', href: '/products', icon: Package },
-  { name: 'Orders', href: '/orders', icon: ShoppingCart },
-  { name: 'Account', href: '/account', icon: CreditCard },
+  { name: 'Products', href: '/products', icon: ShoppingCart },
+  { name: 'Orders', href: '/orders', icon: CreditCard },
+  { name: 'Account', href: '/account', icon: User },
 ];
 
 export function Navbar() {
@@ -42,9 +43,11 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <Package className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold">Harsha Delights B2B</span>
+            <Link href="/dashboard" className="flex items-center space-x-3 hover:scale-105 transition-transform duration-300">
+              <LuxuryLogo size="md" variant="elegant" priority />
+              <span className="text-xl font-bold bg-royal-gradient bg-clip-text text-transparent font-royal">
+                Harsha Delights B2B
+              </span>
             </Link>
             <div className="hidden md:ml-10 md:flex md:items-baseline md:space-x-4">
               {navigation.map((item) => {

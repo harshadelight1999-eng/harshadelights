@@ -59,11 +59,11 @@ const salesData = [
 ]
 
 const productCategoryData = [
-  { name: 'Traditional Sweets', value: 45, revenue: 1285000, color: '#8884d8' },
-  { name: 'Premium Chocolates', value: 25, revenue: 865000, color: '#82ca9d' },
-  { name: 'Dry Fruits', value: 15, revenue: 520000, color: '#ffc658' },
-  { name: 'Gift Boxes', value: 10, revenue: 425000, color: '#ff7c7c' },
-  { name: 'Beverages', value: 5, revenue: 185000, color: '#8dd1e1' },
+  { name: 'Traditional Sweets', value: 45, revenue: 1285000, color: '#7c3aed' },
+  { name: 'Premium Chocolates', value: 25, revenue: 865000, color: '#ffc107' },
+  { name: 'Dry Fruits', value: 15, revenue: 520000, color: '#e8bc5e' },
+  { name: 'Gift Boxes', value: 10, revenue: 425000, color: '#b04848' },
+  { name: 'Beverages', value: 5, revenue: 185000, color: '#9c6eff' },
 ]
 
 const customerSegmentData = [
@@ -249,8 +249,8 @@ export default function AnalyticsPage() {
                     <Area
                       type="monotone"
                       dataKey="revenue"
-                      stroke="#8884d8"
-                      fill="#8884d8"
+                      stroke="#7c3aed"
+                      fill="#f0ebff"
                       fillOpacity={0.6}
                       name="Revenue"
                     />
@@ -353,7 +353,7 @@ export default function AnalyticsPage() {
                     <Tooltip content={<CustomTooltip />} />
                     <Bar
                       dataKey={selectedMetric}
-                      fill="#8884d8"
+                      fill="#7c3aed"
                       name={selectedMetric.charAt(0).toUpperCase() + selectedMetric.slice(1)}
                     />
                   </BarChart>
@@ -443,7 +443,7 @@ export default function AnalyticsPage() {
                     <Tooltip
                       formatter={(value) => [`₹${Number(value).toLocaleString()}`, 'Revenue']}
                     />
-                    <Bar dataKey="revenue" fill="#82ca9d" />
+                    <Bar dataKey="revenue" fill="#ffc107" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -499,9 +499,9 @@ export default function AnalyticsPage() {
                     <Line
                       type="monotone"
                       dataKey="customers"
-                      stroke="#8884d8"
+                      stroke="#7c3aed"
                       strokeWidth={2}
-                      dot={{ fill: '#8884d8' }}
+                      dot={{ fill: '#7c3aed' }}
                       name="New Customers"
                     />
                   </LineChart>

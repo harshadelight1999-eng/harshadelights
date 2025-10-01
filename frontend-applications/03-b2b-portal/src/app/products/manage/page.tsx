@@ -164,7 +164,7 @@ const productColumns = [
     render: (value: any, row: any) => {
       const stock = row.variants?.[0]?.inventory_quantity || 0
       return (
-        <span className={stock === 0 ? 'text-red-600' : stock < 10 ? 'text-yellow-600' : 'text-green-600'}>
+        <span className={stock === 0 ? 'text-luxury-burgundy-600' : stock < 10 ? 'text-luxury-gold-600' : 'text-luxury-champagne-600'}>
           {stock}
         </span>
       )
@@ -177,9 +177,9 @@ const productColumns = [
     render: (value: string) => (
       <div className="flex items-center space-x-2">
         {value === 'active' ? (
-          <CheckCircle className="h-4 w-4 text-green-600" />
+          <CheckCircle className="h-4 w-4 text-luxury-champagne-600" />
         ) : (
-          <AlertCircle className="h-4 w-4 text-red-600" />
+          <AlertCircle className="h-4 w-4 text-luxury-burgundy-600" />
         )}
         <span className="capitalize">{value.replace('_', ' ')}</span>
       </div>
@@ -433,7 +433,7 @@ export default function ProductManagePage() {
                         accept="image/*"
                         multiple
                         onChange={handleImageChange}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-royal-50 file:text-royal-700 hover:file:bg-royal-100"
                       />
                       <p className="text-xs text-gray-500">
                         Upload up to 10 images (max 5MB each)
@@ -595,7 +595,7 @@ export default function ProductManagePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Products</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircle className="h-4 w-4 text-luxury-champagne-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">1,186</div>
@@ -607,7 +607,7 @@ export default function ProductManagePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Low Stock Alerts</CardTitle>
-            <AlertCircle className="h-4 w-4 text-yellow-600" />
+            <AlertCircle className="h-4 w-4 text-luxury-gold-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">23</div>
@@ -619,7 +619,7 @@ export default function ProductManagePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Revenue Impact</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <TrendingUp className="h-4 w-4 text-luxury-champagne-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">₹2.4M</div>

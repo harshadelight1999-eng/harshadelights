@@ -129,7 +129,7 @@ export default function BusinessIntelligence() {
     return `${value > 0 ? '+' : ''}${value.toFixed(1)}%`
   }
 
-  const COLORS = ['#F59E0B', '#EF4444', '#3B82F6', '#10B981', '#8B5CF6']
+  const COLORS = ['#7c3aed', '#ffc107', '#e8bc5e', '#b04848', '#9c6eff']
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -146,7 +146,7 @@ export default function BusinessIntelligence() {
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-royal-500 focus:border-royal-500"
           >
             <option value="7days">Last 7 Days</option>
             <option value="30days">Last 30 Days</option>
@@ -157,7 +157,7 @@ export default function BusinessIntelligence() {
           <button
             onClick={handleRefresh}
             disabled={isLoading}
-            className="flex items-center space-x-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg disabled:opacity-50"
+            className="flex items-center space-x-2 px-4 py-2 bg-gold-gradient hover:shadow-gold text-white rounded-lg disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
@@ -178,8 +178,8 @@ export default function BusinessIntelligence() {
               <p className="text-sm font-medium text-gray-600">Total Revenue</p>
               <p className="text-2xl font-bold text-gray-900">{formatCurrency(metrics.totalRevenue)}</p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-green-600" />
+            <div className="w-12 h-12 bg-luxury-champagne-100 rounded-full flex items-center justify-center">
+              <DollarSign className="w-6 h-6 text-luxury-champagne-600" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -197,8 +197,8 @@ export default function BusinessIntelligence() {
               <p className="text-sm font-medium text-gray-600">Total Orders</p>
               <p className="text-2xl font-bold text-gray-900">{metrics.totalOrders.toLocaleString()}</p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <ShoppingCart className="w-6 h-6 text-blue-600" />
+            <div className="w-12 h-12 bg-royal-100 rounded-full flex items-center justify-center">
+              <ShoppingCart className="w-6 h-6 text-royal-600" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -216,8 +216,8 @@ export default function BusinessIntelligence() {
               <p className="text-sm font-medium text-gray-600">Total Customers</p>
               <p className="text-2xl font-bold text-gray-900">{metrics.totalCustomers.toLocaleString()}</p>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-              <Users className="w-6 h-6 text-purple-600" />
+            <div className="w-12 h-12 bg-royal-100 rounded-full flex items-center justify-center">
+              <Users className="w-6 h-6 text-royal-600" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -235,8 +235,8 @@ export default function BusinessIntelligence() {
               <p className="text-sm font-medium text-gray-600">Avg Order Value</p>
               <p className="text-2xl font-bold text-gray-900">{formatCurrency(metrics.averageOrderValue)}</p>
             </div>
-            <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-              <Package className="w-6 h-6 text-yellow-600" />
+            <div className="w-12 h-12 bg-luxury-gold-100 rounded-full flex items-center justify-center">
+              <Package className="w-6 h-6 text-luxury-gold-600" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -262,8 +262,8 @@ export default function BusinessIntelligence() {
               <Area
                 type="monotone"
                 dataKey="revenue"
-                stroke="#F59E0B"
-                fill="#FEF3C7"
+                stroke="#ffc107"
+                fill="#fff9e6"
                 strokeWidth={2}
               />
             </AreaChart>
@@ -282,14 +282,14 @@ export default function BusinessIntelligence() {
               <Line
                 type="monotone"
                 dataKey="orders"
-                stroke="#3B82F6"
+                stroke="#7c3aed"
                 strokeWidth={2}
                 name="Orders"
               />
               <Line
                 type="monotone"
                 dataKey="customers"
-                stroke="#10B981"
+                stroke="#e8bc5e"
                 strokeWidth={2}
                 name="New Customers"
               />

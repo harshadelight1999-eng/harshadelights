@@ -92,7 +92,7 @@ export default function AccountPage() {
       description: 'View your previous orders and track current deliveries',
       icon: ShoppingBag,
       href: '/account/orders',
-      color: 'bg-yellow-500',
+      color: 'bg-luxury-gold-500',
       unreadCount: 2
     },
     {
@@ -100,21 +100,21 @@ export default function AccountPage() {
       description: 'Manage your delivery addresses',
       icon: MapPin,
       href: '/account/addresses',
-      color: 'bg-green-500'
+      color: 'bg-luxury-champagne-500'
     },
     {
       title: 'Payment Methods',
       description: 'Manage stored payment methods',
       icon: CreditCard,
       href: '/account/payments',
-      color: 'bg-blue-500'
+      color: 'bg-royal-500'
     },
     {
       title: 'Wishlist',
       description: 'Items you saved for later',
       icon: Heart,
       href: '/account/wishlist',
-      color: 'bg-pink-500',
+      color: 'bg-luxury-burgundy-500',
       unreadCount: 3
     },
     {
@@ -122,7 +122,7 @@ export default function AccountPage() {
       description: 'Get help and contact customer service',
       icon: MessageCircle,
       href: '/account/support',
-      color: 'bg-purple-500'
+      color: 'bg-royal-600'
     },
     {
       title: 'Account Settings',
@@ -161,8 +161,8 @@ export default function AccountPage() {
             {/* User Profile Card */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex items-center space-x-4 mb-4">
-                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
-                  <User className="w-8 h-8 text-yellow-600" />
+                <div className="w-16 h-16 bg-luxury-gold-100 rounded-full flex items-center justify-center">
+                  <User className="w-8 h-8 text-luxury-gold-600" />
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900">
@@ -196,8 +196,8 @@ export default function AccountPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg shadow-sm p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-                    <ShoppingBag className="w-5 h-5 text-yellow-600" />
+                  <div className="w-10 h-10 bg-royal-100 rounded-lg flex items-center justify-center">
+                    <ShoppingBag className="w-5 h-5 text-royal-600" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-gray-900">{userStats.totalOrders.toLocaleString()}</div>
@@ -208,8 +208,8 @@ export default function AccountPage() {
 
               <div className="bg-white rounded-lg shadow-sm p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Award className="w-5 h-5 text-green-600" />
+                  <div className="w-10 h-10 bg-luxury-gold-100 rounded-lg flex items-center justify-center">
+                    <Award className="w-5 h-5 text-luxury-gold-600" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-gray-900">{userStats.loyaltyPoints.toLocaleString()}</div>
@@ -220,8 +220,8 @@ export default function AccountPage() {
 
               <div className="bg-white rounded-lg shadow-sm p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Package className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-luxury-champagne-100 rounded-lg flex items-center justify-center">
+                    <Package className="w-5 h-5 text-luxury-champagne-600" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-gray-900">₹{userStats.totalSpent.toLocaleString()}</div>

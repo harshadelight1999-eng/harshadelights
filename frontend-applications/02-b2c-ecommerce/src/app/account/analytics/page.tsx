@@ -62,11 +62,11 @@ export default function AnalyticsPage() {
       { month: 'Aug', spending: 38200, orders: 12 }
     ],
     productCategories: [
-      { name: 'Dark Chocolate', value: 35, amount: 28875, color: '#8B4513' },
-      { name: 'Milk Chocolate', value: 28, amount: 23100, color: '#DAA520' },
-      { name: 'Gift Sets', value: 22, amount: 18150, color: '#FF69B4' },
-      { name: 'Custom Orders', value: 10, amount: 8250, color: '#20B2AA' },
-      { name: 'Promotional', value: 5, amount: 4125, color: '#FF6347' }
+      { name: 'Dark Chocolate', value: 35, amount: 28875, color: '#7c3aed' },
+      { name: 'Milk Chocolate', value: 28, amount: 23100, color: '#ffc107' },
+      { name: 'Gift Sets', value: 22, amount: 18150, color: '#e8bc5e' },
+      { name: 'Custom Orders', value: 10, amount: 8250, color: '#b04848' },
+      { name: 'Promotional', value: 5, amount: 4125, color: '#9c6eff' }
     ],
     seasonalTrends: [
       { season: 'Q1', orders: 12, avgSpending: 2850, change: '+15%' },
@@ -167,8 +167,8 @@ export default function AnalyticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <ShoppingBag className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-royal-100 rounded-lg flex items-center justify-center">
+                <ShoppingBag className="w-6 h-6 text-royal-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Orders</p>
@@ -183,8 +183,8 @@ export default function AnalyticsPage() {
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-luxury-champagne-100 rounded-lg flex items-center justify-center">
+                <DollarSign className="w-6 h-6 text-luxury-champagne-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Spent</p>
@@ -199,15 +199,15 @@ export default function AnalyticsPage() {
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <Target className="w-6 h-6 text-yellow-600" />
+              <div className="w-12 h-12 bg-luxury-gold-100 rounded-lg flex items-center justify-center">
+                <Target className="w-6 h-6 text-luxury-gold-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Average Order Value</p>
                 <p className="text-2xl font-bold text-gray-900">₹{analyticsData.overview.averageOrderValue.toLocaleString()}</p>
                 <div className="flex items-center text-sm">
-                  <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                  <span className="text-yellow-600">Above average customer</span>
+                  <Star className="w-4 h-4 text-luxury-gold-500 mr-1" />
+                  <span className="text-luxury-gold-600">Above average customer</span>
                 </div>
               </div>
             </div>
@@ -215,8 +215,8 @@ export default function AnalyticsPage() {
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Award className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-royal-100 rounded-lg flex items-center justify-center">
+                <Award className="w-6 h-6 text-royal-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Loyalty Points</p>
@@ -250,8 +250,8 @@ export default function AnalyticsPage() {
                   <Area
                     type="monotone"
                     dataKey="spending"
-                    stroke="#f59e0b"
-                    fill="#fef3c7"
+                    stroke="#ffc107"
+                    fill="#fff9e6"
                     strokeWidth={2}
                   />
                 </AreaChart>
@@ -264,7 +264,7 @@ export default function AnalyticsPage() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-gray-900">Product Preferences</h2>
               <div className="text-sm text-gray-600 flex items-center space-x-1">
-                <PieChart className="w-4 h-4 text-blue-500" />
+                <PieChart className="w-4 h-4 text-royal-500" />
                 <span>Top categories by spending</span>
               </div>
             </div>
@@ -359,12 +359,12 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
+            <div className="mt-6 p-4 bg-luxury-gold-50 rounded-lg border border-luxury-gold-200">
               <div className="flex items-start space-x-3">
-                <Zap className="w-5 h-5 text-yellow-600 mt-0.5" />
+                <Zap className="w-5 h-5 text-luxury-gold-600 mt-0.5" />
                 <div>
-                  <h4 className="text-sm font-semibold text-yellow-900">Seasonal Insight</h4>
-                  <p className="text-sm text-yellow-800 mt-1">
+                  <h4 className="text-sm font-semibold text-luxury-gold-900">Seasonal Insight</h4>
+                  <p className="text-sm text-luxury-gold-800 mt-1">
                     Your spending peaks during Q2 (Apr-Jun), likely due to summer celebrations, festivals, and gift-giving occasions.
                     Consider your shopping patterns show holiday and event-driven purchasing behavior.
                   </p>
@@ -378,8 +378,8 @@ export default function AnalyticsPage() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-gray-900">Loyalty Program Performance</h2>
               <div className="flex items-center space-x-1 text-sm text-gray-600">
-                <Crown className="w-4 h-4 text-yellow-500" />
-                <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">
+                <Crown className="w-4 h-4 text-luxury-gold-500" />
+                <span className="bg-luxury-gold-100 text-luxury-gold-800 px-2 py-1 rounded text-xs font-medium">
                   Gold Member
                 </span>
               </div>

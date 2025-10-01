@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link'
+import Image from 'next/image'
 import { ShoppingCart, User, Menu, X, Search } from 'lucide-react'
 import { RootState } from '@/store/store';
 import { toggleCartSidebar } from '@/store/slices/cartSlice';
@@ -24,16 +25,21 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+    <header className="bg-white shadow-sm border-b border-royal-200 sticky top-0 z-40 backdrop-blur-sm bg-white/95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">H</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900 hidden sm:block">
+            <Link href="/" className="flex items-center space-x-3 hover:scale-105 transition-transform duration-300">
+              <Image
+                src="/assets/branding/logos/elegant_monogram_logo_for_harsha_delights_a-removebg-preview.png"
+                alt="Harsha Delights - Premium Confectionery"
+                width={48}
+                height={48}
+                className="drop-shadow-lg"
+                priority
+              />
+              <span className="text-xl font-bold bg-royal-gradient bg-clip-text text-transparent hidden sm:block font-royal">
                 Harsha Delights
               </span>
             </Link>
@@ -45,9 +51,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-600 hover:text-yellow-600 px-3 py-2 text-sm font-medium transition-colors"
+                className="text-gray-600 hover:text-royal-700 px-3 py-2 text-sm font-medium transition-colors relative group"
               >
                 {item.name}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal-gradient group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
@@ -61,7 +68,7 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Search products..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-royal-500 focus:border-royal-500 transition-all"
               />
             </div>
           </div>
@@ -72,11 +79,11 @@ export default function Header() {
             {/* Shopping Cart */}
             <button
               onClick={() => dispatch(toggleCartSidebar())}
-              className="relative p-2 text-gray-600 hover:text-yellow-600 transition-colors"
+              className="relative p-2 text-gray-600 hover:text-royal-700 transition-colors"
             >
               <ShoppingCart className="h-6 w-6" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-royal-gradient text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shadow-royal animate-pulse">
                   {itemCount}
                 </span>
               )}
@@ -88,7 +95,7 @@ export default function Header() {
                 <div className="flex items-center space-x-2">
                   <Link
                     href="/account"
-                    className="flex items-center space-x-1 text-gray-600 hover:text-yellow-600 transition-colors"
+                    className="flex items-center space-x-1 text-gray-600 hover:text-royal-700 transition-colors"
                   >
                     <User className="h-6 w-6" />
                     <span className="hidden sm:block text-sm">{user.first_name}</span>
@@ -98,13 +105,13 @@ export default function Header() {
                 <div className="flex items-center space-x-2">
                   <Link
                     href="/auth/login"
-                    className="text-gray-600 hover:text-yellow-600 text-sm font-medium transition-colors"
+                    className="text-gray-600 hover:text-royal-700 text-sm font-medium transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/register"
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="bg-royal-gradient text-white px-4 py-2 rounded-md text-sm font-medium transition-all shadow-royal hover:shadow-luxury hover:scale-105"
                   >
                     Sign Up
                   </Link>
@@ -134,7 +141,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-2 text-gray-600 hover:text-yellow-600 font-medium"
+                  className="block px-3 py-2 text-gray-600 hover:text-royal-700 font-medium transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}
@@ -151,7 +158,7 @@ export default function Header() {
                 <input
                   type="text"
                   placeholder="Search products..."
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-royal-500 focus:border-royal-500 transition-all"
                 />
               </div>
             </div>
@@ -160,8 +167,8 @@ export default function Header() {
       </div>
 
       {/* Promotional Banner */}
-      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-center py-2 text-sm">
-        🎉 Free shipping on orders above ₹1000 | Same day delivery available in select cities
+      <div className="bg-royal-gradient text-white text-center py-2 text-sm shadow-royal">
+        ✨ Free shipping on orders above ₹1000 | Same day delivery in select cities
       </div>
     </header>
   );

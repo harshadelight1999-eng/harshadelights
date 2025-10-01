@@ -60,20 +60,20 @@ export default function RegisterPage() {
   );
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-yellow-50 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-royal-50 to-luxury-champagne-50 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header with back button */}
         <div className="text-center">
           <Link
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-yellow-600 mb-6"
+            className="inline-flex items-center text-gray-600 hover:text-royal-600 mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
 
           {/* Logo */}
-          <div className="brand-primary px-6 py-3 rounded-lg font-bold text-xl mb-8 inline-block">
+          <div className="bg-royal-gradient shadow-royal px-6 py-3 rounded-lg font-bold text-xl mb-8 inline-block text-white font-royal">
             Harsha Delights
           </div>
 
@@ -242,7 +242,7 @@ export default function RegisterPage() {
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-luxury-burgundy-50 border border-luxury-burgundy-200 text-luxury-burgundy-700 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
@@ -254,7 +254,7 @@ export default function RegisterPage() {
               className={`w-full btn-primary flex items-center justify-center ${
                 isLoading || !isFormValid
                   ? 'opacity-70 cursor-not-allowed'
-                  : 'hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500'
+                  : 'hover:shadow-luxury focus:ring-2 focus:ring-royal-500'
               }`}
             >
               {isLoading ? (
